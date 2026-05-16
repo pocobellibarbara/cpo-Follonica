@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commissione Pari Opportunità — Comune di Follonica</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f0; min-height: 100vh; }
+:root {
+  --blu:#1a4a8a; --blu-l:#e8f0fb; --blu-m:#2b6cb0;
+  --oro:#c9932a; --oro-l:#fdf3e3;
+  --viola:#6b3fa0; --viola-l:#f3eefb;
+  --verde:#1a6b3a; --verde-l:#e8f7ee;
+  --rosso:#a32020; --rosso-l:#fceaea;
+  --bg:#fff; --bg2:#f8f8f5; --bg3:#f5f5f0;
+  --t:#1a1a1a; --t2:#555; --t3:#888;
+  --br:rgba(0,0,0,0.1); --br2:rgba(0,0,0,0.18);
+  --r:8px; --rl:12px;
+}
+/* NAV */
+nav { background:var(--blu); border-bottom:3px solid var(--oro); padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; min-height:64px; gap:12px; flex-wrap:wrap; position:sticky; top:0; z-index:50; }
+.nav-brand { display:flex; align-items:center; gap:12px; }
+.nav-comune { font-size:11px; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:.08em; line-height:1.2; }
+.nav-cpo { font-size:13px; font-weight:500; color:#fff; }
+.nav-links { display:flex; gap:2px; }
+.nb { font-size:13px; padding:6px 12px; border-radius:6px; border:none; background:transparent; color:rgba(255,255,255,0.8); cursor:pointer; transition:all .15s; }
+.nb:hover,.nb.active { background:rgba(255,255,255,0.15); color:#fff; }
+.lb { font-size:12px; padding:6px 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.4); background:transparent; color:#fff; cursor:pointer; transition:all .15s; flex-shrink:0; }
+.lb:hover { background:rgba(255,255,255,0.15); }
+.lb.on { background:var(--oro); border-color:var(--oro); }
+/* PAGES */
+.page { display:none; padding:2rem 1.5rem; max-width:900px; margin:0 auto; }
+.page.active { display:block; }
+/* HERO */
+.hero { background:var(--bg); border-radius:var(--rl); border:.5px solid var(--br); border-top:3px solid var(--blu); padding:2rem; margin-bottom:1.5rem; display:flex; gap:1.5rem; align-items:flex-start; }
+.hero h1 { font-size:22px; font-weight:500; margin-bottom:.4rem; }
+.hero-sub { font-size:12px; color:var(--blu); text-transform:uppercase; letter-spacing:.07em; margin-bottom:.5rem; font-weight:500; }
+.hero p { font-size:14px; color:var(--t2); line-height:1.7; }
+.info-strip { background:var(--blu-l); border-radius:var(--r); border:.5px solid #b8cfe8; padding:.75rem 1rem; margin-bottom:1.5rem; font-size:12px; color:var(--blu); }
+.info-strip a { color:var(--blu-m); }
+.st { font-size:11px; font-weight:500; color:var(--t3); text-transform:uppercase; letter-spacing:.07em; margin-bottom:1rem; }
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin-bottom:1.5rem; }
+.card { background:var(--bg); border:.5px solid var(--br); border-radius:var(--rl); padding:1.25rem; }
+.card-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; font-size:16px; }
+.card h3 { font-size:13px; font-weight:500; margin-bottom:4px; }
+.card p { font-size:12px; color:var(--t2); line-height:1.5; }
+/* NEWS */
+.news-list { display:flex; flex-direction:column; gap:10px; }
+.ni { background:var(--bg); border:.5px solid var(--br); border-radius:var(--rl); padding:1rem 1.25rem; display:flex; gap:1rem; }
+.nd { font-size:10px; color:var(--t3); white-space:nowrap; padding-top:2px; }
+.ni h4 { font-size:13px; font-weight:500; margin-bottom:3px; }
+.ni p { font-size:12px; color:var(--t2); line-height:1.5; }
+/* CONTATTI */
+.cf { background:var(--bg); border:.5px solid var(--br); border-radius:var(--rl); padding:1.5rem; max-width:480px; }
+.fi { margin-bottom:1rem; }
+.fi label { display:block; font-size:12px; color:var(--t2); margin-bottom:4px; }
+.fi input,.fi textarea,.fi select { width:100%; padding:8px 10px; font-size:13px; font-family:inherit; border:.5px solid var(--br2); border-radius:var(--r); background:var(--bg); color:var(--t); outline:none; transition:border-color .15s; }
+.fi input:focus,.fi textarea:focus,.fi select:focus { border-color:var(--blu-m); }
+.fi textarea { height:80px; resize:vertical; }
+/* BUTTONS */
+.btn-blu { background:var(--blu); color:#fff; border:none; padding:9px 22px; border-radius:var(--r); font-size:13px; cursor:pointer; transition:opacity .15s; }
+.btn-blu:hover { opacity:.85; }
+.btn-verde { background:var(--verde); color:#fff; border:none; padding:8px 18px; border-radius:var(--r); font-size:13px; cursor:pointer; transition:opacity .15s; }
+.btn-verde:hover { opacity:.85; }
+.btn-rosso { background:var(--rosso-l); color:var(--rosso); border:none; border-radius:6px; padding:4px 10px; font-size:11px; cursor:pointer; white-space:nowrap; flex-shrink:0; }
+.btn-rosso:hover { opacity:.8; }
+/* MODAL */
+.overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; z-index:100; }
+.modal { background:var(--bg); border-radius:var(--rl); border:.5px solid var(--br); padding:1.75rem; width:340px; max-width:95vw; }
+.modal h2 { font-size:16px; font-weight:500; margin-bottom:.25rem; }
+.modal .sub { font-size:12px; color:var(--t2); margin-bottom:1.25rem; line-height:1.5; }
+.mbtns { display:flex; gap:8px; margin-top:1rem; }
+.btn-cancel { flex:1; background:transparent; border:.5px solid var(--br2); padding:8px; border-radius:var(--r); font-size:13px; cursor:pointer; color:var(--t2); }
+.btn-cancel:hover { background:var(--bg2); }
+.errmsg { font-size:11px; color:#c00; margin-top:4px; }
+/* AREA RISERVATA */
+.mh { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:1.5rem; }
+.mh h2 { font-size:20px; font-weight:500; }
+.badge-cpo { display:inline-flex; align-items:center; gap:6px; background:var(--viola-l); color:var(--viola); font-size:11px; padding:4px 10px; border-radius:99px; margin-bottom:.5rem; border:.5px solid #d4b8f0; }
+.tabs { display:flex; gap:3px; margin-bottom:1.5rem; border-bottom:.5px solid var(--br); flex-wrap:wrap; }
+.tab { font-size:13px; padding:6px 16px; border-radius:8px 8px 0 0; border:none; background:transparent; cursor:pointer; color:var(--t2); transition:all .15s; margin-bottom:-.5px; }
+.tab.active { background:var(--bg); border:.5px solid var(--br); border-bottom-color:var(--bg); color:var(--t); font-weight:500; }
+.tc { display:none; }
+.tc.active { display:block; }
+/* PANNELLO AGGIUNGI */
+.panel { border-radius:var(--rl); padding:1.25rem; margin-bottom:1.5rem; }
+.panel.verde { background:var(--verde-l); border:.5px solid #a8d5b8; }
+.panel.blu { background:var(--blu-l); border:.5px solid #b8cfe8; }
+.panel h3 { font-size:14px; font-weight:500; margin-bottom:1rem; display:flex; align-items:center; gap:6px; }
+.panel.verde h3 { color:var(--verde); }
+.panel.blu h3 { color:var(--blu); }
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.form-grid .fi { margin-bottom:0; }
+.full { grid-column:1/-1; }
+/* CALENDARIO */
+.calendar { background:var(--bg); border-radius:var(--rl); border:.5px solid var(--br); }
+.cal-hdr { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.25rem; border-bottom:.5px solid var(--br); }
+.cal-hdr h3 { font-size:15px; font-weight:500; }
+.cal-nav button { width:28px; height:28px; border-radius:6px; border:.5px solid var(--br2); background:transparent; cursor:pointer; color:var(--t2); font-size:14px; }
+.cal-nav button:hover { background:var(--bg2); }
+.cal-grid { display:grid; grid-template-columns:repeat(7,1fr); padding:1rem; gap:2px; }
+.cdn { text-align:center; font-size:10px; color:var(--t3); padding:4px 0; font-weight:500; }
+.cd { text-align:center; padding:6px 4px; border-radius:6px; font-size:12px; cursor:pointer; transition:background .1s; min-height:30px; position:relative; color:var(--t); }
+.cd:hover:not(.empty) { background:var(--bg2); }
+.cd.today { font-weight:600; color:var(--blu); }
+.cd.has-event::after { content:''; width:5px; height:5px; border-radius:50%; background:var(--blu-m); position:absolute; bottom:3px; left:50%; transform:translateX(-50%); }
+.cd.empty { cursor:default; }
+.ev-list { margin-top:1.5rem; display:flex; flex-direction:column; gap:10px; }
+.ev-item { background:var(--bg); border:.5px solid var(--br); border-left:3px solid var(--blu-m); border-radius:0 10px 10px 0; padding:.9rem 1.1rem; display:flex; gap:1rem; align-items:center; }
+.ev-badge { background:var(--blu-l); color:var(--blu); border-radius:8px; padding:6px 10px; text-align:center; min-width:44px; flex-shrink:0; }
+.ev-badge .day { font-size:18px; font-weight:600; line-height:1; }
+.ev-badge .mon { font-size:9px; text-transform:uppercase; letter-spacing:.05em; }
+.ev-info { flex:1; }
+.ev-info h4 { font-size:13px; font-weight:500; margin-bottom:2px; }
+.ev-info p { font-size:11px; color:var(--t2); }
+/* DOCUMENTI */
+.doc-list { display:flex; flex-direction:column; gap:8px; }
+.doc-item { background:var(--bg); border:.5px solid var(--br); border-radius:10px; padding:.9rem 1.25rem; display:flex; align-items:center; gap:1rem; }
+.doc-icon { width:34px; height:34px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.doc-meta { flex:1; min-width:0; }
+.doc-meta h4 { font-size:13px; font-weight:500; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.doc-meta p { font-size:11px; color:var(--t2); }
+.btn-dl { font-size:12px; color:var(--blu); background:var(--blu-l); padding:5px 12px; border-radius:6px; border:none; cursor:pointer; white-space:nowrap; flex-shrink:0; text-decoration:none; display:inline-block; }
+.btn-dl:hover { opacity:.8; }
+.dst { font-size:11px; font-weight:500; color:var(--t3); margin:1.25rem 0 8px; text-transform:uppercase; letter-spacing:.07em; }
+.empty-msg { color:var(--t3); font-size:13px; padding:1rem 0; }
+.ok-msg { font-size:12px; color:var(--verde); margin-top:8px; display:none; }
+/* UPLOAD AREA */
+.upload-zone { border:2px dashed #b8cfe8; border-radius:var(--rl); padding:1.5rem; text-align:center; cursor:pointer; transition:all .2s; margin-bottom:1rem; background:var(--bg); }
+.upload-zone:hover, .upload-zone.drag { border-color:var(--blu-m); background:var(--blu-l); }
+.upload-zone p { font-size:13px; color:var(--t2); margin-top:6px; }
+.upload-zone .icon { font-size:28px; }
+.upload-zone input[type=file] { display:none; }
+.file-tag { display:inline-flex; align-items:center; gap:6px; background:var(--bg2); border:.5px solid var(--br); border-radius:6px; padding:4px 10px; font-size:12px; margin:4px; }
+.cat-select { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1rem; }
+.cat-btn { font-size:12px; padding:5px 12px; border-radius:99px; border:.5px solid var(--br2); background:var(--bg); cursor:pointer; color:var(--t2); transition:all .15s; }
+.cat-btn.active { background:var(--blu); color:#fff; border-color:var(--blu); }
+footer { background:var(--blu); color:rgba(255,255,255,.65); font-size:11px; text-align:center; padding:1rem; margin-top:3rem; }
+footer a { color:rgba(255,255,255,.8); }
+@media(max-width:600px){.hero{flex-direction:column}.nav-links{display:none}.form-grid{grid-template-columns:1fr}.full{grid-column:1}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+      <rect width="44" height="44" rx="4" fill="white" fill-opacity="0.12"/>
+      <path d="M6 6H38V28Q22 42 22 42Q22 42 6 28Z" fill="#1a4a8a" stroke="#c9932a" stroke-width="1.5"/>
+      <path d="M6 26Q11 23 16 26Q21 29 26 26Q31 23 38 26L38 28Q22 42 22 42Q22 42 6 28Z" fill="#4a90d9"/>
+      <path d="M14 22Q22 19 30 22L29 25Q22 27 15 25Z" fill="#c9932a"/>
+      <line x1="22" y1="10" x2="22" y2="22" stroke="white" stroke-width="1.2"/>
+      <path d="M22 11L29 17L22 20Z" fill="white" fill-opacity="0.9"/>
+      <path d="M22 11L15 17L22 18Z" fill="white" fill-opacity="0.5"/>
+    </svg>
+    <div>
+      <div class="nav-comune">Comune di Follonica</div>
+      <div class="nav-cpo">Commissione Pari Opportunità</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <button class="nb active" onclick="showPage('home',this)">Home</button>
+    <button class="nb" onclick="showPage('news',this)">Notizie</button>
+    <button class="nb" onclick="showPage('contatti',this)">Contatti</button>
+  </div>
+  <button class="lb" id="ltog" onclick="toggleLogin()">Area riservata</button>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <svg width="72" height="72" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="30" fill="#e8f0fb" stroke="#1a4a8a" stroke-width="2"/>
+      <circle cx="22" cy="22" r="7" fill="none" stroke="#6b3fa0" stroke-width="2"/>
+      <line x1="22" y1="29" x2="22" y2="38" stroke="#6b3fa0" stroke-width="2"/>
+      <line x1="18" y1="33" x2="26" y2="33" stroke="#6b3fa0" stroke-width="2"/>
+      <circle cx="42" cy="22" r="7" fill="none" stroke="#1a4a8a" stroke-width="2"/>
+      <line x1="47" y1="17" x2="53" y2="11" stroke="#1a4a8a" stroke-width="2"/>
+      <line x1="49" y1="11" x2="53" y2="11" stroke="#1a4a8a" stroke-width="2"/>
+      <line x1="53" y1="11" x2="53" y2="15" stroke="#1a4a8a" stroke-width="2"/>
+      <line x1="20" y1="46" x2="44" y2="46" stroke="#c9932a" stroke-width="2.5"/>
+      <line x1="20" y1="51" x2="44" y2="51" stroke="#c9932a" stroke-width="2.5"/>
+    </svg>
+    <div>
+      <div class="hero-sub">Comune di Follonica · Organo istituzionale</div>
+      <h1>Commissione Pari Opportunità</h1>
+      <p>Organo consultivo del Comune di Follonica che promuove e tutela la parità di diritti e opportunità tra donne e uomini nel territorio comunale, contrastando ogni forma di discriminazione.</p>
+    </div>
+  </div>
+  <div class="info-strip">
+    <strong>Sede:</strong> Largo Felice Cavallotti, 1 — 58022 Follonica (GR) &nbsp;·&nbsp;
+    <strong>Tel:</strong> 0566 59111 &nbsp;·&nbsp;
+    <a href="https://www.comune.follonica.gr.it">comune.follonica.gr.it</a>
+  </div>
+  <p class="st">Aree di intervento</p>
+  <div class="cards">
+    <div class="card"><div class="card-icon" style="background:#f3eefb">⚖️</div><h3>Pari opportunità</h3><p>Promozione dell'uguaglianza di genere nelle politiche locali.</p></div>
+    <div class="card"><div class="card-icon" style="background:#e8f0fb">🛡️</div><h3>Contrasto discriminazioni</h3><p>Monitoraggio e supporto in caso di discriminazione.</p></div>
+    <div class="card"><div class="card-icon" style="background:#fdf3e3">📣</div><h3>Sensibilizzazione</h3><p>Campagne, eventi e formazione rivolti alla cittadinanza.</p></div>
+    <div class="card"><div class="card-icon" style="background:#eafaf1">🤝</div><h3>Rete territoriale</h3><p>Collaborazione con enti, scuole e associazioni.</p></div>
+  </div>
+</div>
+
+<!-- NOTIZIE -->
+<div class="page" id="page-news">
+  <p class="st">Notizie e comunicati</p>
+  <div class="news-list">
+    <div class="ni"><span class="nd">18 Apr 2026</span><div><h4>Convegno "Lavoro e parità di genere"</h4><p>Giovedì 7 maggio al Teatro Fonderia Leopolda. Iscrizioni aperte fino al 3 maggio.</p></div></div>
+    <div class="ni"><span class="nd">2 Apr 2026</span><div><h4>Riunione plenaria — verbale disponibile</h4><p>Il verbale è disponibile nell'area riservata.</p></div></div>
+    <div class="ni"><span class="nd">20 Mar 2026</span><div><h4>8 marzo: successo per la giornata della donna</h4><p>Grande partecipazione all'iniziativa in piazza.</p></div></div>
+    <div class="ni"><span class="nd">5 Feb 2026</span><div><h4>Nuova composizione della commissione</h4><p>Il Consiglio Comunale ha rinnovato i componenti della CPO per il triennio 2026–2029.</p></div></div>
+  </div>
+</div>
+
+<!-- CONTATTI -->
+<div class="page" id="page-contatti">
+  <p class="st">Contatta la Commissione</p>
+  <div class="cf">
+    <div class="fi"><label>Nome e cognome</label><input type="text" placeholder="Mario Rossi"></div>
+    <div class="fi"><label>Email</label><input type="email" placeholder="email@esempio.it"></div>
+    <div class="fi"><label>Oggetto</label>
+      <select><option>Richiesta informazioni</option><option>Segnalazione discriminazione</option><option>Proposta di collaborazione</option><option>Altro</option></select>
+    </div>
+    <div class="fi"><label>Messaggio</label><textarea placeholder="Scrivi qui il tuo messaggio..."></textarea></div>
+    <button class="btn-blu" onclick="contactSent()">Invia messaggio</button>
+    <p id="contact-ok" style="display:none;font-size:12px;color:var(--blu);margin-top:8px;">✓ Messaggio inviato. Risponderemo all'indirizzo indicato.</p>
+  </div>
+</div>
+
+<!-- AREA RISERVATA -->
+<div class="page" id="page-member">
+  <div class="mh">
+    <div>
+      <div class="badge-cpo">🔒 Area commissarie</div>
+      <h2>Area riservata</h2>
+    </div>
+    <button class="lb" style="border-color:rgba(0,0,0,0.2);color:var(--t2);" onclick="logout()">Esci</button>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('cal',this)">📅 Calendario</button>
+    <button class="tab" onclick="showTab('docs',this)">📁 Documenti</button>
+  </div>
+
+  <!-- TAB CALENDARIO -->
+  <div class="tc active" id="tab-cal">
+    <div class="panel verde">
+      <h3>➕ Aggiungi evento</h3>
+      <div class="form-grid">
+        <div class="fi"><label>Data *</label><input type="date" id="ev-data"></div>
+        <div class="fi"><label>Orario</label><input type="text" id="ev-ora" placeholder="es. 17:30"></div>
+        <div class="fi full"><label>Titolo *</label><input type="text" id="ev-titolo" placeholder="es. Riunione CPO"></div>
+        <div class="fi full"><label>Luogo</label><input type="text" id="ev-luogo" placeholder="es. Sala Giunta, Municipio"></div>
+      </div>
+      <br>
+      <button class="btn-verde" onclick="addEvent()">Aggiungi al calendario</button>
+      <p class="ok-msg" id="ev-ok">✓ Evento aggiunto!</p>
+    </div>
+
+    <div class="calendar">
+      <div class="cal-hdr">
+        <div class="cal-nav"><button onclick="prevMonth()">‹</button></div>
+        <h3 id="cal-title"></h3>
+        <div class="cal-nav"><button onclick="nextMonth()">›</button></div>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+    <div class="ev-list" id="ev-list"></div>
+  </div>
+
+  <!-- TAB DOCUMENTI -->
+  <div class="tc" id="tab-docs">
+
+    <!-- Upload -->
+    <div class="panel blu">
+      <h3>📤 Carica un documento</h3>
+      <div class="fi"><label>Categoria</label>
+        <select id="doc-cat">
+          <option value="verbale">Verbale riunione</option>
+          <option value="lavoro">Documento di lavoro</option>
+          <option value="comunicazione">Comunicazione</option>
+          <option value="altro">Altro</option>
+        </select>
+      </div>
+      <div class="fi"><label>Descrizione (opzionale)</label>
+        <input type="text" id="doc-desc" placeholder="es. Verbale riunione 5 maggio 2026">
+      </div>
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()"
+        ondragover="ev.preventDefault();this.classList.add('drag')"
+        ondragleave="this.classList.remove('drag')"
+        ondrop="handleDrop(event)">
+        <div class="icon">📂</div>
+        <p>Clicca qui o trascina il file</p>
+        <p style="font-size:11px;color:var(--t3);margin-top:4px;">PDF, Word, Excel, immagini — max 10 MB</p>
+        <input type="file" id="file-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" onchange="handleFileSelect(this.files)">
+      </div>
+      <div id="file-preview" style="margin-bottom:10px;"></div>
+      <button class="btn-verde" onclick="uploadDoc()">Carica documento</button>
+      <p class="ok-msg" id="doc-ok">✓ Documento caricato!</p>
+    </div>
+
+    <!-- Filtro categorie -->
+    <p class="st">Documenti condivisi</p>
+    <div class="cat-select" id="cat-filter">
+      <button class="cat-btn active" onclick="filterDocs('tutti',this)">Tutti</button>
+      <button class="cat-btn" onclick="filterDocs('verbale',this)">Verbali</button>
+      <button class="cat-btn" onclick="filterDocs('lavoro',this)">Documenti di lavoro</button>
+      <button class="cat-btn" onclick="filterDocs('comunicazione',this)">Comunicazioni</button>
+      <button class="cat-btn" onclick="filterDocs('altro',this)">Altro</button>
+    </div>
+    <div class="doc-list" id="doc-list"></div>
+  </div>
+</div>
+
+<!-- MODAL LOGIN -->
+<div class="overlay" id="modal" style="display:none">
+  <div class="modal">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem">
+      <svg width="34" height="34" viewBox="0 0 44 44" fill="none">
+        <path d="M6 6H38V28Q22 42 22 42Q22 42 6 28Z" fill="#1a4a8a" stroke="#c9932a" stroke-width="1.5"/>
+        <path d="M6 26Q11 23 16 26Q21 29 26 26Q31 23 38 26L38 28Q22 42 22 42Q22 42 6 28Z" fill="#4a90d9"/>
+        <path d="M14 22Q22 19 30 22L29 25Q22 27 15 25Z" fill="#c9932a"/>
+        <line x1="22" y1="10" x2="22" y2="22" stroke="white" stroke-width="1.2"/>
+        <path d="M22 11L29 17L22 20Z" fill="white" fill-opacity="0.9"/>
+      </svg>
+      <div><h2>Area riservata CPO</h2><p style="font-size:11px;color:var(--t3)">Comune di Follonica</p></div>
+    </div>
+    <p class="sub">Inserisci la password per accedere.</p>
+    <div class="fi">
+      <label>Password</label>
+      <input type="password" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      <p class="errmsg" id="pwd-err" style="display:none">Password errata. Riprova.</p>
+    </div>
+    <div class="mbtns">
+      <button class="btn-cancel" onclick="closeModal()">Annulla</button>
+      <button class="btn-blu" style="flex:1" onclick="doLogin()">Accedi</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Commissione Pari Opportunità — Comune di Follonica &nbsp;·&nbsp; Largo Felice Cavallotti, 1 — 58022 Follonica (GR) &nbsp;·&nbsp; Tel. 0566 59111</p>
+  <p style="margin-top:4px"><a href="https://www.comune.follonica.gr.it">www.comune.follonica.gr.it</a></p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════
+// CONFIGURAZIONE — modifica solo questi valori
+// ═══════════════════════════════════════════
+const PASS = "cpo2026";
+const EV_KEY  = "cpo_eventi";
+const DOC_KEY = "cpo_documenti";
+
+// ── Dati di esempio iniziali ──────────────
+const DEFAULT_EVENTS = [
+  {id:1,anno:2026,mese:5,giorno:7,titolo:"Convegno lavoro e parità di genere",ora:"18:00",luogo:"Teatro Fonderia Leopolda"},
+  {id:2,anno:2026,mese:5,giorno:14,titolo:"Riunione CPO",ora:"17:30",luogo:"Sala Giunta, Municipio"},
+  {id:3,anno:2026,mese:5,giorno:28,titolo:"Tavolo antiviolenza",ora:"15:00",luogo:"Sede CPO"},
+  {id:4,anno:2026,mese:6,giorno:11,titolo:"Riunione CPO",ora:"17:30",luogo:"Sala Giunta, Municipio"},
+];
+const DEFAULT_DOCS = [
+  {id:1,nome:"Verbale riunione 2 aprile 2026",cat:"verbale",desc:"",data:"2026-04-06",size:"180 KB",tipo:"pdf",dataUrl:null},
+  {id:2,nome:"Verbale riunione 12 febbraio 2026",cat:"verbale",desc:"",data:"2026-02-15",size:"155 KB",tipo:"pdf",dataUrl:null},
+  {id:3,nome:"Piano di lavoro 2026–2029",cat:"lavoro",desc:"",data:"2026-01-10",size:"115 KB",tipo:"pdf",dataUrl:null},
+  {id:4,nome:"Regolamento CPO 2026",cat:"lavoro",desc:"",data:"2026-01-10",size:"62 KB",tipo:"word",dataUrl:null},
+];
+
+function load(key, def) { try { const s=localStorage.getItem(key); return s?JSON.parse(s):[...def]; } catch(e){return[...def];} }
+function save(key,val) { try { localStorage.setItem(key,JSON.stringify(val)); } catch(e){ alert("Spazio di archiviazione del browser esaurito. Prova a eliminare qualche documento."); } }
+
+let events = load(EV_KEY, DEFAULT_EVENTS);
+let docs   = load(DOC_KEY, DEFAULT_DOCS);
+let nextEvId  = Math.max(0,...events.map(e=>e.id))+1;
+let nextDocId = Math.max(0,...docs.map(d=>d.id))+1;
+let currentFilter = 'tutti';
+let pendingFile = null;
+
+// ── Navigazione ───────────────────────────
+let loggedIn = false;
+let curM = new Date().getMonth()+1, curY = new Date().getFullYear();
+
+function showPage(name,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  if(btn) btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+function toggleLogin(){ loggedIn ? showPage('member',null) : (document.getElementById('modal').style.display='flex'); }
+function closeModal(){ document.getElementById('modal').style.display='none'; document.getElementById('pwd-err').style.display='none'; document.getElementById('pwd-input').value=''; }
+function doLogin(){
+  if(document.getElementById('pwd-input').value===PASS){
+    loggedIn=true; closeModal();
+    document.getElementById('ltog').textContent='✓ Area riservata';
+    document.getElementById('ltog').className='lb on';
+    showPage('member',null); renderCalendar(); renderDocs();
+  } else { document.getElementById('pwd-err').style.display='block'; }
+}
+function logout(){
+  loggedIn=false;
+  document.getElementById('ltog').textContent='Area riservata';
+  document.getElementById('ltog').className='lb';
+  showPage('home',document.querySelector('.nb'));
+  document.querySelector('.nb').classList.add('active');
+}
+function showTab(name,btn){
+  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+// ── CALENDARIO ────────────────────────────
+const MONTHS=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+const MS=['','Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+
+function addEvent(){
+  const d=document.getElementById('ev-data').value;
+  const t=document.getElementById('ev-titolo').value.trim();
+  if(!d||!t){alert('Inserisci almeno la data e il titolo.');return;}
+  const p=d.split('-');
+  events.push({id:nextEvId++,anno:+p[0],mese:+p[1],giorno:+p[2],titolo:t,ora:document.getElementById('ev-ora').value.trim(),luogo:document.getElementById('ev-luogo').value.trim()});
+  save(EV_KEY,events);
+  ['ev-data','ev-titolo','ev-ora','ev-luogo'].forEach(id=>document.getElementById(id).value='');
+  flash('ev-ok'); curM=+p[1]; curY=+p[0]; renderCalendar();
+}
+function deleteEvent(id){
+  if(!confirm('Eliminare questo evento?'))return;
+  events=events.filter(e=>e.id!==id); save(EV_KEY,events); renderCalendar();
+}
+function renderCalendar(){
+  document.getElementById('cal-title').textContent=MONTHS[curM-1]+' '+curY;
+  const grid=document.getElementById('cal-grid'); grid.innerHTML='';
+  ['L','M','M','G','V','S','D'].forEach(d=>{const el=document.createElement('div');el.className='cdn';el.textContent=d;grid.appendChild(el);});
+  const first=new Date(curY,curM-1,1).getDay(), offset=first===0?6:first-1;
+  const days=new Date(curY,curM,0).getDate(), today=new Date();
+  for(let i=0;i<offset;i++){const el=document.createElement('div');el.className='cd empty';grid.appendChild(el);}
+  for(let d=1;d<=days;d++){
+    const el=document.createElement('div');el.className='cd';el.textContent=d;
+    if(d===today.getDate()&&curM===today.getMonth()+1&&curY===today.getFullYear())el.classList.add('today');
+    if(events.some(e=>e.giorno===d&&e.mese===curM&&e.anno===curY))el.classList.add('has-event');
+    grid.appendChild(el);
+  }
+  const evList=document.getElementById('ev-list');
+  const me=events.filter(e=>e.mese===curM&&e.anno===curY).sort((a,b)=>a.giorno-b.giorno);
+  evList.innerHTML=me.length===0?'<p class="empty-msg">Nessun evento in questo mese.</p>'
+    :me.map(e=>`<div class="ev-item">
+      <div class="ev-badge"><div class="day">${e.giorno}</div><div class="mon">${MS[e.mese]}</div></div>
+      <div class="ev-info"><h4>${e.titolo}</h4>${[e.ora,e.luogo].filter(Boolean).length?`<p>${[e.ora,e.luogo].filter(Boolean).join(' · ')}</p>`:''}</div>
+      <button class="btn-rosso" onclick="deleteEvent(${e.id})">✕ Elimina</button>
+    </div>`).join('');
+}
+function prevMonth(){curM--;if(curM<1){curM=12;curY--;}renderCalendar();}
+function nextMonth(){curM++;if(curM>12){curM=1;curY++;}renderCalendar();}
+
+// ── DOCUMENTI ─────────────────────────────
+function handleFileSelect(files){ if(files[0]) setFile(files[0]); }
+function handleDrop(ev){
+  ev.preventDefault(); document.getElementById('upload-zone').classList.remove('drag');
+  if(ev.dataTransfer.files[0]) setFile(ev.dataTransfer.files[0]);
+}
+function setFile(f){
+  if(f.size>10*1024*1024){alert('File troppo grande. Massimo 10 MB.');return;}
+  pendingFile=f;
+  document.getElementById('file-preview').innerHTML=`<span class="file-tag">📎 ${f.name} (${(f.size/1024).toFixed(0)} KB)</span>`;
+}
+function uploadDoc(){
+  if(!pendingFile){alert('Seleziona prima un file.');return;}
+  const cat=document.getElementById('doc-cat').value;
+  const desc=document.getElementById('doc-desc').value.trim();
+  const nome=desc||pendingFile.name;
+  const ext=pendingFile.name.split('.').pop().toLowerCase();
+  const tipo=ext==='pdf'?'pdf':['doc','docx'].includes(ext)?'word':['xls','xlsx'].includes(ext)?'excel':'file';
+  const today=new Date().toISOString().split('T')[0];
+  const size=(pendingFile.size/1024).toFixed(0)+' KB';
+
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    docs.push({id:nextDocId++,nome,cat,desc,data:today,size,tipo,dataUrl:ev.target.result,nomeFile:pendingFile.name});
+    save(DOC_KEY,docs);
+    pendingFile=null;
+    document.getElementById('file-preview').innerHTML='';
+    document.getElementById('doc-desc').value='';
+    document.getElementById('file-input').value='';
+    flash('doc-ok'); renderDocs();
+  };
+  reader.readAsDataURL(pendingFile);
+}
+function deleteDoc(id){
+  if(!confirm('Eliminare questo documento?'))return;
+  docs=docs.filter(d=>d.id!==id); save(DOC_KEY,docs); renderDocs();
+}
+function filterDocs(cat,btn){
+  currentFilter=cat;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderDocs();
+}
+const CAT_LABELS={'verbale':'Verbale','lavoro':'Documento di lavoro','comunicazione':'Comunicazione','altro':'Altro'};
+const TIPO_ICON={'pdf':'📄','word':'📝','excel':'📊','file':'📎'};
+const TIPO_BG={'pdf':'#FCEBEB','word':'#E6F1FB','excel':'#E8F7EE','file':'#F5F5F0'};
+function renderDocs(){
+  const filtered=currentFilter==='tutti'?docs:docs.filter(d=>d.cat===currentFilter);
+  const list=document.getElementById('doc-list');
+  if(filtered.length===0){list.innerHTML='<p class="empty-msg">Nessun documento in questa categoria.</p>';return;}
+  list.innerHTML=filtered.map(d=>{
+    const dlBtn=d.dataUrl
+      ?`<a class="btn-dl" href="${d.dataUrl}" download="${d.nomeFile||d.nome}">⬇ Scarica</a>`
+      :`<span class="btn-dl" style="opacity:.5;cursor:default">⬇ Scarica</span>`;
+    const dataFmt=d.data?new Date(d.data).toLocaleDateString('it-IT',{day:'numeric',month:'short',year:'numeric'}):'';
+    return `<div class="doc-item">
+      <div class="doc-icon" style="background:${TIPO_BG[d.tipo]||TIPO_BG.file}">${TIPO_ICON[d.tipo]||'📎'}</div>
+      <div class="doc-meta">
+        <h4>${d.nome}</h4>
+        <p>${CAT_LABELS[d.cat]||d.cat}${dataFmt?' · '+dataFmt:''}${d.size?' · '+d.size:''}</p>
+      </div>
+      ${dlBtn}
+      <button class="btn-rosso" onclick="deleteDoc(${d.id})">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function flash(id){ const el=document.getElementById(id); el.style.display='block'; setTimeout(()=>el.style.display='none',3000); }
+function contactSent(){ document.getElementById('contact-ok').style.display='block'; }
+</script>
+</body>
+</html>
