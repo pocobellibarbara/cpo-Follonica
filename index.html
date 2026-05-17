@@ -262,7 +262,33 @@ footer a{color:rgba(255,255,255,.8)}
 
   <!-- CALENDARIO -->
   <div class="tc active" id="tab-cal">
-    <div class="panel oro">
+
+
+
+
+    <div class="cal-toolbar" id="ev-count"></div>
+    <div class="calendar">
+      <div class="cal-hdr">
+        <div class="cal-nav"><button onclick="prevMonth()">‹</button></div>
+        <h3 id="cal-title"></h3>
+        <div class="cal-nav"><button onclick="nextMonth()">›</button></div>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+    <div class="ev-list" id="ev-list"></div>
+    <div class="panel verde">
+      <h3>➕ Aggiungi evento singolo</h3>
+      <div class="form-grid">
+        <div class="fi"><label>Data *</label><input type="date" id="ev-data"></div>
+        <div class="fi"><label>Orario</label><input type="text" id="ev-ora" placeholder="es. 17:30"></div>
+        <div class="fi full"><label>Titolo *</label><input type="text" id="ev-titolo" placeholder="es. Riunione CPO"></div>
+        <div class="fi full"><label>Luogo</label><input type="text" id="ev-luogo" placeholder="es. Sala Giunta, Municipio"></div>
+      </div>
+      <br>
+      <button class="btn-verde" id="btn-add-ev" onclick="addEvent()">Aggiungi al calendario</button>
+      <p class="ok-msg" id="ev-ok">✓ Evento salvato per tutte!</p>
+    </div>
+        <div class="panel oro">
       <h3>📊 Importa eventi da Excel</h3>
       <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Compila il file Excel template con gli eventi, poi caricalo qui. Gli eventi saranno visibili a tutte le commissarie.</p>
       <div class="xl-drop" id="xl-drop" onclick="document.getElementById('xl-input').click()"
@@ -277,30 +303,6 @@ footer a{color:rgba(255,255,255,.8)}
       <div id="xl-preview"></div>
       <div id="xl-result" class="import-result"></div>
     </div>
-
-    <div class="panel verde">
-      <h3>➕ Aggiungi evento singolo</h3>
-      <div class="form-grid">
-        <div class="fi"><label>Data *</label><input type="date" id="ev-data"></div>
-        <div class="fi"><label>Orario</label><input type="text" id="ev-ora" placeholder="es. 17:30"></div>
-        <div class="fi full"><label>Titolo *</label><input type="text" id="ev-titolo" placeholder="es. Riunione CPO"></div>
-        <div class="fi full"><label>Luogo</label><input type="text" id="ev-luogo" placeholder="es. Sala Giunta, Municipio"></div>
-      </div>
-      <br>
-      <button class="btn-verde" id="btn-add-ev" onclick="addEvent()">Aggiungi al calendario</button>
-      <p class="ok-msg" id="ev-ok">✓ Evento salvato per tutte!</p>
-    </div>
-
-    <div class="cal-toolbar" id="ev-count"></div>
-    <div class="calendar">
-      <div class="cal-hdr">
-        <div class="cal-nav"><button onclick="prevMonth()">‹</button></div>
-        <h3 id="cal-title"></h3>
-        <div class="cal-nav"><button onclick="nextMonth()">›</button></div>
-      </div>
-      <div class="cal-grid" id="cal-grid"></div>
-    </div>
-    <div class="ev-list" id="ev-list"></div>
   </div>
 
   <!-- DOCUMENTI -->
