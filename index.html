@@ -4,140 +4,150 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Commissione Pari Opportunità — Comune di Follonica</title>
+<!-- Libreria SheetJS per leggere file Excel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f0; min-height: 100vh; }
-:root {
-  --blu:#1a4a8a; --blu-l:#e8f0fb; --blu-m:#2b6cb0;
-  --oro:#c9932a; --oro-l:#fdf3e3;
-  --viola:#6b3fa0; --viola-l:#f3eefb;
-  --verde:#1a6b3a; --verde-l:#e8f7ee;
-  --rosso:#a32020; --rosso-l:#fceaea;
-  --bg:#fff; --bg2:#f8f8f5; --bg3:#f5f5f0;
-  --t:#1a1a1a; --t2:#555; --t3:#888;
-  --br:rgba(0,0,0,0.1); --br2:rgba(0,0,0,0.18);
-  --r:8px; --rl:12px;
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f5f0;min-height:100vh}
+:root{
+  --blu:#1a4a8a;--blu-l:#e8f0fb;--blu-m:#2b6cb0;
+  --oro:#c9932a;--oro-l:#fdf3e3;
+  --viola:#6b3fa0;--viola-l:#f3eefb;
+  --verde:#1a6b3a;--verde-l:#e8f7ee;
+  --rosso:#a32020;--rosso-l:#fceaea;
+  --bg:#fff;--bg2:#f8f8f5;
+  --t:#1a1a1a;--t2:#555;--t3:#888;
+  --br:rgba(0,0,0,0.1);--br2:rgba(0,0,0,0.18);
+  --r:8px;--rl:12px
 }
-/* NAV */
-nav { background:var(--blu); border-bottom:3px solid var(--oro); padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; min-height:64px; gap:12px; flex-wrap:wrap; position:sticky; top:0; z-index:50; }
-.nav-brand { display:flex; align-items:center; gap:12px; }
-.nav-comune { font-size:11px; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:.08em; line-height:1.2; }
-.nav-cpo { font-size:13px; font-weight:500; color:#fff; }
-.nav-links { display:flex; gap:2px; }
-.nb { font-size:13px; padding:6px 12px; border-radius:6px; border:none; background:transparent; color:rgba(255,255,255,0.8); cursor:pointer; transition:all .15s; }
-.nb:hover,.nb.active { background:rgba(255,255,255,0.15); color:#fff; }
-.lb { font-size:12px; padding:6px 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.4); background:transparent; color:#fff; cursor:pointer; transition:all .15s; flex-shrink:0; }
-.lb:hover { background:rgba(255,255,255,0.15); }
-.lb.on { background:var(--oro); border-color:var(--oro); }
-/* PAGES */
-.page { display:none; padding:2rem 1.5rem; max-width:900px; margin:0 auto; }
-.page.active { display:block; }
-/* HERO */
-.hero { background:var(--bg); border-radius:var(--rl); border:.5px solid var(--br); border-top:3px solid var(--blu); padding:2rem; margin-bottom:1.5rem; display:flex; gap:1.5rem; align-items:flex-start; }
-.hero h1 { font-size:22px; font-weight:500; margin-bottom:.4rem; }
-.hero-sub { font-size:12px; color:var(--blu); text-transform:uppercase; letter-spacing:.07em; margin-bottom:.5rem; font-weight:500; }
-.hero p { font-size:14px; color:var(--t2); line-height:1.7; }
-.info-strip { background:var(--blu-l); border-radius:var(--r); border:.5px solid #b8cfe8; padding:.75rem 1rem; margin-bottom:1.5rem; font-size:12px; color:var(--blu); }
-.info-strip a { color:var(--blu-m); }
-.st { font-size:11px; font-weight:500; color:var(--t3); text-transform:uppercase; letter-spacing:.07em; margin-bottom:1rem; }
-.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin-bottom:1.5rem; }
-.card { background:var(--bg); border:.5px solid var(--br); border-radius:var(--rl); padding:1.25rem; }
-.card-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; font-size:16px; }
-.card h3 { font-size:13px; font-weight:500; margin-bottom:4px; }
-.card p { font-size:12px; color:var(--t2); line-height:1.5; }
-/* NEWS */
-.news-list { display:flex; flex-direction:column; gap:10px; }
-.ni { background:var(--bg); border:.5px solid var(--br); border-radius:var(--rl); padding:1rem 1.25rem; display:flex; gap:1rem; }
-.nd { font-size:10px; color:var(--t3); white-space:nowrap; padding-top:2px; }
-.ni h4 { font-size:13px; font-weight:500; margin-bottom:3px; }
-.ni p { font-size:12px; color:var(--t2); line-height:1.5; }
-/* CONTATTI */
-.cf { background:var(--bg); border:.5px solid var(--br); border-radius:var(--rl); padding:1.5rem; max-width:480px; }
-.fi { margin-bottom:1rem; }
-.fi label { display:block; font-size:12px; color:var(--t2); margin-bottom:4px; }
-.fi input,.fi textarea,.fi select { width:100%; padding:8px 10px; font-size:13px; font-family:inherit; border:.5px solid var(--br2); border-radius:var(--r); background:var(--bg); color:var(--t); outline:none; transition:border-color .15s; }
-.fi input:focus,.fi textarea:focus,.fi select:focus { border-color:var(--blu-m); }
-.fi textarea { height:80px; resize:vertical; }
-/* BUTTONS */
-.btn-blu { background:var(--blu); color:#fff; border:none; padding:9px 22px; border-radius:var(--r); font-size:13px; cursor:pointer; transition:opacity .15s; }
-.btn-blu:hover { opacity:.85; }
-.btn-verde { background:var(--verde); color:#fff; border:none; padding:8px 18px; border-radius:var(--r); font-size:13px; cursor:pointer; transition:opacity .15s; }
-.btn-verde:hover { opacity:.85; }
-.btn-rosso { background:var(--rosso-l); color:var(--rosso); border:none; border-radius:6px; padding:4px 10px; font-size:11px; cursor:pointer; white-space:nowrap; flex-shrink:0; }
-.btn-rosso:hover { opacity:.8; }
-/* MODAL */
-.overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; z-index:100; }
-.modal { background:var(--bg); border-radius:var(--rl); border:.5px solid var(--br); padding:1.75rem; width:340px; max-width:95vw; }
-.modal h2 { font-size:16px; font-weight:500; margin-bottom:.25rem; }
-.modal .sub { font-size:12px; color:var(--t2); margin-bottom:1.25rem; line-height:1.5; }
-.mbtns { display:flex; gap:8px; margin-top:1rem; }
-.btn-cancel { flex:1; background:transparent; border:.5px solid var(--br2); padding:8px; border-radius:var(--r); font-size:13px; cursor:pointer; color:var(--t2); }
-.btn-cancel:hover { background:var(--bg2); }
-.errmsg { font-size:11px; color:#c00; margin-top:4px; }
-/* AREA RISERVATA */
-.mh { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:1.5rem; }
-.mh h2 { font-size:20px; font-weight:500; }
-.badge-cpo { display:inline-flex; align-items:center; gap:6px; background:var(--viola-l); color:var(--viola); font-size:11px; padding:4px 10px; border-radius:99px; margin-bottom:.5rem; border:.5px solid #d4b8f0; }
-.tabs { display:flex; gap:3px; margin-bottom:1.5rem; border-bottom:.5px solid var(--br); flex-wrap:wrap; }
-.tab { font-size:13px; padding:6px 16px; border-radius:8px 8px 0 0; border:none; background:transparent; cursor:pointer; color:var(--t2); transition:all .15s; margin-bottom:-.5px; }
-.tab.active { background:var(--bg); border:.5px solid var(--br); border-bottom-color:var(--bg); color:var(--t); font-weight:500; }
-.tc { display:none; }
-.tc.active { display:block; }
-/* PANNELLO AGGIUNGI */
-.panel { border-radius:var(--rl); padding:1.25rem; margin-bottom:1.5rem; }
-.panel.verde { background:var(--verde-l); border:.5px solid #a8d5b8; }
-.panel.blu { background:var(--blu-l); border:.5px solid #b8cfe8; }
-.panel h3 { font-size:14px; font-weight:500; margin-bottom:1rem; display:flex; align-items:center; gap:6px; }
-.panel.verde h3 { color:var(--verde); }
-.panel.blu h3 { color:var(--blu); }
-.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.form-grid .fi { margin-bottom:0; }
-.full { grid-column:1/-1; }
+nav{background:var(--blu);border-bottom:3px solid var(--oro);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;min-height:64px;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:50}
+.nav-brand{display:flex;align-items:center;gap:12px}
+.nav-comune{font-size:11px;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:.08em;line-height:1.2}
+.nav-cpo{font-size:13px;font-weight:500;color:#fff}
+.nav-links{display:flex;gap:2px}
+.nb{font-size:13px;padding:6px 12px;border-radius:6px;border:none;background:transparent;color:rgba(255,255,255,0.8);cursor:pointer;transition:all .15s}
+.nb:hover,.nb.active{background:rgba(255,255,255,0.15);color:#fff}
+.lb{font-size:12px;padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.4);background:transparent;color:#fff;cursor:pointer;transition:all .15s;flex-shrink:0}
+.lb:hover{background:rgba(255,255,255,0.15)}
+.lb.on{background:var(--oro);border-color:var(--oro)}
+.page{display:none;padding:2rem 1.5rem;max-width:900px;margin:0 auto}
+.page.active{display:block}
+.hero{background:var(--bg);border-radius:var(--rl);border:.5px solid var(--br);border-top:3px solid var(--blu);padding:2rem;margin-bottom:1.5rem;display:flex;gap:1.5rem;align-items:flex-start}
+.hero h1{font-size:22px;font-weight:500;margin-bottom:.4rem}
+.hero-sub{font-size:12px;color:var(--blu);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem;font-weight:500}
+.hero p{font-size:14px;color:var(--t2);line-height:1.7}
+.info-strip{background:var(--blu-l);border-radius:var(--r);border:.5px solid #b8cfe8;padding:.75rem 1rem;margin-bottom:1.5rem;font-size:12px;color:var(--blu)}
+.info-strip a{color:var(--blu-m)}
+.st{font-size:11px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:1rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:1.5rem}
+.card{background:var(--bg);border:.5px solid var(--br);border-radius:var(--rl);padding:1.25rem}
+.card-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:16px}
+.card h3{font-size:13px;font-weight:500;margin-bottom:4px}
+.card p{font-size:12px;color:var(--t2);line-height:1.5}
+.news-list{display:flex;flex-direction:column;gap:10px}
+.ni{background:var(--bg);border:.5px solid var(--br);border-radius:var(--rl);padding:1rem 1.25rem;display:flex;gap:1rem}
+.nd{font-size:10px;color:var(--t3);white-space:nowrap;padding-top:2px}
+.ni h4{font-size:13px;font-weight:500;margin-bottom:3px}
+.ni p{font-size:12px;color:var(--t2);line-height:1.5}
+.cf{background:var(--bg);border:.5px solid var(--br);border-radius:var(--rl);padding:1.5rem;max-width:480px}
+.fi{margin-bottom:1rem}
+.fi label{display:block;font-size:12px;color:var(--t2);margin-bottom:4px}
+.fi input,.fi textarea,.fi select{width:100%;padding:8px 10px;font-size:13px;font-family:inherit;border:.5px solid var(--br2);border-radius:var(--r);background:var(--bg);color:var(--t);outline:none;transition:border-color .15s}
+.fi input:focus,.fi textarea:focus,.fi select:focus{border-color:var(--blu-m)}
+.fi textarea{height:80px;resize:vertical}
+.btn-blu{background:var(--blu);color:#fff;border:none;padding:9px 22px;border-radius:var(--r);font-size:13px;cursor:pointer;transition:opacity .15s}
+.btn-blu:hover{opacity:.85}
+.btn-verde{background:var(--verde);color:#fff;border:none;padding:8px 18px;border-radius:var(--r);font-size:13px;cursor:pointer;transition:opacity .15s}
+.btn-verde:hover{opacity:.85}
+.btn-oro{background:var(--oro);color:#fff;border:none;padding:8px 18px;border-radius:var(--r);font-size:13px;cursor:pointer;transition:opacity .15s}
+.btn-oro:hover{opacity:.85}
+.btn-rosso{background:var(--rosso-l);color:var(--rosso);border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.btn-rosso:hover{opacity:.8}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:100}
+.modal{background:var(--bg);border-radius:var(--rl);border:.5px solid var(--br);padding:1.75rem;width:360px;max-width:95vw}
+.modal h2{font-size:16px;font-weight:500;margin-bottom:.25rem}
+.modal .sub{font-size:12px;color:var(--t2);margin-bottom:1.25rem;line-height:1.5}
+.mbtns{display:flex;gap:8px;margin-top:1rem}
+.btn-cancel{flex:1;background:transparent;border:.5px solid var(--br2);padding:8px;border-radius:var(--r);font-size:13px;cursor:pointer;color:var(--t2)}
+.btn-cancel:hover{background:var(--bg2)}
+.errmsg{font-size:11px;color:#c00;margin-top:4px}
+.mh{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem}
+.mh h2{font-size:20px;font-weight:500}
+.badge-cpo{display:inline-flex;align-items:center;gap:6px;background:var(--viola-l);color:var(--viola);font-size:11px;padding:4px 10px;border-radius:99px;margin-bottom:.5rem;border:.5px solid #d4b8f0}
+.tabs{display:flex;gap:3px;margin-bottom:1.5rem;border-bottom:.5px solid var(--br);flex-wrap:wrap}
+.tab{font-size:13px;padding:6px 16px;border-radius:8px 8px 0 0;border:none;background:transparent;cursor:pointer;color:var(--t2);transition:all .15s;margin-bottom:-.5px}
+.tab.active{background:var(--bg);border:.5px solid var(--br);border-bottom-color:var(--bg);color:var(--t);font-weight:500}
+.tc{display:none}
+.tc.active{display:block}
+.panel{border-radius:var(--rl);padding:1.25rem;margin-bottom:1.25rem}
+.panel.verde{background:var(--verde-l);border:.5px solid #a8d5b8}
+.panel.blu{background:var(--blu-l);border:.5px solid #b8cfe8}
+.panel.oro{background:var(--oro-l);border:.5px solid #e8c880}
+.panel h3{font-size:14px;font-weight:500;margin-bottom:1rem;display:flex;align-items:center;gap:6px}
+.panel.verde h3{color:var(--verde)}
+.panel.blu h3{color:var(--blu)}
+.panel.oro h3{color:var(--oro)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-grid .fi{margin-bottom:0}
+.full{grid-column:1/-1}
+.ok-msg{font-size:12px;color:var(--verde);margin-top:8px;display:none}
+.link-hint{font-size:11px;color:var(--t3);margin-top:4px;line-height:1.5}
+.link-hint b{color:var(--t2)}
+/* EXCEL IMPORT */
+.xl-drop{border:2px dashed #a8d5b8;border-radius:var(--rl);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg);margin-bottom:1rem}
+.xl-drop:hover,.xl-drop.drag{border-color:var(--verde);background:var(--verde-l)}
+.xl-drop .ico{font-size:32px;margin-bottom:6px}
+.xl-drop p{font-size:13px;color:var(--t2)}
+.xl-drop small{font-size:11px;color:var(--t3);display:block;margin-top:4px}
+.xl-drop input{display:none}
+.preview-table{width:100%;border-collapse:collapse;font-size:12px;margin:10px 0;max-height:200px;overflow-y:auto;display:block}
+.preview-table th{background:var(--blu);color:#fff;padding:5px 10px;text-align:left;position:sticky;top:0}
+.preview-table td{padding:5px 10px;border-bottom:.5px solid var(--br)}
+.preview-table tr:nth-child(even) td{background:var(--bg2)}
+.import-result{font-size:13px;padding:.6rem 1rem;border-radius:var(--r);margin-top:8px;display:none}
+.import-result.ok{background:var(--verde-l);color:var(--verde);border:.5px solid #a8d5b8}
+.import-result.warn{background:var(--oro-l);color:var(--oro);border:.5px solid #e8c880}
 /* CALENDARIO */
-.calendar { background:var(--bg); border-radius:var(--rl); border:.5px solid var(--br); }
-.cal-hdr { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.25rem; border-bottom:.5px solid var(--br); }
-.cal-hdr h3 { font-size:15px; font-weight:500; }
-.cal-nav button { width:28px; height:28px; border-radius:6px; border:.5px solid var(--br2); background:transparent; cursor:pointer; color:var(--t2); font-size:14px; }
-.cal-nav button:hover { background:var(--bg2); }
-.cal-grid { display:grid; grid-template-columns:repeat(7,1fr); padding:1rem; gap:2px; }
-.cdn { text-align:center; font-size:10px; color:var(--t3); padding:4px 0; font-weight:500; }
-.cd { text-align:center; padding:6px 4px; border-radius:6px; font-size:12px; cursor:pointer; transition:background .1s; min-height:30px; position:relative; color:var(--t); }
-.cd:hover:not(.empty) { background:var(--bg2); }
-.cd.today { font-weight:600; color:var(--blu); }
-.cd.has-event::after { content:''; width:5px; height:5px; border-radius:50%; background:var(--blu-m); position:absolute; bottom:3px; left:50%; transform:translateX(-50%); }
-.cd.empty { cursor:default; }
-.ev-list { margin-top:1.5rem; display:flex; flex-direction:column; gap:10px; }
-.ev-item { background:var(--bg); border:.5px solid var(--br); border-left:3px solid var(--blu-m); border-radius:0 10px 10px 0; padding:.9rem 1.1rem; display:flex; gap:1rem; align-items:center; }
-.ev-badge { background:var(--blu-l); color:var(--blu); border-radius:8px; padding:6px 10px; text-align:center; min-width:44px; flex-shrink:0; }
-.ev-badge .day { font-size:18px; font-weight:600; line-height:1; }
-.ev-badge .mon { font-size:9px; text-transform:uppercase; letter-spacing:.05em; }
-.ev-info { flex:1; }
-.ev-info h4 { font-size:13px; font-weight:500; margin-bottom:2px; }
-.ev-info p { font-size:11px; color:var(--t2); }
+.cal-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:1rem}
+.cal-toolbar span{font-size:12px;color:var(--t3)}
+.calendar{background:var(--bg);border-radius:var(--rl);border:.5px solid var(--br)}
+.cal-hdr{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:.5px solid var(--br)}
+.cal-hdr h3{font-size:15px;font-weight:500}
+.cal-nav button{width:28px;height:28px;border-radius:6px;border:.5px solid var(--br2);background:transparent;cursor:pointer;color:var(--t2);font-size:14px}
+.cal-nav button:hover{background:var(--bg2)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);padding:1rem;gap:2px}
+.cdn{text-align:center;font-size:10px;color:var(--t3);padding:4px 0;font-weight:500}
+.cd{text-align:center;padding:6px 4px;border-radius:6px;font-size:12px;cursor:pointer;transition:background .1s;min-height:30px;position:relative;color:var(--t)}
+.cd:hover:not(.empty){background:var(--bg2)}
+.cd.today{font-weight:600;color:var(--blu)}
+.cd.has-event::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--blu-m);position:absolute;bottom:3px;left:50%;transform:translateX(-50%)}
+.cd.empty{cursor:default}
+.ev-list{margin-top:1.5rem;display:flex;flex-direction:column;gap:10px}
+.ev-item{background:var(--bg);border:.5px solid var(--br);border-left:3px solid var(--blu-m);border-radius:0 10px 10px 0;padding:.9rem 1.1rem;display:flex;gap:1rem;align-items:center}
+.ev-badge{background:var(--blu-l);color:var(--blu);border-radius:8px;padding:6px 10px;text-align:center;min-width:44px;flex-shrink:0}
+.ev-badge .day{font-size:18px;font-weight:600;line-height:1}
+.ev-badge .mon{font-size:9px;text-transform:uppercase;letter-spacing:.05em}
+.ev-info{flex:1}
+.ev-info h4{font-size:13px;font-weight:500;margin-bottom:2px}
+.ev-info p{font-size:11px;color:var(--t2)}
+.ev-src{font-size:10px;padding:2px 7px;border-radius:99px;margin-left:6px}
+.ev-src.excel{background:var(--verde-l);color:var(--verde)}
+.ev-src.manual{background:var(--blu-l);color:var(--blu)}
 /* DOCUMENTI */
-.doc-list { display:flex; flex-direction:column; gap:8px; }
-.doc-item { background:var(--bg); border:.5px solid var(--br); border-radius:10px; padding:.9rem 1.25rem; display:flex; align-items:center; gap:1rem; }
-.doc-icon { width:34px; height:34px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
-.doc-meta { flex:1; min-width:0; }
-.doc-meta h4 { font-size:13px; font-weight:500; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.doc-meta p { font-size:11px; color:var(--t2); }
-.btn-dl { font-size:12px; color:var(--blu); background:var(--blu-l); padding:5px 12px; border-radius:6px; border:none; cursor:pointer; white-space:nowrap; flex-shrink:0; text-decoration:none; display:inline-block; }
-.btn-dl:hover { opacity:.8; }
-.dst { font-size:11px; font-weight:500; color:var(--t3); margin:1.25rem 0 8px; text-transform:uppercase; letter-spacing:.07em; }
-.empty-msg { color:var(--t3); font-size:13px; padding:1rem 0; }
-.ok-msg { font-size:12px; color:var(--verde); margin-top:8px; display:none; }
-/* UPLOAD AREA */
-.upload-zone { border:2px dashed #b8cfe8; border-radius:var(--rl); padding:1.5rem; text-align:center; cursor:pointer; transition:all .2s; margin-bottom:1rem; background:var(--bg); }
-.upload-zone:hover, .upload-zone.drag { border-color:var(--blu-m); background:var(--blu-l); }
-.upload-zone p { font-size:13px; color:var(--t2); margin-top:6px; }
-.upload-zone .icon { font-size:28px; }
-.upload-zone input[type=file] { display:none; }
-.file-tag { display:inline-flex; align-items:center; gap:6px; background:var(--bg2); border:.5px solid var(--br); border-radius:6px; padding:4px 10px; font-size:12px; margin:4px; }
-.cat-select { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1rem; }
-.cat-btn { font-size:12px; padding:5px 12px; border-radius:99px; border:.5px solid var(--br2); background:var(--bg); cursor:pointer; color:var(--t2); transition:all .15s; }
-.cat-btn.active { background:var(--blu); color:#fff; border-color:var(--blu); }
-footer { background:var(--blu); color:rgba(255,255,255,.65); font-size:11px; text-align:center; padding:1rem; margin-top:3rem; }
-footer a { color:rgba(255,255,255,.8); }
+.cat-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
+.cat-btn{font-size:12px;padding:5px 14px;border-radius:99px;border:.5px solid var(--br2);background:var(--bg);cursor:pointer;color:var(--t2);transition:all .15s}
+.cat-btn.active{background:var(--blu);color:#fff;border-color:var(--blu)}
+.doc-list{display:flex;flex-direction:column;gap:8px}
+.doc-item{background:var(--bg);border:.5px solid var(--br);border-radius:10px;padding:.9rem 1.25rem;display:flex;align-items:center;gap:1rem}
+.doc-ico{width:34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.doc-meta{flex:1;min-width:0}
+.doc-meta h4{font-size:13px;font-weight:500;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doc-meta p{font-size:11px;color:var(--t2)}
+.btn-dl{font-size:12px;color:var(--blu);background:var(--blu-l);padding:5px 12px;border-radius:6px;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0;text-decoration:none;display:inline-block}
+.btn-dl:hover{opacity:.8}
+.empty-msg{color:var(--t3);font-size:13px;padding:1rem 0}
+footer{background:var(--blu);color:rgba(255,255,255,.65);font-size:11px;text-align:center;padding:1rem;margin-top:3rem}
+footer a{color:rgba(255,255,255,.8)}
 @media(max-width:600px){.hero{flex-direction:column}.nav-links{display:none}.form-grid{grid-template-columns:1fr}.full{grid-column:1}}
 </style>
 </head>
@@ -209,7 +219,7 @@ footer a { color:rgba(255,255,255,.8); }
     <div class="ni"><span class="nd">18 Apr 2026</span><div><h4>Convegno "Lavoro e parità di genere"</h4><p>Giovedì 7 maggio al Teatro Fonderia Leopolda. Iscrizioni aperte fino al 3 maggio.</p></div></div>
     <div class="ni"><span class="nd">2 Apr 2026</span><div><h4>Riunione plenaria — verbale disponibile</h4><p>Il verbale è disponibile nell'area riservata.</p></div></div>
     <div class="ni"><span class="nd">20 Mar 2026</span><div><h4>8 marzo: successo per la giornata della donna</h4><p>Grande partecipazione all'iniziativa in piazza.</p></div></div>
-    <div class="ni"><span class="nd">5 Feb 2026</span><div><h4>Nuova composizione della commissione</h4><p>Il Consiglio Comunale ha rinnovato i componenti della CPO per il triennio 2026–2029.</p></div></div>
+    <div class="ni"><span class="nd">5 Feb 2026</span><div><h4>Nuova composizione della commissione</h4><p>Il Consiglio Comunale ha rinnovato i componenti per il triennio 2026–2029.</p></div></div>
   </div>
 </div>
 
@@ -224,7 +234,7 @@ footer a { color:rgba(255,255,255,.8); }
     </div>
     <div class="fi"><label>Messaggio</label><textarea placeholder="Scrivi qui il tuo messaggio..."></textarea></div>
     <button class="btn-blu" onclick="contactSent()">Invia messaggio</button>
-    <p id="contact-ok" style="display:none;font-size:12px;color:var(--blu);margin-top:8px;">✓ Messaggio inviato. Risponderemo all'indirizzo indicato.</p>
+    <p id="contact-ok" style="display:none;font-size:12px;color:var(--blu);margin-top:8px">✓ Messaggio inviato. Risponderemo all'indirizzo indicato.</p>
   </div>
 </div>
 
@@ -235,17 +245,40 @@ footer a { color:rgba(255,255,255,.8); }
       <div class="badge-cpo">🔒 Area commissarie</div>
       <h2>Area riservata</h2>
     </div>
-    <button class="lb" style="border-color:rgba(0,0,0,0.2);color:var(--t2);" onclick="logout()">Esci</button>
+    <button class="lb" style="border-color:rgba(0,0,0,0.2);color:var(--t2)" onclick="logout()">Esci</button>
   </div>
   <div class="tabs">
     <button class="tab active" onclick="showTab('cal',this)">📅 Calendario</button>
     <button class="tab" onclick="showTab('docs',this)">📁 Documenti</button>
+    <button class="tab" onclick="showTab('impost',this)">⚙️ Impostazioni</button>
   </div>
 
-  <!-- TAB CALENDARIO -->
+  <!-- CALENDARIO -->
   <div class="tc active" id="tab-cal">
+
+    <!-- IMPORTA DA EXCEL -->
+    <div class="panel oro">
+      <h3>📊 Importa eventi da Excel</h3>
+      <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">
+        Compila il file Excel template con tutti gli eventi, poi caricalo qui sotto.
+        Gli eventi verranno aggiunti al calendario automaticamente.
+      </p>
+      <div class="xl-drop" id="xl-drop" onclick="document.getElementById('xl-input').click()"
+        ondragover="event.preventDefault();this.classList.add('drag')"
+        ondragleave="this.classList.remove('drag')"
+        ondrop="handleXlDrop(event)">
+        <div class="ico">📂</div>
+        <p>Clicca o trascina il file Excel qui</p>
+        <small>Formato: .xlsx — usa il template scaricabile qui sotto</small>
+        <input type="file" id="xl-input" accept=".xlsx,.xls" onchange="handleXlFile(this.files[0])">
+      </div>
+      <div id="xl-preview"></div>
+      <div id="xl-result" class="import-result"></div>
+    </div>
+
+    <!-- AGGIUNGI SINGOLO EVENTO -->
     <div class="panel verde">
-      <h3>➕ Aggiungi evento</h3>
+      <h3>➕ Aggiungi evento singolo</h3>
       <div class="form-grid">
         <div class="fi"><label>Data *</label><input type="date" id="ev-data"></div>
         <div class="fi"><label>Orario</label><input type="text" id="ev-ora" placeholder="es. 17:30"></div>
@@ -257,6 +290,10 @@ footer a { color:rgba(255,255,255,.8); }
       <p class="ok-msg" id="ev-ok">✓ Evento aggiunto!</p>
     </div>
 
+    <!-- CALENDARIO -->
+    <div class="cal-toolbar">
+      <span id="ev-count"></span>
+    </div>
     <div class="calendar">
       <div class="cal-hdr">
         <div class="cal-nav"><button onclick="prevMonth()">‹</button></div>
@@ -268,40 +305,40 @@ footer a { color:rgba(255,255,255,.8); }
     <div class="ev-list" id="ev-list"></div>
   </div>
 
-  <!-- TAB DOCUMENTI -->
+  <!-- DOCUMENTI -->
   <div class="tc" id="tab-docs">
-
-    <!-- Upload -->
     <div class="panel blu">
-      <h3>📤 Carica un documento</h3>
-      <div class="fi"><label>Categoria</label>
-        <select id="doc-cat">
-          <option value="verbale">Verbale riunione</option>
-          <option value="lavoro">Documento di lavoro</option>
-          <option value="comunicazione">Comunicazione</option>
-          <option value="altro">Altro</option>
-        </select>
+      <h3>🔗 Aggiungi documento da Google Drive</h3>
+      <div class="form-grid">
+        <div class="fi full">
+          <label>Nome documento *</label>
+          <input type="text" id="doc-nome" placeholder="es. Verbale riunione 5 maggio 2026">
+        </div>
+        <div class="fi full">
+          <label>Link Google Drive *</label>
+          <input type="url" id="doc-link" placeholder="https://drive.google.com/file/d/…/view">
+          <div class="link-hint">Drive → clic destro → <b>Condividi</b> → <b>"Chiunque abbia il link"</b> → <b>Copia link</b></div>
+        </div>
+        <div class="fi">
+          <label>Categoria</label>
+          <select id="doc-cat">
+            <option value="verbale">Verbale riunione</option>
+            <option value="lavoro">Documento di lavoro</option>
+            <option value="comunicazione">Comunicazione</option>
+            <option value="altro">Altro</option>
+          </select>
+        </div>
+        <div class="fi">
+          <label>Data documento</label>
+          <input type="date" id="doc-data">
+        </div>
       </div>
-      <div class="fi"><label>Descrizione (opzionale)</label>
-        <input type="text" id="doc-desc" placeholder="es. Verbale riunione 5 maggio 2026">
-      </div>
-      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()"
-        ondragover="ev.preventDefault();this.classList.add('drag')"
-        ondragleave="this.classList.remove('drag')"
-        ondrop="handleDrop(event)">
-        <div class="icon">📂</div>
-        <p>Clicca qui o trascina il file</p>
-        <p style="font-size:11px;color:var(--t3);margin-top:4px;">PDF, Word, Excel, immagini — max 10 MB</p>
-        <input type="file" id="file-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" onchange="handleFileSelect(this.files)">
-      </div>
-      <div id="file-preview" style="margin-bottom:10px;"></div>
-      <button class="btn-verde" onclick="uploadDoc()">Carica documento</button>
-      <p class="ok-msg" id="doc-ok">✓ Documento caricato!</p>
+      <br>
+      <button class="btn-verde" onclick="addDoc()">Aggiungi documento</button>
+      <p class="ok-msg" id="doc-ok">✓ Documento aggiunto!</p>
     </div>
-
-    <!-- Filtro categorie -->
     <p class="st">Documenti condivisi</p>
-    <div class="cat-select" id="cat-filter">
+    <div class="cat-bar">
       <button class="cat-btn active" onclick="filterDocs('tutti',this)">Tutti</button>
       <button class="cat-btn" onclick="filterDocs('verbale',this)">Verbali</button>
       <button class="cat-btn" onclick="filterDocs('lavoro',this)">Documenti di lavoro</button>
@@ -309,6 +346,27 @@ footer a { color:rgba(255,255,255,.8); }
       <button class="cat-btn" onclick="filterDocs('altro',this)">Altro</button>
     </div>
     <div class="doc-list" id="doc-list"></div>
+  </div>
+
+  <!-- IMPOSTAZIONI -->
+  <div class="tc" id="tab-impost">
+    <div class="panel blu">
+      <h3>🔑 Cambia password</h3>
+      <div class="fi"><label>Password attuale</label><input type="password" id="pwd-old" placeholder="••••••••"></div>
+      <div class="fi"><label>Nuova password</label><input type="password" id="pwd-new" placeholder="••••••••"></div>
+      <div class="fi"><label>Conferma nuova password</label><input type="password" id="pwd-new2" placeholder="••••••••"></div>
+      <button class="btn-verde" onclick="changePassword()">Aggiorna password</button>
+      <p class="ok-msg" id="pwd-ok">✓ Password aggiornata!</p>
+      <p id="pwd-err2" style="display:none;font-size:12px;color:var(--rosso);margin-top:8px"></p>
+    </div>
+    <div class="panel verde">
+      <h3>🗑️ Gestione dati</h3>
+      <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Elimina tutti gli eventi o tutti i documenti salvati. L'operazione non è reversibile.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn-rosso" style="padding:8px 16px;font-size:13px" onclick="clearEvents()">Elimina tutti gli eventi</button>
+        <button class="btn-rosso" style="padding:8px 16px;font-size:13px" onclick="clearDocs()">Elimina tutti i documenti</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -344,52 +402,46 @@ footer a { color:rgba(255,255,255,.8); }
 </footer>
 
 <script>
-// ═══════════════════════════════════════════
-// CONFIGURAZIONE — modifica solo questi valori
-// ═══════════════════════════════════════════
-const PASS = "cpo2026";
-const EV_KEY  = "cpo_eventi";
-const DOC_KEY = "cpo_documenti";
+// ══════════════════════════════════════
+// STORAGE
+// ══════════════════════════════════════
+const K_PASS='cpo_pass', K_EV='cpo_eventi', K_DOC='cpo_documenti';
+function getPass(){ return localStorage.getItem(K_PASS)||'cpo2026'; }
+function load(k,d){ try{ const s=localStorage.getItem(k); return s?JSON.parse(s):d; }catch(e){ return d; } }
+function save(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){ alert('Spazio browser esaurito.'); } }
 
-// ── Dati di esempio iniziali ──────────────
-const DEFAULT_EVENTS = [
-  {id:1,anno:2026,mese:5,giorno:7,titolo:"Convegno lavoro e parità di genere",ora:"18:00",luogo:"Teatro Fonderia Leopolda"},
-  {id:2,anno:2026,mese:5,giorno:14,titolo:"Riunione CPO",ora:"17:30",luogo:"Sala Giunta, Municipio"},
-  {id:3,anno:2026,mese:5,giorno:28,titolo:"Tavolo antiviolenza",ora:"15:00",luogo:"Sede CPO"},
-  {id:4,anno:2026,mese:6,giorno:11,titolo:"Riunione CPO",ora:"17:30",luogo:"Sala Giunta, Municipio"},
+const DEFAULT_EV=[
+  {id:1,anno:2026,mese:5,giorno:7,titolo:'Convegno lavoro e parità di genere',ora:'18:00',luogo:'Teatro Fonderia Leopolda',src:'manual'},
+  {id:2,anno:2026,mese:5,giorno:14,titolo:'Riunione CPO',ora:'17:30',luogo:'Sala Giunta, Municipio',src:'manual'},
+  {id:3,anno:2026,mese:5,giorno:28,titolo:'Tavolo antiviolenza',ora:'15:00',luogo:'Sede CPO',src:'manual'},
 ];
-const DEFAULT_DOCS = [
-  {id:1,nome:"Verbale riunione 2 aprile 2026",cat:"verbale",desc:"",data:"2026-04-06",size:"180 KB",tipo:"pdf",dataUrl:null},
-  {id:2,nome:"Verbale riunione 12 febbraio 2026",cat:"verbale",desc:"",data:"2026-02-15",size:"155 KB",tipo:"pdf",dataUrl:null},
-  {id:3,nome:"Piano di lavoro 2026–2029",cat:"lavoro",desc:"",data:"2026-01-10",size:"115 KB",tipo:"pdf",dataUrl:null},
-  {id:4,nome:"Regolamento CPO 2026",cat:"lavoro",desc:"",data:"2026-01-10",size:"62 KB",tipo:"word",dataUrl:null},
+const DEFAULT_DOC=[
+  {id:1,nome:'Verbale riunione 2 aprile 2026',cat:'verbale',data:'2026-04-06',link:''},
+  {id:2,nome:'Piano di lavoro 2026–2029',cat:'lavoro',data:'2026-01-10',link:''},
 ];
 
-function load(key, def) { try { const s=localStorage.getItem(key); return s?JSON.parse(s):[...def]; } catch(e){return[...def];} }
-function save(key,val) { try { localStorage.setItem(key,JSON.stringify(val)); } catch(e){ alert("Spazio di archiviazione del browser esaurito. Prova a eliminare qualche documento."); } }
+let events=load(K_EV,DEFAULT_EV);
+let docs=load(K_DOC,DEFAULT_DOC);
+let nextEvId=Math.max(0,...events.map(e=>e.id))+1;
+let nextDocId=Math.max(0,...docs.map(d=>d.id))+1;
+let currentFilter='tutti';
+let loggedIn=false;
+let curM=new Date().getMonth()+1, curY=new Date().getFullYear();
 
-let events = load(EV_KEY, DEFAULT_EVENTS);
-let docs   = load(DOC_KEY, DEFAULT_DOCS);
-let nextEvId  = Math.max(0,...events.map(e=>e.id))+1;
-let nextDocId = Math.max(0,...docs.map(d=>d.id))+1;
-let currentFilter = 'tutti';
-let pendingFile = null;
-
-// ── Navigazione ───────────────────────────
-let loggedIn = false;
-let curM = new Date().getMonth()+1, curY = new Date().getFullYear();
-
-function showPage(name,btn){
+// ══════════════════════════════════════
+// NAVIGAZIONE
+// ══════════════════════════════════════
+function showPage(n,b){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  if(btn) btn.classList.add('active');
+  document.querySelectorAll('.nb').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+n).classList.add('active');
+  if(b) b.classList.add('active');
   window.scrollTo(0,0);
 }
-function toggleLogin(){ loggedIn ? showPage('member',null) : (document.getElementById('modal').style.display='flex'); }
+function toggleLogin(){ loggedIn?showPage('member',null):(document.getElementById('modal').style.display='flex'); }
 function closeModal(){ document.getElementById('modal').style.display='none'; document.getElementById('pwd-err').style.display='none'; document.getElementById('pwd-input').value=''; }
 function doLogin(){
-  if(document.getElementById('pwd-input').value===PASS){
+  if(document.getElementById('pwd-input').value===getPass()){
     loggedIn=true; closeModal();
     document.getElementById('ltog').textContent='✓ Area riservata';
     document.getElementById('ltog').className='lb on';
@@ -403,42 +455,186 @@ function logout(){
   showPage('home',document.querySelector('.nb'));
   document.querySelector('.nb').classList.add('active');
 }
-function showTab(name,btn){
+function showTab(n,b){
   document.querySelectorAll('.tc').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  if(btn) btn.classList.add('active');
+  document.getElementById('tab-'+n).classList.add('active');
+  if(b) b.classList.add('active');
 }
 
-// ── CALENDARIO ────────────────────────────
+// ══════════════════════════════════════
+// IMPORTA DA EXCEL
+// ══════════════════════════════════════
+function handleXlDrop(ev){
+  ev.preventDefault();
+  document.getElementById('xl-drop').classList.remove('drag');
+  const f=ev.dataTransfer.files[0];
+  if(f) handleXlFile(f);
+}
+
+function handleXlFile(file){
+  if(!file) return;
+  if(!file.name.match(/\.xlsx?$/i)){ alert('Carica un file Excel (.xlsx)'); return; }
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const wb=XLSX.read(e.target.result,{type:'array',cellDates:true});
+      // Cerca il foglio "Eventi CPO" oppure il primo foglio
+      const sheetName=wb.SheetNames.includes('Eventi CPO')?'Eventi CPO':wb.SheetNames[0];
+      const ws=wb.Sheets[sheetName];
+      // Leggi a partire dalla riga 5 (indice 4) — righe 1-3 sono titolo/sottotitolo/spazio, riga 4 intestazioni
+      const rows=XLSX.utils.sheet_to_json(ws,{header:1,raw:false,dateNF:'DD/MM/YYYY'});
+      // Trova riga intestazioni (contiene "Data")
+      let headerRow=-1;
+      for(let i=0;i<rows.length;i++){
+        const r=rows[i].map(c=>(c||'').toString().toLowerCase());
+        if(r.some(c=>c.includes('data'))){ headerRow=i; break; }
+      }
+      if(headerRow===-1){ showImportResult('Non ho trovato la riga con le intestazioni (Data, Titolo...). Usa il template fornito.','warn'); return; }
+      
+      // Mappa colonne
+      const hdr=rows[headerRow].map(c=>(c||'').toString().toLowerCase().trim());
+      const iData  = hdr.findIndex(c=>c.includes('data'));
+      const iTitolo= hdr.findIndex(c=>c.includes('titolo'));
+      const iOra   = hdr.findIndex(c=>c.includes('orario')||c.includes('ora'));
+      const iLuogo = hdr.findIndex(c=>c.includes('luogo'));
+
+      if(iData===-1||iTitolo===-1){ showImportResult('Colonne "Data" e "Titolo" obbligatorie non trovate. Controlla il file Excel.','warn'); return; }
+
+      const nuovi=[], saltati=[];
+      for(let i=headerRow+1;i<rows.length;i++){
+        const row=rows[i];
+        const dataRaw=(iData>=0?row[iData]:'')||'';
+        const titolo=((iTitolo>=0?row[iTitolo]:'')||'').toString().trim();
+        if(!dataRaw && !titolo) continue; // riga vuota
+        if(!dataRaw || !titolo){ saltati.push(i+1); continue; }
+
+        // Parsing data: supporta DD/MM/YYYY, DD-MM-YYYY, YYYY-MM-DD, oggetto Date
+        let parsed=null;
+        const s=dataRaw.toString().trim();
+        // Prova DD/MM/YYYY o DD-MM-YYYY
+        let m=s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+        if(m){ parsed={giorno:+m[1],mese:+m[2],anno:+m[3]}; }
+        // Prova YYYY-MM-DD
+        if(!parsed){ m=s.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/); if(m) parsed={anno:+m[1],mese:+m[2],giorno:+m[3]}; }
+        // Prova numero seriale Excel
+        if(!parsed && !isNaN(+s)){
+          const d=XLSX.SSF.parse_date_code(+s);
+          if(d) parsed={anno:d.y,mese:d.m,giorno:d.d};
+        }
+        if(!parsed){ saltati.push(i+1); continue; }
+
+        nuovi.push({
+          id:nextEvId++,
+          anno:parsed.anno, mese:parsed.mese, giorno:parsed.giorno,
+          titolo:titolo,
+          ora:((iOra>=0?row[iOra]:'')||'').toString().trim(),
+          luogo:((iLuogo>=0?row[iLuogo]:'')||'').toString().trim(),
+          src:'excel'
+        });
+      }
+
+      if(nuovi.length===0){ showImportResult('Nessun evento valido trovato nel file. Controlla che Data e Titolo siano compilati.','warn'); return; }
+
+      // Mostra anteprima
+      showPreview(nuovi, saltati);
+
+    } catch(err){
+      showImportResult('Errore nella lettura del file: '+err.message,'warn');
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function showPreview(nuovi, saltati){
+  const MS=['','Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+  let html=`<p style="font-size:12px;color:var(--verde);margin-bottom:6px;font-weight:500">✓ Trovati ${nuovi.length} eventi da importare${saltati.length?' ('+saltati.length+' righe saltate per dati mancanti)':''}:</p>`;
+  html+=`<div style="max-height:180px;overflow-y:auto;border:.5px solid var(--br);border-radius:var(--r);margin-bottom:10px">
+    <table class="preview-table">
+      <thead><tr><th>Data</th><th>Titolo</th><th>Orario</th><th>Luogo</th></tr></thead>
+      <tbody>`;
+  nuovi.forEach(e=>{
+    html+=`<tr><td>${e.giorno} ${MS[e.mese]} ${e.anno}</td><td>${e.titolo}</td><td>${e.ora||'—'}</td><td>${e.luogo||'—'}</td></tr>`;
+  });
+  html+=`</tbody></table></div>`;
+  html+=`<div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn-verde" onclick="confirmImport(${JSON.stringify(nuovi).split('"').join("'")})">✓ Importa ${nuovi.length} eventi</button>
+    <button class="btn-cancel" style="flex:0" onclick="resetXlPreview()">Annulla</button>
+  </div>`;
+  document.getElementById('xl-preview').innerHTML=html;
+  document.getElementById('xl-result').style.display='none';
+}
+
+function confirmImport(nuoviStr){
+  // Ricostruisce array (passato come stringa attr)
+  const nuovi=typeof nuoviStr==='string'
+    ? JSON.parse(nuoviStr.split("'").join('"'))
+    : nuoviStr;
+  // Rimuove vecchi eventi Excel e aggiunge i nuovi
+  events=events.filter(e=>e.src!=='excel');
+  events.push(...nuovi);
+  nextEvId=Math.max(0,...events.map(e=>e.id))+1;
+  save(K_EV,events);
+  resetXlPreview();
+  // Vai al mese del primo evento
+  if(nuovi.length){ curM=nuovi[0].mese; curY=nuovi[0].anno; }
+  renderCalendar();
+  showImportResult(`✓ ${nuovi.length} eventi importati con successo! Gli eventi precedentemente importati da Excel sono stati sostituiti.`,'ok');
+}
+
+function resetXlPreview(){
+  document.getElementById('xl-preview').innerHTML='';
+  document.getElementById('xl-input').value='';
+}
+function showImportResult(msg,type){
+  const el=document.getElementById('xl-result');
+  el.textContent=msg; el.className='import-result '+type; el.style.display='block';
+}
+
+// ══════════════════════════════════════
+// CALENDARIO — eventi manuali
+// ══════════════════════════════════════
 const MONTHS=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
 const MS=['','Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
 
 function addEvent(){
   const d=document.getElementById('ev-data').value;
   const t=document.getElementById('ev-titolo').value.trim();
-  if(!d||!t){alert('Inserisci almeno la data e il titolo.');return;}
+  if(!d||!t){ alert('Inserisci almeno la data e il titolo.'); return; }
   const p=d.split('-');
-  events.push({id:nextEvId++,anno:+p[0],mese:+p[1],giorno:+p[2],titolo:t,ora:document.getElementById('ev-ora').value.trim(),luogo:document.getElementById('ev-luogo').value.trim()});
-  save(EV_KEY,events);
+  events.push({id:nextEvId++,anno:+p[0],mese:+p[1],giorno:+p[2],
+    titolo:t, ora:document.getElementById('ev-ora').value.trim(),
+    luogo:document.getElementById('ev-luogo').value.trim(), src:'manual'});
+  save(K_EV,events);
   ['ev-data','ev-titolo','ev-ora','ev-luogo'].forEach(id=>document.getElementById(id).value='');
   flash('ev-ok'); curM=+p[1]; curY=+p[0]; renderCalendar();
 }
 function deleteEvent(id){
   if(!confirm('Eliminare questo evento?'))return;
-  events=events.filter(e=>e.id!==id); save(EV_KEY,events); renderCalendar();
+  events=events.filter(e=>e.id!==id); save(K_EV,events); renderCalendar();
 }
+function clearEvents(){
+  if(!confirm('Eliminare TUTTI gli eventi?'))return;
+  events=[]; save(K_EV,events); renderCalendar();
+}
+
 function renderCalendar(){
   document.getElementById('cal-title').textContent=MONTHS[curM-1]+' '+curY;
+  const totale=events.length;
+  const excelN=events.filter(e=>e.src==='excel').length;
+  document.getElementById('ev-count').textContent=
+    totale===0?'Nessun evento salvato':
+    `${totale} eventi totali${excelN?' ('+excelN+' da Excel)':''}`;
+
   const grid=document.getElementById('cal-grid'); grid.innerHTML='';
-  ['L','M','M','G','V','S','D'].forEach(d=>{const el=document.createElement('div');el.className='cdn';el.textContent=d;grid.appendChild(el);});
+  ['L','M','M','G','V','S','D'].forEach(d=>{ const el=document.createElement('div'); el.className='cdn'; el.textContent=d; grid.appendChild(el); });
   const first=new Date(curY,curM-1,1).getDay(), offset=first===0?6:first-1;
   const days=new Date(curY,curM,0).getDate(), today=new Date();
-  for(let i=0;i<offset;i++){const el=document.createElement('div');el.className='cd empty';grid.appendChild(el);}
+  for(let i=0;i<offset;i++){ const el=document.createElement('div'); el.className='cd empty'; grid.appendChild(el); }
   for(let d=1;d<=days;d++){
-    const el=document.createElement('div');el.className='cd';el.textContent=d;
-    if(d===today.getDate()&&curM===today.getMonth()+1&&curY===today.getFullYear())el.classList.add('today');
-    if(events.some(e=>e.giorno===d&&e.mese===curM&&e.anno===curY))el.classList.add('has-event');
+    const el=document.createElement('div'); el.className='cd'; el.textContent=d;
+    if(d===today.getDate()&&curM===today.getMonth()+1&&curY===today.getFullYear()) el.classList.add('today');
+    if(events.some(e=>e.giorno===d&&e.mese===curM&&e.anno===curY)) el.classList.add('has-event');
     grid.appendChild(el);
   }
   const evList=document.getElementById('ev-list');
@@ -446,81 +642,88 @@ function renderCalendar(){
   evList.innerHTML=me.length===0?'<p class="empty-msg">Nessun evento in questo mese.</p>'
     :me.map(e=>`<div class="ev-item">
       <div class="ev-badge"><div class="day">${e.giorno}</div><div class="mon">${MS[e.mese]}</div></div>
-      <div class="ev-info"><h4>${e.titolo}</h4>${[e.ora,e.luogo].filter(Boolean).length?`<p>${[e.ora,e.luogo].filter(Boolean).join(' · ')}</p>`:''}</div>
-      <button class="btn-rosso" onclick="deleteEvent(${e.id})">✕ Elimina</button>
+      <div class="ev-info">
+        <h4>${e.titolo} <span class="ev-src ${e.src||'manual'}">${e.src==='excel'?'Excel':'Manuale'}</span></h4>
+        ${[e.ora,e.luogo].filter(Boolean).length?`<p>${[e.ora,e.luogo].filter(Boolean).join(' · ')}</p>`:''}
+      </div>
+      <button class="btn-rosso" onclick="deleteEvent(${e.id})">✕</button>
     </div>`).join('');
 }
-function prevMonth(){curM--;if(curM<1){curM=12;curY--;}renderCalendar();}
-function nextMonth(){curM++;if(curM>12){curM=1;curY++;}renderCalendar();}
+function prevMonth(){ curM--; if(curM<1){curM=12;curY--;} renderCalendar(); }
+function nextMonth(){ curM++; if(curM>12){curM=1;curY++;} renderCalendar(); }
 
-// ── DOCUMENTI ─────────────────────────────
-function handleFileSelect(files){ if(files[0]) setFile(files[0]); }
-function handleDrop(ev){
-  ev.preventDefault(); document.getElementById('upload-zone').classList.remove('drag');
-  if(ev.dataTransfer.files[0]) setFile(ev.dataTransfer.files[0]);
+// ══════════════════════════════════════
+// DOCUMENTI
+// ══════════════════════════════════════
+function driveToDownload(url){
+  if(!url) return '';
+  const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if(m) return `https://drive.google.com/uc?export=download&id=${m[1]}`;
+  return url;
 }
-function setFile(f){
-  if(f.size>10*1024*1024){alert('File troppo grande. Massimo 10 MB.');return;}
-  pendingFile=f;
-  document.getElementById('file-preview').innerHTML=`<span class="file-tag">📎 ${f.name} (${(f.size/1024).toFixed(0)} KB)</span>`;
-}
-function uploadDoc(){
-  if(!pendingFile){alert('Seleziona prima un file.');return;}
-  const cat=document.getElementById('doc-cat').value;
-  const desc=document.getElementById('doc-desc').value.trim();
-  const nome=desc||pendingFile.name;
-  const ext=pendingFile.name.split('.').pop().toLowerCase();
-  const tipo=ext==='pdf'?'pdf':['doc','docx'].includes(ext)?'word':['xls','xlsx'].includes(ext)?'excel':'file';
-  const today=new Date().toISOString().split('T')[0];
-  const size=(pendingFile.size/1024).toFixed(0)+' KB';
+const CAT_LABEL={verbale:'Verbale',lavoro:'Documento di lavoro',comunicazione:'Comunicazione',altro:'Altro'};
+const TIPO_ICO={pdf:'📄',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊',default:'📎'};
+const TIPO_BG={pdf:'#FCEBEB',doc:'#E6F1FB',docx:'#E6F1FB',xls:'#E8F7EE',xlsx:'#E8F7EE',default:'#F5F5F0'};
+function guessType(link){ if(!link)return'default'; const l=link.toLowerCase(); for(const e of['pdf','docx','doc','xlsx','xls'])if(l.includes(e))return e; return'default'; }
 
-  const reader=new FileReader();
-  reader.onload=function(ev){
-    docs.push({id:nextDocId++,nome,cat,desc,data:today,size,tipo,dataUrl:ev.target.result,nomeFile:pendingFile.name});
-    save(DOC_KEY,docs);
-    pendingFile=null;
-    document.getElementById('file-preview').innerHTML='';
-    document.getElementById('doc-desc').value='';
-    document.getElementById('file-input').value='';
-    flash('doc-ok'); renderDocs();
-  };
-  reader.readAsDataURL(pendingFile);
+function addDoc(){
+  const nome=document.getElementById('doc-nome').value.trim();
+  const link=document.getElementById('doc-link').value.trim();
+  if(!nome||!link){ alert('Inserisci nome e link del documento.'); return; }
+  if(!link.includes('drive.google.com')){ alert('Inserisci un link di Google Drive valido.'); return; }
+  docs.push({id:nextDocId++,nome,cat:document.getElementById('doc-cat').value,
+    data:document.getElementById('doc-data').value,link,tipo:guessType(link)});
+  save(K_DOC,docs);
+  document.getElementById('doc-nome').value='';
+  document.getElementById('doc-link').value='';
+  document.getElementById('doc-data').value='';
+  flash('doc-ok'); renderDocs();
 }
-function deleteDoc(id){
-  if(!confirm('Eliminare questo documento?'))return;
-  docs=docs.filter(d=>d.id!==id); save(DOC_KEY,docs); renderDocs();
-}
+function deleteDoc(id){ if(!confirm('Eliminare?'))return; docs=docs.filter(d=>d.id!==id); save(K_DOC,docs); renderDocs(); }
+function clearDocs(){ if(!confirm('Eliminare TUTTI i documenti?'))return; docs=[]; save(K_DOC,docs); renderDocs(); }
 function filterDocs(cat,btn){
   currentFilter=cat;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
   renderDocs();
 }
-const CAT_LABELS={'verbale':'Verbale','lavoro':'Documento di lavoro','comunicazione':'Comunicazione','altro':'Altro'};
-const TIPO_ICON={'pdf':'📄','word':'📝','excel':'📊','file':'📎'};
-const TIPO_BG={'pdf':'#FCEBEB','word':'#E6F1FB','excel':'#E8F7EE','file':'#F5F5F0'};
 function renderDocs(){
   const filtered=currentFilter==='tutti'?docs:docs.filter(d=>d.cat===currentFilter);
   const list=document.getElementById('doc-list');
-  if(filtered.length===0){list.innerHTML='<p class="empty-msg">Nessun documento in questa categoria.</p>';return;}
+  if(!filtered.length){ list.innerHTML='<p class="empty-msg">Nessun documento in questa categoria.</p>'; return; }
   list.innerHTML=filtered.map(d=>{
-    const dlBtn=d.dataUrl
-      ?`<a class="btn-dl" href="${d.dataUrl}" download="${d.nomeFile||d.nome}">⬇ Scarica</a>`
-      :`<span class="btn-dl" style="opacity:.5;cursor:default">⬇ Scarica</span>`;
-    const dataFmt=d.data?new Date(d.data).toLocaleDateString('it-IT',{day:'numeric',month:'short',year:'numeric'}):'';
+    const tipo=d.tipo||guessType(d.link);
+    const dlUrl=driveToDownload(d.link);
+    const dataFmt=d.data?new Date(d.data+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'short',year:'numeric'}):'';
+    const dlBtn=dlUrl?`<a class="btn-dl" href="${dlUrl}" target="_blank" rel="noopener">⬇ Scarica</a>`
+      :`<span class="btn-dl" style="opacity:.4;cursor:default">⬇ Scarica</span>`;
     return `<div class="doc-item">
-      <div class="doc-icon" style="background:${TIPO_BG[d.tipo]||TIPO_BG.file}">${TIPO_ICON[d.tipo]||'📎'}</div>
-      <div class="doc-meta">
-        <h4>${d.nome}</h4>
-        <p>${CAT_LABELS[d.cat]||d.cat}${dataFmt?' · '+dataFmt:''}${d.size?' · '+d.size:''}</p>
-      </div>
+      <div class="doc-ico" style="background:${TIPO_BG[tipo]||TIPO_BG.default}">${TIPO_ICO[tipo]||'📎'}</div>
+      <div class="doc-meta"><h4>${d.nome}</h4><p>${CAT_LABEL[d.cat]||d.cat}${dataFmt?' · '+dataFmt:''}</p></div>
       ${dlBtn}
       <button class="btn-rosso" onclick="deleteDoc(${d.id})">✕</button>
     </div>`;
   }).join('');
 }
 
-function flash(id){ const el=document.getElementById(id); el.style.display='block'; setTimeout(()=>el.style.display='none',3000); }
+// ══════════════════════════════════════
+// IMPOSTAZIONI
+// ══════════════════════════════════════
+function changePassword(){
+  const old=document.getElementById('pwd-old').value;
+  const nw=document.getElementById('pwd-new').value;
+  const nw2=document.getElementById('pwd-new2').value;
+  const err=document.getElementById('pwd-err2');
+  err.style.display='none';
+  if(old!==getPass()){ err.textContent='Password attuale errata.'; err.style.display='block'; return; }
+  if(nw.length<6){ err.textContent='La nuova password deve avere almeno 6 caratteri.'; err.style.display='block'; return; }
+  if(nw!==nw2){ err.textContent='Le due password non coincidono.'; err.style.display='block'; return; }
+  localStorage.setItem(K_PASS,nw);
+  ['pwd-old','pwd-new','pwd-new2'].forEach(id=>document.getElementById(id).value='');
+  flash('pwd-ok');
+}
+
+function flash(id){ const el=document.getElementById(id); el.style.display='block'; setTimeout(()=>el.style.display='none',3500); }
 function contactSent(){ document.getElementById('contact-ok').style.display='block'; }
 </script>
 </body>
