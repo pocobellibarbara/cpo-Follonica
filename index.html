@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Commissione Pari Opportunità — Comune di Follonica</title>
-<!-- Libreria SheetJS per leggere file Excel -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -93,6 +92,10 @@ nav{background:var(--blu);border-bottom:3px solid var(--oro);padding:0 1.5rem;di
 .ok-msg{font-size:12px;color:var(--verde);margin-top:8px;display:none}
 .link-hint{font-size:11px;color:var(--t3);margin-top:4px;line-height:1.5}
 .link-hint b{color:var(--t2)}
+/* LOADER */
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-bar{background:var(--bg2);border-radius:var(--rl);padding:1.5rem;text-align:center;color:var(--t3);font-size:13px;margin-bottom:1rem}
 /* EXCEL IMPORT */
 .xl-drop{border:2px dashed #a8d5b8;border-radius:var(--rl);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg);margin-bottom:1rem}
 .xl-drop:hover,.xl-drop.drag{border-color:var(--verde);background:var(--verde-l)}
@@ -100,16 +103,15 @@ nav{background:var(--blu);border-bottom:3px solid var(--oro);padding:0 1.5rem;di
 .xl-drop p{font-size:13px;color:var(--t2)}
 .xl-drop small{font-size:11px;color:var(--t3);display:block;margin-top:4px}
 .xl-drop input{display:none}
-.preview-table{width:100%;border-collapse:collapse;font-size:12px;margin:10px 0;max-height:200px;overflow-y:auto;display:block}
-.preview-table th{background:var(--blu);color:#fff;padding:5px 10px;text-align:left;position:sticky;top:0}
+.preview-table{width:100%;border-collapse:collapse;font-size:12px}
+.preview-table th{background:var(--blu);color:#fff;padding:5px 10px;text-align:left}
 .preview-table td{padding:5px 10px;border-bottom:.5px solid var(--br)}
 .preview-table tr:nth-child(even) td{background:var(--bg2)}
 .import-result{font-size:13px;padding:.6rem 1rem;border-radius:var(--r);margin-top:8px;display:none}
 .import-result.ok{background:var(--verde-l);color:var(--verde);border:.5px solid #a8d5b8}
 .import-result.warn{background:var(--oro-l);color:var(--oro);border:.5px solid #e8c880}
 /* CALENDARIO */
-.cal-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:1rem}
-.cal-toolbar span{font-size:12px;color:var(--t3)}
+.cal-toolbar{font-size:12px;color:var(--t3);margin-bottom:1rem;min-height:18px}
 .calendar{background:var(--bg);border-radius:var(--rl);border:.5px solid var(--br)}
 .cal-hdr{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:.5px solid var(--br)}
 .cal-hdr h3{font-size:15px;font-weight:500}
@@ -146,6 +148,10 @@ nav{background:var(--blu);border-bottom:3px solid var(--oro);padding:0 1.5rem;di
 .btn-dl{font-size:12px;color:var(--blu);background:var(--blu-l);padding:5px 12px;border-radius:6px;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0;text-decoration:none;display:inline-block}
 .btn-dl:hover{opacity:.8}
 .empty-msg{color:var(--t3);font-size:13px;padding:1rem 0}
+/* DB STATUS */
+.db-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:99px;margin-bottom:1rem}
+.db-status.ok{background:var(--verde-l);color:var(--verde)}
+.db-status.err{background:var(--rosso-l);color:var(--rosso)}
 footer{background:var(--blu);color:rgba(255,255,255,.65);font-size:11px;text-align:center;padding:1rem;margin-top:3rem}
 footer a{color:rgba(255,255,255,.8)}
 @media(max-width:600px){.hero{flex-direction:column}.nav-links{display:none}.form-grid{grid-template-columns:1fr}.full{grid-column:1}}
@@ -247,6 +253,7 @@ footer a{color:rgba(255,255,255,.8)}
     </div>
     <button class="lb" style="border-color:rgba(0,0,0,0.2);color:var(--t2)" onclick="logout()">Esci</button>
   </div>
+  <div id="db-status-bar"></div>
   <div class="tabs">
     <button class="tab active" onclick="showTab('cal',this)">📅 Calendario</button>
     <button class="tab" onclick="showTab('docs',this)">📁 Documenti</button>
@@ -255,28 +262,22 @@ footer a{color:rgba(255,255,255,.8)}
 
   <!-- CALENDARIO -->
   <div class="tc active" id="tab-cal">
-
-    <!-- IMPORTA DA EXCEL -->
     <div class="panel oro">
       <h3>📊 Importa eventi da Excel</h3>
-      <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">
-        Compila il file Excel template con tutti gli eventi, poi caricalo qui sotto.
-        Gli eventi verranno aggiunti al calendario automaticamente.
-      </p>
+      <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Compila il file Excel template con gli eventi, poi caricalo qui. Gli eventi saranno visibili a tutte le commissarie.</p>
       <div class="xl-drop" id="xl-drop" onclick="document.getElementById('xl-input').click()"
         ondragover="event.preventDefault();this.classList.add('drag')"
         ondragleave="this.classList.remove('drag')"
         ondrop="handleXlDrop(event)">
         <div class="ico">📂</div>
         <p>Clicca o trascina il file Excel qui</p>
-        <small>Formato: .xlsx — usa il template scaricabile qui sotto</small>
+        <small>Formato .xlsx — usa il template fornito</small>
         <input type="file" id="xl-input" accept=".xlsx,.xls" onchange="handleXlFile(this.files[0])">
       </div>
       <div id="xl-preview"></div>
       <div id="xl-result" class="import-result"></div>
     </div>
 
-    <!-- AGGIUNGI SINGOLO EVENTO -->
     <div class="panel verde">
       <h3>➕ Aggiungi evento singolo</h3>
       <div class="form-grid">
@@ -286,14 +287,11 @@ footer a{color:rgba(255,255,255,.8)}
         <div class="fi full"><label>Luogo</label><input type="text" id="ev-luogo" placeholder="es. Sala Giunta, Municipio"></div>
       </div>
       <br>
-      <button class="btn-verde" onclick="addEvent()">Aggiungi al calendario</button>
-      <p class="ok-msg" id="ev-ok">✓ Evento aggiunto!</p>
+      <button class="btn-verde" id="btn-add-ev" onclick="addEvent()">Aggiungi al calendario</button>
+      <p class="ok-msg" id="ev-ok">✓ Evento salvato per tutte!</p>
     </div>
 
-    <!-- CALENDARIO -->
-    <div class="cal-toolbar">
-      <span id="ev-count"></span>
-    </div>
+    <div class="cal-toolbar" id="ev-count"></div>
     <div class="calendar">
       <div class="cal-hdr">
         <div class="cal-nav"><button onclick="prevMonth()">‹</button></div>
@@ -310,17 +308,13 @@ footer a{color:rgba(255,255,255,.8)}
     <div class="panel blu">
       <h3>🔗 Aggiungi documento da Google Drive</h3>
       <div class="form-grid">
-        <div class="fi full">
-          <label>Nome documento *</label>
-          <input type="text" id="doc-nome" placeholder="es. Verbale riunione 5 maggio 2026">
-        </div>
+        <div class="fi full"><label>Nome documento *</label><input type="text" id="doc-nome" placeholder="es. Verbale riunione 5 maggio 2026"></div>
         <div class="fi full">
           <label>Link Google Drive *</label>
           <input type="url" id="doc-link" placeholder="https://drive.google.com/file/d/…/view">
           <div class="link-hint">Drive → clic destro → <b>Condividi</b> → <b>"Chiunque abbia il link"</b> → <b>Copia link</b></div>
         </div>
-        <div class="fi">
-          <label>Categoria</label>
+        <div class="fi"><label>Categoria</label>
           <select id="doc-cat">
             <option value="verbale">Verbale riunione</option>
             <option value="lavoro">Documento di lavoro</option>
@@ -328,14 +322,11 @@ footer a{color:rgba(255,255,255,.8)}
             <option value="altro">Altro</option>
           </select>
         </div>
-        <div class="fi">
-          <label>Data documento</label>
-          <input type="date" id="doc-data">
-        </div>
+        <div class="fi"><label>Data documento</label><input type="date" id="doc-data"></div>
       </div>
       <br>
-      <button class="btn-verde" onclick="addDoc()">Aggiungi documento</button>
-      <p class="ok-msg" id="doc-ok">✓ Documento aggiunto!</p>
+      <button class="btn-verde" id="btn-add-doc" onclick="addDoc()">Aggiungi documento</button>
+      <p class="ok-msg" id="doc-ok">✓ Documento salvato per tutte!</p>
     </div>
     <p class="st">Documenti condivisi</p>
     <div class="cat-bar">
@@ -361,7 +352,7 @@ footer a{color:rgba(255,255,255,.8)}
     </div>
     <div class="panel verde">
       <h3>🗑️ Gestione dati</h3>
-      <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Elimina tutti gli eventi o tutti i documenti salvati. L'operazione non è reversibile.</p>
+      <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Elimina tutti gli eventi o tutti i documenti dal database condiviso. L'operazione non è reversibile.</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn-rosso" style="padding:8px 16px;font-size:13px" onclick="clearEvents()">Elimina tutti gli eventi</button>
         <button class="btn-rosso" style="padding:8px 16px;font-size:13px" onclick="clearDocs()">Elimina tutti i documenti</button>
@@ -403,30 +394,55 @@ footer a{color:rgba(255,255,255,.8)}
 
 <script>
 // ══════════════════════════════════════
-// STORAGE
+// SUPABASE CONFIG
 // ══════════════════════════════════════
-const K_PASS='cpo_pass', K_EV='cpo_eventi', K_DOC='cpo_documenti';
+const SB_URL = 'https://nxcjpeahugyiuazflcvf.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54Y2pwZWFodWd5aXVhemZsY3ZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NjkwMDYsImV4cCI6MjA5NDU0NTAwNn0.tK1_2Zbg1NiHrj1IAsfKTbPzzMH86rAIpi7RzT8vYqE';
+
+const HEADERS = {
+  'Content-Type': 'application/json',
+  'apikey': SB_KEY,
+  'Authorization': 'Bearer ' + SB_KEY,
+  'Prefer': 'return=representation'
+};
+
+async function sbGet(table, filter=''){
+  const res = await fetch(`${SB_URL}/rest/v1/${table}?order=creato_il.asc${filter}`, {headers: HEADERS});
+  if(!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+async function sbInsert(table, data){
+  const res = await fetch(`${SB_URL}/rest/v1/${table}`, {method:'POST', headers: HEADERS, body: JSON.stringify(data)});
+  if(!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+async function sbDelete(table, id){
+  const res = await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${id}`, {method:'DELETE', headers: HEADERS});
+  if(!res.ok) throw new Error(await res.text());
+}
+async function sbDeleteAll(table){
+  const res = await fetch(`${SB_URL}/rest/v1/${table}?id=gt.0`, {method:'DELETE', headers: HEADERS});
+  if(!res.ok) throw new Error(await res.text());
+}
+async function sbDeleteBySrc(src){
+  const res = await fetch(`${SB_URL}/rest/v1/eventi?src=eq.${src}`, {method:'DELETE', headers: HEADERS});
+  if(!res.ok) throw new Error(await res.text());
+}
+
+// ══════════════════════════════════════
+// PASSWORD (localStorage)
+// ══════════════════════════════════════
+const K_PASS = 'cpo_pass';
 function getPass(){ return localStorage.getItem(K_PASS)||'cpo2026'; }
-function load(k,d){ try{ const s=localStorage.getItem(k); return s?JSON.parse(s):d; }catch(e){ return d; } }
-function save(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){ alert('Spazio browser esaurito.'); } }
 
-const DEFAULT_EV=[
-  {id:1,anno:2026,mese:5,giorno:7,titolo:'Convegno lavoro e parità di genere',ora:'18:00',luogo:'Teatro Fonderia Leopolda',src:'manual'},
-  {id:2,anno:2026,mese:5,giorno:14,titolo:'Riunione CPO',ora:'17:30',luogo:'Sala Giunta, Municipio',src:'manual'},
-  {id:3,anno:2026,mese:5,giorno:28,titolo:'Tavolo antiviolenza',ora:'15:00',luogo:'Sede CPO',src:'manual'},
-];
-const DEFAULT_DOC=[
-  {id:1,nome:'Verbale riunione 2 aprile 2026',cat:'verbale',data:'2026-04-06',link:''},
-  {id:2,nome:'Piano di lavoro 2026–2029',cat:'lavoro',data:'2026-01-10',link:''},
-];
-
-let events=load(K_EV,DEFAULT_EV);
-let docs=load(K_DOC,DEFAULT_DOC);
-let nextEvId=Math.max(0,...events.map(e=>e.id))+1;
-let nextDocId=Math.max(0,...docs.map(d=>d.id))+1;
+// ══════════════════════════════════════
+// STATO
+// ══════════════════════════════════════
+let events=[], docs=[];
 let currentFilter='tutti';
 let loggedIn=false;
 let curM=new Date().getMonth()+1, curY=new Date().getFullYear();
+let dbOk=false;
 
 // ══════════════════════════════════════
 // NAVIGAZIONE
@@ -445,7 +461,8 @@ function doLogin(){
     loggedIn=true; closeModal();
     document.getElementById('ltog').textContent='✓ Area riservata';
     document.getElementById('ltog').className='lb on';
-    showPage('member',null); renderCalendar(); renderDocs();
+    showPage('member',null);
+    loadAll();
   } else { document.getElementById('pwd-err').style.display='block'; }
 }
 function logout(){
@@ -463,14 +480,34 @@ function showTab(n,b){
 }
 
 // ══════════════════════════════════════
+// CARICA TUTTO DA SUPABASE
+// ══════════════════════════════════════
+async function loadAll(){
+  setDbStatus('caricamento');
+  try{
+    [events, docs] = await Promise.all([sbGet('eventi'), sbGet('documenti')]);
+    dbOk=true;
+    setDbStatus('ok');
+    renderCalendar();
+    renderDocs();
+  } catch(e){
+    dbOk=false;
+    setDbStatus('err');
+    console.error(e);
+  }
+}
+
+function setDbStatus(stato){
+  const el=document.getElementById('db-status-bar');
+  if(stato==='ok') el.innerHTML='<span class="db-status ok">🟢 Database condiviso connesso — tutte le commissarie vedono questi dati</span>';
+  else if(stato==='err') el.innerHTML='<span class="db-status err">🔴 Errore di connessione al database. Ricarica la pagina.</span>';
+  else el.innerHTML='<span class="db-status ok" style="opacity:.6">⏳ Connessione in corso...</span>';
+}
+
+// ══════════════════════════════════════
 // IMPORTA DA EXCEL
 // ══════════════════════════════════════
-function handleXlDrop(ev){
-  ev.preventDefault();
-  document.getElementById('xl-drop').classList.remove('drag');
-  const f=ev.dataTransfer.files[0];
-  if(f) handleXlFile(f);
-}
+function handleXlDrop(ev){ ev.preventDefault(); document.getElementById('xl-drop').classList.remove('drag'); const f=ev.dataTransfer.files[0]; if(f) handleXlFile(f); }
 
 function handleXlFile(file){
   if(!file) return;
@@ -479,153 +516,124 @@ function handleXlFile(file){
   reader.onload=function(e){
     try{
       const wb=XLSX.read(e.target.result,{type:'array',cellDates:true});
-      // Cerca il foglio "Eventi CPO" oppure il primo foglio
       const sheetName=wb.SheetNames.includes('Eventi CPO')?'Eventi CPO':wb.SheetNames[0];
       const ws=wb.Sheets[sheetName];
-      // Leggi a partire dalla riga 5 (indice 4) — righe 1-3 sono titolo/sottotitolo/spazio, riga 4 intestazioni
       const rows=XLSX.utils.sheet_to_json(ws,{header:1,raw:false,dateNF:'DD/MM/YYYY'});
-      // Trova riga intestazioni (contiene "Data")
       let headerRow=-1;
       for(let i=0;i<rows.length;i++){
         const r=rows[i].map(c=>(c||'').toString().toLowerCase());
         if(r.some(c=>c.includes('data'))){ headerRow=i; break; }
       }
-      if(headerRow===-1){ showImportResult('Non ho trovato la riga con le intestazioni (Data, Titolo...). Usa il template fornito.','warn'); return; }
-      
-      // Mappa colonne
+      if(headerRow===-1){ showXlResult('Non ho trovato le intestazioni. Usa il template fornito.','warn'); return; }
       const hdr=rows[headerRow].map(c=>(c||'').toString().toLowerCase().trim());
-      const iData  = hdr.findIndex(c=>c.includes('data'));
-      const iTitolo= hdr.findIndex(c=>c.includes('titolo'));
-      const iOra   = hdr.findIndex(c=>c.includes('orario')||c.includes('ora'));
-      const iLuogo = hdr.findIndex(c=>c.includes('luogo'));
-
-      if(iData===-1||iTitolo===-1){ showImportResult('Colonne "Data" e "Titolo" obbligatorie non trovate. Controlla il file Excel.','warn'); return; }
-
+      const iD=hdr.findIndex(c=>c.includes('data'));
+      const iT=hdr.findIndex(c=>c.includes('titolo'));
+      const iO=hdr.findIndex(c=>c.includes('orario')||c.includes('ora'));
+      const iL=hdr.findIndex(c=>c.includes('luogo'));
+      if(iD===-1||iT===-1){ showXlResult('Colonne "Data" e "Titolo" non trovate.','warn'); return; }
       const nuovi=[], saltati=[];
       for(let i=headerRow+1;i<rows.length;i++){
         const row=rows[i];
-        const dataRaw=(iData>=0?row[iData]:'')||'';
-        const titolo=((iTitolo>=0?row[iTitolo]:'')||'').toString().trim();
-        if(!dataRaw && !titolo) continue; // riga vuota
-        if(!dataRaw || !titolo){ saltati.push(i+1); continue; }
-
-        // Parsing data: supporta DD/MM/YYYY, DD-MM-YYYY, YYYY-MM-DD, oggetto Date
+        const dataRaw=((iD>=0?row[iD]:'')||'').toString().trim();
+        const titolo=((iT>=0?row[iT]:'')||'').toString().trim();
+        if(!dataRaw&&!titolo) continue;
+        if(!dataRaw||!titolo){ saltati.push(i+1); continue; }
         let parsed=null;
-        const s=dataRaw.toString().trim();
-        // Prova DD/MM/YYYY o DD-MM-YYYY
-        let m=s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
-        if(m){ parsed={giorno:+m[1],mese:+m[2],anno:+m[3]}; }
-        // Prova YYYY-MM-DD
-        if(!parsed){ m=s.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/); if(m) parsed={anno:+m[1],mese:+m[2],giorno:+m[3]}; }
-        // Prova numero seriale Excel
-        if(!parsed && !isNaN(+s)){
-          const d=XLSX.SSF.parse_date_code(+s);
-          if(d) parsed={anno:d.y,mese:d.m,giorno:d.d};
-        }
+        let m=dataRaw.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+        if(m) parsed={giorno:+m[1],mese:+m[2],anno:+m[3]};
+        if(!parsed){ m=dataRaw.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/); if(m) parsed={anno:+m[1],mese:+m[2],giorno:+m[3]}; }
+        if(!parsed&&!isNaN(+dataRaw)){ const d=XLSX.SSF.parse_date_code(+dataRaw); if(d) parsed={anno:d.y,mese:d.m,giorno:d.d}; }
         if(!parsed){ saltati.push(i+1); continue; }
-
-        nuovi.push({
-          id:nextEvId++,
-          anno:parsed.anno, mese:parsed.mese, giorno:parsed.giorno,
-          titolo:titolo,
-          ora:((iOra>=0?row[iOra]:'')||'').toString().trim(),
-          luogo:((iLuogo>=0?row[iLuogo]:'')||'').toString().trim(),
-          src:'excel'
-        });
+        nuovi.push({anno:parsed.anno,mese:parsed.mese,giorno:parsed.giorno,
+          titolo,ora:((iO>=0?row[iO]:'')||'').toString().trim(),
+          luogo:((iL>=0?row[iL]:'')||'').toString().trim(),src:'excel'});
       }
-
-      if(nuovi.length===0){ showImportResult('Nessun evento valido trovato nel file. Controlla che Data e Titolo siano compilati.','warn'); return; }
-
-      // Mostra anteprima
-      showPreview(nuovi, saltati);
-
-    } catch(err){
-      showImportResult('Errore nella lettura del file: '+err.message,'warn');
-    }
+      if(!nuovi.length){ showXlResult('Nessun evento valido trovato nel file.','warn'); return; }
+      showXlPreview(nuovi, saltati);
+    } catch(err){ showXlResult('Errore nella lettura: '+err.message,'warn'); }
   };
   reader.readAsArrayBuffer(file);
 }
 
-function showPreview(nuovi, saltati){
+function showXlPreview(nuovi, saltati){
   const MS=['','Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
-  let html=`<p style="font-size:12px;color:var(--verde);margin-bottom:6px;font-weight:500">✓ Trovati ${nuovi.length} eventi da importare${saltati.length?' ('+saltati.length+' righe saltate per dati mancanti)':''}:</p>`;
+  let html=`<p style="font-size:12px;color:var(--verde);margin-bottom:6px;font-weight:500">✓ Trovati ${nuovi.length} eventi${saltati.length?' ('+saltati.length+' righe saltate)':''}:</p>`;
   html+=`<div style="max-height:180px;overflow-y:auto;border:.5px solid var(--br);border-radius:var(--r);margin-bottom:10px">
-    <table class="preview-table">
-      <thead><tr><th>Data</th><th>Titolo</th><th>Orario</th><th>Luogo</th></tr></thead>
-      <tbody>`;
-  nuovi.forEach(e=>{
-    html+=`<tr><td>${e.giorno} ${MS[e.mese]} ${e.anno}</td><td>${e.titolo}</td><td>${e.ora||'—'}</td><td>${e.luogo||'—'}</td></tr>`;
-  });
+    <table class="preview-table"><thead><tr><th>Data</th><th>Titolo</th><th>Orario</th><th>Luogo</th></tr></thead><tbody>`;
+  nuovi.forEach(e=>{ html+=`<tr><td>${e.giorno} ${MS[e.mese]} ${e.anno}</td><td>${e.titolo}</td><td>${e.ora||'—'}</td><td>${e.luogo||'—'}</td></tr>`; });
   html+=`</tbody></table></div>`;
   html+=`<div style="display:flex;gap:8px;flex-wrap:wrap">
-    <button class="btn-verde" onclick="confirmImport(${JSON.stringify(nuovi).split('"').join("'")})">✓ Importa ${nuovi.length} eventi</button>
+    <button class="btn-verde" id="btn-confirm-xl" onclick="confirmImport(this)">✓ Importa ${nuovi.length} eventi nel database</button>
     <button class="btn-cancel" style="flex:0" onclick="resetXlPreview()">Annulla</button>
   </div>`;
-  document.getElementById('xl-preview').innerHTML=html;
+  // Salviamo i dati nell'attributo data
+  const wrapper=document.getElementById('xl-preview');
+  wrapper.innerHTML=html;
+  wrapper._nuovi=nuovi;
   document.getElementById('xl-result').style.display='none';
 }
 
-function confirmImport(nuoviStr){
-  // Ricostruisce array (passato come stringa attr)
-  const nuovi=typeof nuoviStr==='string'
-    ? JSON.parse(nuoviStr.split("'").join('"'))
-    : nuoviStr;
-  // Rimuove vecchi eventi Excel e aggiunge i nuovi
-  events=events.filter(e=>e.src!=='excel');
-  events.push(...nuovi);
-  nextEvId=Math.max(0,...events.map(e=>e.id))+1;
-  save(K_EV,events);
-  resetXlPreview();
-  // Vai al mese del primo evento
-  if(nuovi.length){ curM=nuovi[0].mese; curY=nuovi[0].anno; }
-  renderCalendar();
-  showImportResult(`✓ ${nuovi.length} eventi importati con successo! Gli eventi precedentemente importati da Excel sono stati sostituiti.`,'ok');
+async function confirmImport(btn){
+  const nuovi=document.getElementById('xl-preview')._nuovi;
+  if(!nuovi||!nuovi.length) return;
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Importando...';
+  try{
+    // Elimina vecchi eventi Excel
+    await sbDeleteBySrc('excel');
+    // Inserisce tutti i nuovi
+    await sbInsert('eventi', nuovi);
+    resetXlPreview();
+    await loadAll();
+    if(nuovi.length){ curM=nuovi[0].mese; curY=nuovi[0].anno; renderCalendar(); }
+    showXlResult(`✓ ${nuovi.length} eventi importati con successo! Visibili a tutte le commissarie.`,'ok');
+  } catch(e){
+    btn.disabled=false; btn.textContent='✓ Importa';
+    showXlResult('Errore durante l\'importazione: '+e.message,'warn');
+  }
 }
 
-function resetXlPreview(){
-  document.getElementById('xl-preview').innerHTML='';
-  document.getElementById('xl-input').value='';
-}
-function showImportResult(msg,type){
-  const el=document.getElementById('xl-result');
-  el.textContent=msg; el.className='import-result '+type; el.style.display='block';
-}
+function resetXlPreview(){ document.getElementById('xl-preview').innerHTML=''; document.getElementById('xl-input').value=''; }
+function showXlResult(msg,type){ const el=document.getElementById('xl-result'); el.textContent=msg; el.className='import-result '+type; el.style.display='block'; }
 
 // ══════════════════════════════════════
-// CALENDARIO — eventi manuali
+// CALENDARIO
 // ══════════════════════════════════════
 const MONTHS=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
 const MS=['','Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
 
-function addEvent(){
+async function addEvent(){
   const d=document.getElementById('ev-data').value;
   const t=document.getElementById('ev-titolo').value.trim();
   if(!d||!t){ alert('Inserisci almeno la data e il titolo.'); return; }
   const p=d.split('-');
-  events.push({id:nextEvId++,anno:+p[0],mese:+p[1],giorno:+p[2],
-    titolo:t, ora:document.getElementById('ev-ora').value.trim(),
-    luogo:document.getElementById('ev-luogo').value.trim(), src:'manual'});
-  save(K_EV,events);
-  ['ev-data','ev-titolo','ev-ora','ev-luogo'].forEach(id=>document.getElementById(id).value='');
-  flash('ev-ok'); curM=+p[1]; curY=+p[0]; renderCalendar();
+  const btn=document.getElementById('btn-add-ev');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Salvando...';
+  try{
+    await sbInsert('eventi',[{anno:+p[0],mese:+p[1],giorno:+p[2],
+      titolo:t,ora:document.getElementById('ev-ora').value.trim(),
+      luogo:document.getElementById('ev-luogo').value.trim(),src:'manual'}]);
+    ['ev-data','ev-titolo','ev-ora','ev-luogo'].forEach(id=>document.getElementById(id).value='');
+    await loadAll();
+    curM=+p[1]; curY=+p[0]; renderCalendar();
+    flash('ev-ok');
+  } catch(e){ alert('Errore: '+e.message); }
+  btn.disabled=false; btn.textContent='Aggiungi al calendario';
 }
-function deleteEvent(id){
+
+async function deleteEvent(id){
   if(!confirm('Eliminare questo evento?'))return;
-  events=events.filter(e=>e.id!==id); save(K_EV,events); renderCalendar();
+  try{ await sbDelete('eventi',id); await loadAll(); renderCalendar(); } catch(e){ alert('Errore: '+e.message); }
 }
-function clearEvents(){
-  if(!confirm('Eliminare TUTTI gli eventi?'))return;
-  events=[]; save(K_EV,events); renderCalendar();
+async function clearEvents(){
+  if(!confirm('Eliminare TUTTI gli eventi dal database condiviso?'))return;
+  try{ await sbDeleteAll('eventi'); await loadAll(); renderCalendar(); } catch(e){ alert('Errore: '+e.message); }
 }
 
 function renderCalendar(){
   document.getElementById('cal-title').textContent=MONTHS[curM-1]+' '+curY;
-  const totale=events.length;
-  const excelN=events.filter(e=>e.src==='excel').length;
-  document.getElementById('ev-count').textContent=
-    totale===0?'Nessun evento salvato':
-    `${totale} eventi totali${excelN?' ('+excelN+' da Excel)':''}`;
-
+  const tot=events.length, xl=events.filter(e=>e.src==='excel').length;
+  document.getElementById('ev-count').textContent=tot===0?'Nessun evento nel database':
+    `${tot} eventi totali${xl?' ('+xl+' da Excel)':''}`;
   const grid=document.getElementById('cal-grid'); grid.innerHTML='';
   ['L','M','M','G','V','S','D'].forEach(d=>{ const el=document.createElement('div'); el.className='cdn'; el.textContent=d; grid.appendChild(el); });
   const first=new Date(curY,curM-1,1).getDay(), offset=first===0?6:first-1;
@@ -655,32 +663,39 @@ function nextMonth(){ curM++; if(curM>12){curM=1;curY++;} renderCalendar(); }
 // ══════════════════════════════════════
 // DOCUMENTI
 // ══════════════════════════════════════
-function driveToDownload(url){
-  if(!url) return '';
-  const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  if(m) return `https://drive.google.com/uc?export=download&id=${m[1]}`;
-  return url;
-}
+function driveToDownload(url){ if(!url)return''; const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/); if(m)return`https://drive.google.com/uc?export=download&id=${m[1]}`; return url; }
 const CAT_LABEL={verbale:'Verbale',lavoro:'Documento di lavoro',comunicazione:'Comunicazione',altro:'Altro'};
 const TIPO_ICO={pdf:'📄',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊',default:'📎'};
 const TIPO_BG={pdf:'#FCEBEB',doc:'#E6F1FB',docx:'#E6F1FB',xls:'#E8F7EE',xlsx:'#E8F7EE',default:'#F5F5F0'};
 function guessType(link){ if(!link)return'default'; const l=link.toLowerCase(); for(const e of['pdf','docx','doc','xlsx','xls'])if(l.includes(e))return e; return'default'; }
 
-function addDoc(){
+async function addDoc(){
   const nome=document.getElementById('doc-nome').value.trim();
   const link=document.getElementById('doc-link').value.trim();
   if(!nome||!link){ alert('Inserisci nome e link del documento.'); return; }
   if(!link.includes('drive.google.com')){ alert('Inserisci un link di Google Drive valido.'); return; }
-  docs.push({id:nextDocId++,nome,cat:document.getElementById('doc-cat').value,
-    data:document.getElementById('doc-data').value,link,tipo:guessType(link)});
-  save(K_DOC,docs);
-  document.getElementById('doc-nome').value='';
-  document.getElementById('doc-link').value='';
-  document.getElementById('doc-data').value='';
-  flash('doc-ok'); renderDocs();
+  const btn=document.getElementById('btn-add-doc');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Salvando...';
+  try{
+    await sbInsert('documenti',[{nome,cat:document.getElementById('doc-cat').value,
+      data:document.getElementById('doc-data').value||null,
+      link,tipo:guessType(link)}]);
+    document.getElementById('doc-nome').value='';
+    document.getElementById('doc-link').value='';
+    document.getElementById('doc-data').value='';
+    await loadAll(); flash('doc-ok');
+  } catch(e){ alert('Errore: '+e.message); }
+  btn.disabled=false; btn.textContent='Aggiungi documento';
 }
-function deleteDoc(id){ if(!confirm('Eliminare?'))return; docs=docs.filter(d=>d.id!==id); save(K_DOC,docs); renderDocs(); }
-function clearDocs(){ if(!confirm('Eliminare TUTTI i documenti?'))return; docs=[]; save(K_DOC,docs); renderDocs(); }
+
+async function deleteDoc(id){
+  if(!confirm('Eliminare questo documento?'))return;
+  try{ await sbDelete('documenti',id); await loadAll(); } catch(e){ alert('Errore: '+e.message); }
+}
+async function clearDocs(){
+  if(!confirm('Eliminare TUTTI i documenti dal database condiviso?'))return;
+  try{ await sbDeleteAll('documenti'); await loadAll(); } catch(e){ alert('Errore: '+e.message); }
+}
 function filterDocs(cat,btn){
   currentFilter=cat;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
