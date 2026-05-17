@@ -28,7 +28,8 @@ nav{background:var(--blu);border-bottom:3px solid var(--oro);padding:0 1.5rem;di
 .nb:hover,.nb.active{background:rgba(255,255,255,0.15);color:#fff}
 .lb{font-size:12px;padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.4);background:transparent;color:#fff;cursor:pointer;transition:all .15s;flex-shrink:0}
 .lb:hover{background:rgba(255,255,255,0.15)}
-.lb.on{background:var(--oro);border-color:var(--oro)}
+.lb.on-view{background:var(--blu-m);border-color:var(--blu-m)}
+.lb.on-admin{background:var(--oro);border-color:var(--oro)}
 .page{display:none;padding:2rem 1.5rem;max-width:900px;margin:0 auto}
 .page.active{display:block}
 .hero{background:var(--bg);border-radius:var(--rl);border:.5px solid var(--br);border-top:3px solid var(--blu);padding:2rem;margin-bottom:1.5rem;display:flex;gap:1.5rem;align-items:flex-start}
@@ -62,17 +63,30 @@ nav{background:var(--blu);border-bottom:3px solid var(--oro);padding:0 1.5rem;di
 .btn-oro:hover{opacity:.85}
 .btn-rosso{background:var(--rosso-l);color:var(--rosso);border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .btn-rosso:hover{opacity:.8}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:100}
-.modal{background:var(--bg);border-radius:var(--rl);border:.5px solid var(--br);padding:1.75rem;width:360px;max-width:95vw}
-.modal h2{font-size:16px;font-weight:500;margin-bottom:.25rem}
-.modal .sub{font-size:12px;color:var(--t2);margin-bottom:1.25rem;line-height:1.5}
-.mbtns{display:flex;gap:8px;margin-top:1rem}
 .btn-cancel{flex:1;background:transparent;border:.5px solid var(--br2);padding:8px;border-radius:var(--r);font-size:13px;cursor:pointer;color:var(--t2)}
 .btn-cancel:hover{background:var(--bg2)}
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:100}
+.modal{background:var(--bg);border-radius:var(--rl);border:.5px solid var(--br);padding:1.75rem;width:380px;max-width:95vw}
+.modal h2{font-size:16px;font-weight:500;margin-bottom:.25rem}
+.modal .sub{font-size:12px;color:var(--t2);margin-bottom:1rem;line-height:1.5}
+.mbtns{display:flex;gap:8px;margin-top:1rem}
 .errmsg{font-size:11px;color:#c00;margin-top:4px}
-.mh{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem}
+/* RUOLO SELECTOR */
+.role-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem}
+.role-card{border:.5px solid var(--br2);border-radius:var(--rl);padding:1rem;cursor:pointer;transition:all .15s;text-align:center;background:var(--bg)}
+.role-card:hover{border-color:var(--blu-m);background:var(--blu-l)}
+.role-card.selected{border-color:var(--blu);background:var(--blu-l);box-shadow:0 0 0 2px var(--blu-l)}
+.role-card .role-icon{font-size:26px;margin-bottom:6px}
+.role-card .role-name{font-size:13px;font-weight:500;color:var(--t)}
+.role-card .role-desc{font-size:11px;color:var(--t3);margin-top:2px}
+.role-card.admin-card:hover,.role-card.admin-card.selected{border-color:var(--oro);background:var(--oro-l);box-shadow:0 0 0 2px var(--oro-l)}
+/* AREA RISERVATA */
+.mh{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:8px}
 .mh h2{font-size:20px;font-weight:500}
-.badge-cpo{display:inline-flex;align-items:center;gap:6px;background:var(--viola-l);color:var(--viola);font-size:11px;padding:4px 10px;border-radius:99px;margin-bottom:.5rem;border:.5px solid #d4b8f0}
+.badge-role{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:4px 10px;border-radius:99px;margin-bottom:.5rem}
+.badge-role.viewer{background:var(--blu-l);color:var(--blu);border:.5px solid #b8cfe8}
+.badge-role.admin{background:var(--oro-l);color:var(--oro);border:.5px solid #e8c880}
 .tabs{display:flex;gap:3px;margin-bottom:1.5rem;border-bottom:.5px solid var(--br);flex-wrap:wrap}
 .tab{font-size:13px;padding:6px 16px;border-radius:8px 8px 0 0;border:none;background:transparent;cursor:pointer;color:var(--t2);transition:all .15s;margin-bottom:-.5px}
 .tab.active{background:var(--bg);border:.5px solid var(--br);border-bottom-color:var(--bg);color:var(--t);font-weight:500}
@@ -82,21 +96,24 @@ nav{background:var(--blu);border-bottom:3px solid var(--oro);padding:0 1.5rem;di
 .panel.verde{background:var(--verde-l);border:.5px solid #a8d5b8}
 .panel.blu{background:var(--blu-l);border:.5px solid #b8cfe8}
 .panel.oro{background:var(--oro-l);border:.5px solid #e8c880}
+.panel.grigio{background:var(--bg2);border:.5px solid var(--br)}
 .panel h3{font-size:14px;font-weight:500;margin-bottom:1rem;display:flex;align-items:center;gap:6px}
 .panel.verde h3{color:var(--verde)}
 .panel.blu h3{color:var(--blu)}
 .panel.oro h3{color:var(--oro)}
+.panel.grigio h3{color:var(--t2)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .form-grid .fi{margin-bottom:0}
 .full{grid-column:1/-1}
 .ok-msg{font-size:12px;color:var(--verde);margin-top:8px;display:none}
 .link-hint{font-size:11px;color:var(--t3);margin-top:4px;line-height:1.5}
 .link-hint b{color:var(--t2)}
-/* LOADER */
-.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+/* SOLA LETTURA */
+.readonly-notice{background:var(--blu-l);border:.5px solid #b8cfe8;border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--blu)}
+/* SPINNER */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-bar{background:var(--bg2);border-radius:var(--rl);padding:1.5rem;text-align:center;color:var(--t3);font-size:13px;margin-bottom:1rem}
-/* EXCEL IMPORT */
+/* EXCEL */
 .xl-drop{border:2px dashed #a8d5b8;border-radius:var(--rl);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg);margin-bottom:1rem}
 .xl-drop:hover,.xl-drop.drag{border-color:var(--verde);background:var(--verde-l)}
 .xl-drop .ico{font-size:32px;margin-bottom:6px}
@@ -148,13 +165,12 @@ nav{background:var(--blu);border-bottom:3px solid var(--oro);padding:0 1.5rem;di
 .btn-dl{font-size:12px;color:var(--blu);background:var(--blu-l);padding:5px 12px;border-radius:6px;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0;text-decoration:none;display:inline-block}
 .btn-dl:hover{opacity:.8}
 .empty-msg{color:var(--t3);font-size:13px;padding:1rem 0}
-/* DB STATUS */
 .db-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:99px;margin-bottom:1rem}
 .db-status.ok{background:var(--verde-l);color:var(--verde)}
 .db-status.err{background:var(--rosso-l);color:var(--rosso)}
 footer{background:var(--blu);color:rgba(255,255,255,.65);font-size:11px;text-align:center;padding:1rem;margin-top:3rem}
 footer a{color:rgba(255,255,255,.8)}
-@media(max-width:600px){.hero{flex-direction:column}.nav-links{display:none}.form-grid{grid-template-columns:1fr}.full{grid-column:1}}
+@media(max-width:600px){.hero{flex-direction:column}.nav-links{display:none}.form-grid{grid-template-columns:1fr}.full{grid-column:1}.role-cards{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -222,7 +238,7 @@ footer a{color:rgba(255,255,255,.8)}
 <div class="page" id="page-news">
   <p class="st">Notizie e comunicati</p>
   <div class="news-list">
-    <div class="ni"><span class="nd">18 Apr 2026</span><div><h4>Convegno "Lavoro e parità di genere"</h4><p>Giovedì 7 maggio al Teatro Fonderia Leopolda. Iscrizioni aperte fino al 3 maggio.</p></div></div>
+    <div class="ni"><span class="nd">18 Apr 2026</span><div><h4>Convegno "Lavoro e parità di genere"</h4><p>Giovedì 7 maggio al Teatro Fonderia Leopolda.</p></div></div>
     <div class="ni"><span class="nd">2 Apr 2026</span><div><h4>Riunione plenaria — verbale disponibile</h4><p>Il verbale è disponibile nell'area riservata.</p></div></div>
     <div class="ni"><span class="nd">20 Mar 2026</span><div><h4>8 marzo: successo per la giornata della donna</h4><p>Grande partecipazione all'iniziativa in piazza.</p></div></div>
     <div class="ni"><span class="nd">5 Feb 2026</span><div><h4>Nuova composizione della commissione</h4><p>Il Consiglio Comunale ha rinnovato i componenti per il triennio 2026–2029.</p></div></div>
@@ -240,7 +256,7 @@ footer a{color:rgba(255,255,255,.8)}
     </div>
     <div class="fi"><label>Messaggio</label><textarea placeholder="Scrivi qui il tuo messaggio..."></textarea></div>
     <button class="btn-blu" onclick="contactSent()">Invia messaggio</button>
-    <p id="contact-ok" style="display:none;font-size:12px;color:var(--blu);margin-top:8px">✓ Messaggio inviato. Risponderemo all'indirizzo indicato.</p>
+    <p id="contact-ok" style="display:none;font-size:12px;color:var(--blu);margin-top:8px">✓ Messaggio inviato.</p>
   </div>
 </div>
 
@@ -248,47 +264,56 @@ footer a{color:rgba(255,255,255,.8)}
 <div class="page" id="page-member">
   <div class="mh">
     <div>
-      <div class="badge-cpo">🔒 Area commissarie</div>
+      <div class="badge-role" id="badge-role"></div>
       <h2>Area riservata</h2>
     </div>
     <button class="lb" style="border-color:rgba(0,0,0,0.2);color:var(--t2)" onclick="logout()">Esci</button>
   </div>
   <div id="db-status-bar"></div>
+
   <div class="tabs">
     <button class="tab active" onclick="showTab('cal',this)">📅 Calendario</button>
     <button class="tab" onclick="showTab('docs',this)">📁 Documenti</button>
-    <button class="tab" onclick="showTab('impost',this)">⚙️ Impostazioni</button>
+    <button class="tab admin-only" id="tab-impost-btn" onclick="showTab('impost',this)">⚙️ Impostazioni</button>
   </div>
 
-  <!-- CALENDARIO -->
+  <!-- ── CALENDARIO ── -->
   <div class="tc active" id="tab-cal">
-    <div class="panel oro">
-      <h3>📊 Importa eventi da Excel</h3>
-      <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Compila il file Excel template con gli eventi, poi caricalo qui. Gli eventi saranno visibili a tutte le commissarie.</p>
-      <div class="xl-drop" id="xl-drop" onclick="document.getElementById('xl-input').click()"
-        ondragover="event.preventDefault();this.classList.add('drag')"
-        ondragleave="this.classList.remove('drag')"
-        ondrop="handleXlDrop(event)">
-        <div class="ico">📂</div>
-        <p>Clicca o trascina il file Excel qui</p>
-        <small>Formato .xlsx — usa il template fornito</small>
-        <input type="file" id="xl-input" accept=".xlsx,.xls" onchange="handleXlFile(this.files[0])">
+
+    <!-- Pannelli SOLO ADMIN -->
+    <div class="admin-only">
+      <div class="panel oro">
+        <h3>📊 Importa eventi da Excel</h3>
+        <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Compila il template Excel con gli eventi e caricalo qui. Tutti gli utenti li vedranno subito.</p>
+        <div class="xl-drop" id="xl-drop" onclick="document.getElementById('xl-input').click()"
+          ondragover="event.preventDefault();this.classList.add('drag')"
+          ondragleave="this.classList.remove('drag')"
+          ondrop="handleXlDrop(event)">
+          <div class="ico">📂</div>
+          <p>Clicca o trascina il file Excel qui</p>
+          <small>Formato .xlsx — usa il template fornito</small>
+          <input type="file" id="xl-input" accept=".xlsx,.xls" onchange="handleXlFile(this.files[0])">
+        </div>
+        <div id="xl-preview"></div>
+        <div id="xl-result" class="import-result"></div>
       </div>
-      <div id="xl-preview"></div>
-      <div id="xl-result" class="import-result"></div>
+      <div class="panel verde">
+        <h3>➕ Aggiungi evento singolo</h3>
+        <div class="form-grid">
+          <div class="fi"><label>Data *</label><input type="date" id="ev-data"></div>
+          <div class="fi"><label>Orario</label><input type="text" id="ev-ora" placeholder="es. 17:30"></div>
+          <div class="fi full"><label>Titolo *</label><input type="text" id="ev-titolo" placeholder="es. Riunione CPO"></div>
+          <div class="fi full"><label>Luogo</label><input type="text" id="ev-luogo" placeholder="es. Sala Giunta, Municipio"></div>
+        </div>
+        <br>
+        <button class="btn-verde" id="btn-add-ev" onclick="addEvent()">Aggiungi al calendario</button>
+        <p class="ok-msg" id="ev-ok">✓ Evento salvato!</p>
+      </div>
     </div>
 
-    <div class="panel verde">
-      <h3>➕ Aggiungi evento singolo</h3>
-      <div class="form-grid">
-        <div class="fi"><label>Data *</label><input type="date" id="ev-data"></div>
-        <div class="fi"><label>Orario</label><input type="text" id="ev-ora" placeholder="es. 17:30"></div>
-        <div class="fi full"><label>Titolo *</label><input type="text" id="ev-titolo" placeholder="es. Riunione CPO"></div>
-        <div class="fi full"><label>Luogo</label><input type="text" id="ev-luogo" placeholder="es. Sala Giunta, Municipio"></div>
-      </div>
-      <br>
-      <button class="btn-verde" id="btn-add-ev" onclick="addEvent()">Aggiungi al calendario</button>
-      <p class="ok-msg" id="ev-ok">✓ Evento salvato per tutte!</p>
+    <!-- Avviso SOLO VIEWER -->
+    <div class="viewer-only readonly-notice">
+      👁️ <span>Accesso in sola visualizzazione — solo l'amministratrice può aggiungere o modificare eventi.</span>
     </div>
 
     <div class="cal-toolbar" id="ev-count"></div>
@@ -303,31 +328,41 @@ footer a{color:rgba(255,255,255,.8)}
     <div class="ev-list" id="ev-list"></div>
   </div>
 
-  <!-- DOCUMENTI -->
+  <!-- ── DOCUMENTI ── -->
   <div class="tc" id="tab-docs">
-    <div class="panel blu">
-      <h3>🔗 Aggiungi documento da Google Drive</h3>
-      <div class="form-grid">
-        <div class="fi full"><label>Nome documento *</label><input type="text" id="doc-nome" placeholder="es. Verbale riunione 5 maggio 2026"></div>
-        <div class="fi full">
-          <label>Link Google Drive *</label>
-          <input type="url" id="doc-link" placeholder="https://drive.google.com/file/d/…/view">
-          <div class="link-hint">Drive → clic destro → <b>Condividi</b> → <b>"Chiunque abbia il link"</b> → <b>Copia link</b></div>
+
+    <!-- Pannello SOLO ADMIN -->
+    <div class="admin-only">
+      <div class="panel blu">
+        <h3>🔗 Aggiungi documento da Google Drive</h3>
+        <div class="form-grid">
+          <div class="fi full"><label>Nome documento *</label><input type="text" id="doc-nome" placeholder="es. Verbale riunione 5 maggio 2026"></div>
+          <div class="fi full">
+            <label>Link Google Drive *</label>
+            <input type="url" id="doc-link" placeholder="https://drive.google.com/file/d/…/view">
+            <div class="link-hint">Drive → clic destro → <b>Condividi</b> → <b>"Chiunque abbia il link"</b> → <b>Copia link</b></div>
+          </div>
+          <div class="fi"><label>Categoria</label>
+            <select id="doc-cat">
+              <option value="verbale">Verbale riunione</option>
+              <option value="lavoro">Documento di lavoro</option>
+              <option value="comunicazione">Comunicazione</option>
+              <option value="altro">Altro</option>
+            </select>
+          </div>
+          <div class="fi"><label>Data documento</label><input type="date" id="doc-data"></div>
         </div>
-        <div class="fi"><label>Categoria</label>
-          <select id="doc-cat">
-            <option value="verbale">Verbale riunione</option>
-            <option value="lavoro">Documento di lavoro</option>
-            <option value="comunicazione">Comunicazione</option>
-            <option value="altro">Altro</option>
-          </select>
-        </div>
-        <div class="fi"><label>Data documento</label><input type="date" id="doc-data"></div>
+        <br>
+        <button class="btn-verde" id="btn-add-doc" onclick="addDoc()">Aggiungi documento</button>
+        <p class="ok-msg" id="doc-ok">✓ Documento salvato!</p>
       </div>
-      <br>
-      <button class="btn-verde" id="btn-add-doc" onclick="addDoc()">Aggiungi documento</button>
-      <p class="ok-msg" id="doc-ok">✓ Documento salvato per tutte!</p>
     </div>
+
+    <!-- Avviso SOLO VIEWER -->
+    <div class="viewer-only readonly-notice">
+      👁️ <span>Accesso in sola visualizzazione — solo l'amministratrice può aggiungere documenti.</span>
+    </div>
+
     <p class="st">Documenti condivisi</p>
     <div class="cat-bar">
       <button class="cat-btn active" onclick="filterDocs('tutti',this)">Tutti</button>
@@ -339,20 +374,30 @@ footer a{color:rgba(255,255,255,.8)}
     <div class="doc-list" id="doc-list"></div>
   </div>
 
-  <!-- IMPOSTAZIONI -->
+  <!-- ── IMPOSTAZIONI (solo admin) ── -->
   <div class="tc" id="tab-impost">
     <div class="panel blu">
-      <h3>🔑 Cambia password</h3>
-      <div class="fi"><label>Password attuale</label><input type="password" id="pwd-old" placeholder="••••••••"></div>
-      <div class="fi"><label>Nuova password</label><input type="password" id="pwd-new" placeholder="••••••••"></div>
-      <div class="fi"><label>Conferma nuova password</label><input type="password" id="pwd-new2" placeholder="••••••••"></div>
-      <button class="btn-verde" onclick="changePassword()">Aggiorna password</button>
-      <p class="ok-msg" id="pwd-ok">✓ Password aggiornata!</p>
-      <p id="pwd-err2" style="display:none;font-size:12px;color:var(--rosso);margin-top:8px"></p>
+      <h3>🔑 Cambia password visualizzatrici</h3>
+      <p style="font-size:12px;color:var(--t2);margin-bottom:1rem">Modifica la password che usano le commissarie per accedere in sola visualizzazione.</p>
+      <div class="fi"><label>Nuova password visualizzatrici</label><input type="password" id="pwd-view-new" placeholder="••••••••"></div>
+      <div class="fi"><label>Conferma</label><input type="password" id="pwd-view-new2" placeholder="••••••••"></div>
+      <button class="btn-verde" onclick="changeViewPassword()">Aggiorna</button>
+      <p class="ok-msg" id="pwd-view-ok">✓ Password visualizzatrici aggiornata!</p>
+      <p id="pwd-view-err" style="display:none;font-size:12px;color:var(--rosso);margin-top:8px"></p>
     </div>
-    <div class="panel verde">
+    <div class="panel oro">
+      <h3>🔑 Cambia password admin</h3>
+      <p style="font-size:12px;color:var(--t2);margin-bottom:1rem">Modifica la tua password di amministratrice.</p>
+      <div class="fi"><label>Password attuale</label><input type="password" id="pwd-admin-old" placeholder="••••••••"></div>
+      <div class="fi"><label>Nuova password</label><input type="password" id="pwd-admin-new" placeholder="••••••••"></div>
+      <div class="fi"><label>Conferma</label><input type="password" id="pwd-admin-new2" placeholder="••••••••"></div>
+      <button class="btn-oro" onclick="changeAdminPassword()">Aggiorna</button>
+      <p class="ok-msg" id="pwd-admin-ok">✓ Password admin aggiornata!</p>
+      <p id="pwd-admin-err" style="display:none;font-size:12px;color:var(--rosso);margin-top:8px"></p>
+    </div>
+    <div class="panel grigio">
       <h3>🗑️ Gestione dati</h3>
-      <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Elimina tutti gli eventi o tutti i documenti dal database condiviso. L'operazione non è reversibile.</p>
+      <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Elimina tutti gli eventi o tutti i documenti dal database. L'operazione non è reversibile.</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn-rosso" style="padding:8px 16px;font-size:13px" onclick="clearEvents()">Elimina tutti gli eventi</button>
         <button class="btn-rosso" style="padding:8px 16px;font-size:13px" onclick="clearDocs()">Elimina tutti i documenti</button>
@@ -374,15 +419,30 @@ footer a{color:rgba(255,255,255,.8)}
       </svg>
       <div><h2>Area riservata CPO</h2><p style="font-size:11px;color:var(--t3)">Comune di Follonica</p></div>
     </div>
-    <p class="sub">Inserisci la password per accedere.</p>
+
+    <!-- Selezione ruolo -->
+    <p class="sub">Seleziona il tuo accesso:</p>
+    <div class="role-cards">
+      <div class="role-card selected" id="rc-viewer" onclick="selectRole('viewer')">
+        <div class="role-icon">👁️</div>
+        <div class="role-name">Commissaria</div>
+        <div class="role-desc">Visualizzazione calendario e documenti</div>
+      </div>
+      <div class="role-card admin-card" id="rc-admin" onclick="selectRole('admin')">
+        <div class="role-icon">⚙️</div>
+        <div class="role-name">Amministratrice</div>
+        <div class="role-desc">Gestione completa eventi e documenti</div>
+      </div>
+    </div>
+
     <div class="fi">
-      <label>Password</label>
+      <label id="pwd-label">Password commissaria</label>
       <input type="password" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
       <p class="errmsg" id="pwd-err" style="display:none">Password errata. Riprova.</p>
     </div>
     <div class="mbtns">
       <button class="btn-cancel" onclick="closeModal()">Annulla</button>
-      <button class="btn-blu" style="flex:1" onclick="doLogin()">Accedi</button>
+      <button class="btn-blu" style="flex:1" id="btn-login" onclick="doLogin()">Accedi</button>
     </div>
   </div>
 </div>
@@ -394,55 +454,37 @@ footer a{color:rgba(255,255,255,.8)}
 
 <script>
 // ══════════════════════════════════════
-// SUPABASE CONFIG
+// SUPABASE
 // ══════════════════════════════════════
-const SB_URL = 'https://nxcjpeahugyiuazflcvf.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54Y2pwZWFodWd5aXVhemZsY3ZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NjkwMDYsImV4cCI6MjA5NDU0NTAwNn0.tK1_2Zbg1NiHrj1IAsfKTbPzzMH86rAIpi7RzT8vYqE';
-
-const HEADERS = {
-  'Content-Type': 'application/json',
-  'apikey': SB_KEY,
-  'Authorization': 'Bearer ' + SB_KEY,
-  'Prefer': 'return=representation'
+const SB_URL='https://nxcjpeahugyiuazflcvf.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54Y2pwZWFodWd5aXVhemZsY3ZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NjkwMDYsImV4cCI6MjA5NDU0NTAwNn0.tK1_2Zbg1NiHrj1IAsfKTbPzzMH86rAIpi7RzT8vYqE';
+const H={
+  'Content-Type':'application/json',
+  'apikey':SB_KEY,
+  'Authorization':'Bearer '+SB_KEY,
+  'Prefer':'return=representation'
 };
-
-async function sbGet(table, filter=''){
-  const res = await fetch(`${SB_URL}/rest/v1/${table}?order=creato_il.asc${filter}`, {headers: HEADERS});
-  if(!res.ok) throw new Error(await res.text());
-  return res.json();
-}
-async function sbInsert(table, data){
-  const res = await fetch(`${SB_URL}/rest/v1/${table}`, {method:'POST', headers: HEADERS, body: JSON.stringify(data)});
-  if(!res.ok) throw new Error(await res.text());
-  return res.json();
-}
-async function sbDelete(table, id){
-  const res = await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${id}`, {method:'DELETE', headers: HEADERS});
-  if(!res.ok) throw new Error(await res.text());
-}
-async function sbDeleteAll(table){
-  const res = await fetch(`${SB_URL}/rest/v1/${table}?id=gt.0`, {method:'DELETE', headers: HEADERS});
-  if(!res.ok) throw new Error(await res.text());
-}
-async function sbDeleteBySrc(src){
-  const res = await fetch(`${SB_URL}/rest/v1/eventi?src=eq.${src}`, {method:'DELETE', headers: HEADERS});
-  if(!res.ok) throw new Error(await res.text());
-}
+async function sbGet(t,f=''){ const r=await fetch(`${SB_URL}/rest/v1/${t}?order=creato_il.asc${f}`,{headers:H}); if(!r.ok)throw new Error(await r.text()); return r.json(); }
+async function sbInsert(t,d){ const r=await fetch(`${SB_URL}/rest/v1/${t}`,{method:'POST',headers:H,body:JSON.stringify(d)}); if(!r.ok)throw new Error(await r.text()); return r.json(); }
+async function sbDelete(t,id){ const r=await fetch(`${SB_URL}/rest/v1/${t}?id=eq.${id}`,{method:'DELETE',headers:H}); if(!r.ok)throw new Error(await r.text()); }
+async function sbDeleteAll(t){ const r=await fetch(`${SB_URL}/rest/v1/${t}?id=gt.0`,{method:'DELETE',headers:H}); if(!r.ok)throw new Error(await r.text()); }
+async function sbDeleteBySrc(src){ const r=await fetch(`${SB_URL}/rest/v1/eventi?src=eq.${src}`,{method:'DELETE',headers:H}); if(!r.ok)throw new Error(await r.text()); }
 
 // ══════════════════════════════════════
-// PASSWORD (localStorage)
+// PASSWORD E RUOLI
 // ══════════════════════════════════════
-const K_PASS = 'cpo_pass';
-function getPass(){ return localStorage.getItem(K_PASS)||'cpo2026'; }
+const K_PASS_ADMIN  = 'cpo_pass_admin';
+const K_PASS_VIEWER = 'cpo_pass_viewer';
+function getPassAdmin(){  return localStorage.getItem(K_PASS_ADMIN)  || 'cpoAdmin2026'; }
+function getPassViewer(){ return localStorage.getItem(K_PASS_VIEWER) || 'cpo2026'; }
 
 // ══════════════════════════════════════
 // STATO
 // ══════════════════════════════════════
-let events=[], docs=[];
-let currentFilter='tutti';
-let loggedIn=false;
+let events=[], docs=[], currentFilter='tutti';
+let loggedIn=false, currentRole=null; // 'admin' | 'viewer'
+let selectedRole='viewer';
 let curM=new Date().getMonth()+1, curY=new Date().getFullYear();
-let dbOk=false;
 
 // ══════════════════════════════════════
 // NAVIGAZIONE
@@ -456,21 +498,64 @@ function showPage(n,b){
 }
 function toggleLogin(){ loggedIn?showPage('member',null):(document.getElementById('modal').style.display='flex'); }
 function closeModal(){ document.getElementById('modal').style.display='none'; document.getElementById('pwd-err').style.display='none'; document.getElementById('pwd-input').value=''; }
-function doLogin(){
-  if(document.getElementById('pwd-input').value===getPass()){
-    loggedIn=true; closeModal();
-    document.getElementById('ltog').textContent='✓ Area riservata';
-    document.getElementById('ltog').className='lb on';
-    showPage('member',null);
-    loadAll();
-  } else { document.getElementById('pwd-err').style.display='block'; }
+
+function selectRole(role){
+  selectedRole=role;
+  document.getElementById('rc-viewer').classList.toggle('selected', role==='viewer');
+  document.getElementById('rc-admin').classList.toggle('selected', role==='admin');
+  document.getElementById('pwd-label').textContent = role==='admin'?'Password amministratrice':'Password commissaria';
+  document.getElementById('btn-login').style.background = role==='admin'?'var(--oro)':'var(--blu)';
+  document.getElementById('pwd-err').style.display='none';
+  document.getElementById('pwd-input').value='';
+  document.getElementById('pwd-input').focus();
 }
+
+function doLogin(){
+  const pwd=document.getElementById('pwd-input').value;
+  const isAdmin  = pwd===getPassAdmin();
+  const isViewer = pwd===getPassViewer();
+  if(!isAdmin && !isViewer){ document.getElementById('pwd-err').style.display='block'; return; }
+  // Se ha inserito la password giusta per il ruolo selezionato
+  // (oppure se admin usa password viewer per sicurezza — non permesso)
+  if(selectedRole==='admin' && !isAdmin){ document.getElementById('pwd-err').style.display='block'; return; }
+  if(selectedRole==='viewer' && !isViewer && !isAdmin){ document.getElementById('pwd-err').style.display='block'; return; }
+
+  currentRole = isAdmin ? 'admin' : 'viewer';
+  loggedIn=true; closeModal();
+  applyRole();
+  showPage('member',null);
+  loadAll();
+}
+
+function applyRole(){
+  const isAdmin = currentRole==='admin';
+  // Badge ruolo
+  const badge=document.getElementById('badge-role');
+  if(isAdmin){
+    badge.className='badge-role admin';
+    badge.innerHTML='⚙️ Amministratrice — accesso completo';
+  } else {
+    badge.className='badge-role viewer';
+    badge.innerHTML='👁️ Commissaria — sola visualizzazione';
+  }
+  // Pulsante nav
+  document.getElementById('ltog').textContent = isAdmin?'⚙️ Admin':'👁️ Area riservata';
+  document.getElementById('ltog').className   = 'lb ' + (isAdmin?'on-admin':'on-view');
+  // Mostra/nascondi elementi
+  document.querySelectorAll('.admin-only').forEach(el=>el.style.display=isAdmin?'':'none');
+  document.querySelectorAll('.viewer-only').forEach(el=>el.style.display=isAdmin?'none':'');
+  // Tab impostazioni solo admin
+  document.getElementById('tab-impost-btn').style.display=isAdmin?'':'none';
+}
+
 function logout(){
-  loggedIn=false;
+  loggedIn=false; currentRole=null;
   document.getElementById('ltog').textContent='Area riservata';
   document.getElementById('ltog').className='lb';
   showPage('home',document.querySelector('.nb'));
   document.querySelector('.nb').classList.add('active');
+  // Reset selezione ruolo
+  selectRole('viewer');
 }
 function showTab(n,b){
   document.querySelectorAll('.tc').forEach(t=>t.classList.remove('active'));
@@ -480,118 +565,93 @@ function showTab(n,b){
 }
 
 // ══════════════════════════════════════
-// CARICA TUTTO DA SUPABASE
+// CARICA DATI
 // ══════════════════════════════════════
 async function loadAll(){
   setDbStatus('caricamento');
   try{
-    [events, docs] = await Promise.all([sbGet('eventi'), sbGet('documenti')]);
-    dbOk=true;
+    [events,docs]=await Promise.all([sbGet('eventi'),sbGet('documenti')]);
     setDbStatus('ok');
-    renderCalendar();
-    renderDocs();
-  } catch(e){
-    dbOk=false;
-    setDbStatus('err');
-    console.error(e);
-  }
+    renderCalendar(); renderDocs();
+  } catch(e){ setDbStatus('err'); console.error(e); }
 }
-
-function setDbStatus(stato){
+function setDbStatus(s){
   const el=document.getElementById('db-status-bar');
-  if(stato==='ok') el.innerHTML='<span class="db-status ok">🟢 Database condiviso connesso — tutte le commissarie vedono questi dati</span>';
-  else if(stato==='err') el.innerHTML='<span class="db-status err">🔴 Errore di connessione al database. Ricarica la pagina.</span>';
-  else el.innerHTML='<span class="db-status ok" style="opacity:.6">⏳ Connessione in corso...</span>';
+  if(s==='ok') el.innerHTML='<span class="db-status ok">🟢 Database condiviso connesso</span>';
+  else if(s==='err') el.innerHTML='<span class="db-status err">🔴 Errore connessione. Ricarica la pagina.</span>';
+  else el.innerHTML='<span class="db-status ok" style="opacity:.6">⏳ Connessione...</span>';
 }
 
 // ══════════════════════════════════════
-// IMPORTA DA EXCEL
+// EXCEL IMPORT
 // ══════════════════════════════════════
 function handleXlDrop(ev){ ev.preventDefault(); document.getElementById('xl-drop').classList.remove('drag'); const f=ev.dataTransfer.files[0]; if(f) handleXlFile(f); }
-
 function handleXlFile(file){
-  if(!file) return;
-  if(!file.name.match(/\.xlsx?$/i)){ alert('Carica un file Excel (.xlsx)'); return; }
+  if(!file||!file.name.match(/\.xlsx?$/i)){ alert('Carica un file .xlsx'); return; }
   const reader=new FileReader();
   reader.onload=function(e){
     try{
       const wb=XLSX.read(e.target.result,{type:'array',cellDates:true});
-      const sheetName=wb.SheetNames.includes('Eventi CPO')?'Eventi CPO':wb.SheetNames[0];
-      const ws=wb.Sheets[sheetName];
+      const sn=wb.SheetNames.includes('Eventi CPO')?'Eventi CPO':wb.SheetNames[0];
+      const ws=wb.Sheets[sn];
       const rows=XLSX.utils.sheet_to_json(ws,{header:1,raw:false,dateNF:'DD/MM/YYYY'});
-      let headerRow=-1;
-      for(let i=0;i<rows.length;i++){
-        const r=rows[i].map(c=>(c||'').toString().toLowerCase());
-        if(r.some(c=>c.includes('data'))){ headerRow=i; break; }
-      }
-      if(headerRow===-1){ showXlResult('Non ho trovato le intestazioni. Usa il template fornito.','warn'); return; }
-      const hdr=rows[headerRow].map(c=>(c||'').toString().toLowerCase().trim());
+      let hr=-1;
+      for(let i=0;i<rows.length;i++){ if(rows[i].map(c=>(c||'').toString().toLowerCase()).some(c=>c.includes('data'))){ hr=i; break; } }
+      if(hr===-1){ showXlResult('Intestazioni non trovate. Usa il template.','warn'); return; }
+      const hdr=rows[hr].map(c=>(c||'').toString().toLowerCase().trim());
       const iD=hdr.findIndex(c=>c.includes('data'));
       const iT=hdr.findIndex(c=>c.includes('titolo'));
       const iO=hdr.findIndex(c=>c.includes('orario')||c.includes('ora'));
       const iL=hdr.findIndex(c=>c.includes('luogo'));
-      if(iD===-1||iT===-1){ showXlResult('Colonne "Data" e "Titolo" non trovate.','warn'); return; }
+      if(iD===-1||iT===-1){ showXlResult('Colonne Data e Titolo non trovate.','warn'); return; }
       const nuovi=[], saltati=[];
-      for(let i=headerRow+1;i<rows.length;i++){
+      for(let i=hr+1;i<rows.length;i++){
         const row=rows[i];
-        const dataRaw=((iD>=0?row[iD]:'')||'').toString().trim();
-        const titolo=((iT>=0?row[iT]:'')||'').toString().trim();
-        if(!dataRaw&&!titolo) continue;
-        if(!dataRaw||!titolo){ saltati.push(i+1); continue; }
-        let parsed=null;
-        let m=dataRaw.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
-        if(m) parsed={giorno:+m[1],mese:+m[2],anno:+m[3]};
-        if(!parsed){ m=dataRaw.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/); if(m) parsed={anno:+m[1],mese:+m[2],giorno:+m[3]}; }
-        if(!parsed&&!isNaN(+dataRaw)){ const d=XLSX.SSF.parse_date_code(+dataRaw); if(d) parsed={anno:d.y,mese:d.m,giorno:d.d}; }
-        if(!parsed){ saltati.push(i+1); continue; }
-        nuovi.push({anno:parsed.anno,mese:parsed.mese,giorno:parsed.giorno,
-          titolo,ora:((iO>=0?row[iO]:'')||'').toString().trim(),
+        const dr=((iD>=0?row[iD]:'')||'').toString().trim();
+        const tit=((iT>=0?row[iT]:'')||'').toString().trim();
+        if(!dr&&!tit) continue;
+        if(!dr||!tit){ saltati.push(i+1); continue; }
+        let p=null;
+        let m=dr.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+        if(m) p={giorno:+m[1],mese:+m[2],anno:+m[3]};
+        if(!p){ m=dr.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/); if(m) p={anno:+m[1],mese:+m[2],giorno:+m[3]}; }
+        if(!p&&!isNaN(+dr)){ const d=XLSX.SSF.parse_date_code(+dr); if(d) p={anno:d.y,mese:d.m,giorno:d.d}; }
+        if(!p){ saltati.push(i+1); continue; }
+        nuovi.push({anno:p.anno,mese:p.mese,giorno:p.giorno,titolo:tit,
+          ora:((iO>=0?row[iO]:'')||'').toString().trim(),
           luogo:((iL>=0?row[iL]:'')||'').toString().trim(),src:'excel'});
       }
-      if(!nuovi.length){ showXlResult('Nessun evento valido trovato nel file.','warn'); return; }
-      showXlPreview(nuovi, saltati);
-    } catch(err){ showXlResult('Errore nella lettura: '+err.message,'warn'); }
+      if(!nuovi.length){ showXlResult('Nessun evento valido trovato.','warn'); return; }
+      showXlPreview(nuovi,saltati);
+    } catch(err){ showXlResult('Errore: '+err.message,'warn'); }
   };
   reader.readAsArrayBuffer(file);
 }
-
-function showXlPreview(nuovi, saltati){
+function showXlPreview(nuovi,saltati){
   const MS=['','Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
-  let html=`<p style="font-size:12px;color:var(--verde);margin-bottom:6px;font-weight:500">✓ Trovati ${nuovi.length} eventi${saltati.length?' ('+saltati.length+' righe saltate)':''}:</p>`;
-  html+=`<div style="max-height:180px;overflow-y:auto;border:.5px solid var(--br);border-radius:var(--r);margin-bottom:10px">
-    <table class="preview-table"><thead><tr><th>Data</th><th>Titolo</th><th>Orario</th><th>Luogo</th></tr></thead><tbody>`;
+  let html=`<p style="font-size:12px;color:var(--verde);margin-bottom:6px;font-weight:500">✓ Trovati ${nuovi.length} eventi${saltati.length?' ('+saltati.length+' saltati)':''}:</p>`;
+  html+=`<div style="max-height:180px;overflow-y:auto;border:.5px solid var(--br);border-radius:var(--r);margin-bottom:10px"><table class="preview-table"><thead><tr><th>Data</th><th>Titolo</th><th>Orario</th><th>Luogo</th></tr></thead><tbody>`;
   nuovi.forEach(e=>{ html+=`<tr><td>${e.giorno} ${MS[e.mese]} ${e.anno}</td><td>${e.titolo}</td><td>${e.ora||'—'}</td><td>${e.luogo||'—'}</td></tr>`; });
-  html+=`</tbody></table></div>`;
-  html+=`<div style="display:flex;gap:8px;flex-wrap:wrap">
-    <button class="btn-verde" id="btn-confirm-xl" onclick="confirmImport(this)">✓ Importa ${nuovi.length} eventi nel database</button>
-    <button class="btn-cancel" style="flex:0" onclick="resetXlPreview()">Annulla</button>
-  </div>`;
-  // Salviamo i dati nell'attributo data
+  html+=`</tbody></table></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-verde" id="btn-xl-confirm">✓ Importa ${nuovi.length} eventi</button><button class="btn-cancel" style="flex:0" onclick="resetXlPreview()">Annulla</button></div>`;
   const wrapper=document.getElementById('xl-preview');
-  wrapper.innerHTML=html;
-  wrapper._nuovi=nuovi;
+  wrapper.innerHTML=html; wrapper._nuovi=nuovi;
+  document.getElementById('btn-xl-confirm').onclick=()=>confirmImport();
   document.getElementById('xl-result').style.display='none';
 }
-
-async function confirmImport(btn){
+async function confirmImport(){
   const nuovi=document.getElementById('xl-preview')._nuovi;
   if(!nuovi||!nuovi.length) return;
+  const btn=document.getElementById('btn-xl-confirm');
   btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Importando...';
   try{
-    // Elimina vecchi eventi Excel
     await sbDeleteBySrc('excel');
-    // Inserisce tutti i nuovi
-    await sbInsert('eventi', nuovi);
+    await sbInsert('eventi',nuovi);
     resetXlPreview();
     await loadAll();
     if(nuovi.length){ curM=nuovi[0].mese; curY=nuovi[0].anno; renderCalendar(); }
-    showXlResult(`✓ ${nuovi.length} eventi importati con successo! Visibili a tutte le commissarie.`,'ok');
-  } catch(e){
-    btn.disabled=false; btn.textContent='✓ Importa';
-    showXlResult('Errore durante l\'importazione: '+e.message,'warn');
-  }
+    showXlResult(`✓ ${nuovi.length} eventi importati con successo!`,'ok');
+  } catch(e){ btn.disabled=false; btn.textContent='✓ Importa'; showXlResult('Errore: '+e.message,'warn'); }
 }
-
 function resetXlPreview(){ document.getElementById('xl-preview').innerHTML=''; document.getElementById('xl-input').value=''; }
 function showXlResult(msg,type){ const el=document.getElementById('xl-result'); el.textContent=msg; el.className='import-result '+type; el.style.display='block'; }
 
@@ -602,6 +662,7 @@ const MONTHS=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','
 const MS=['','Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
 
 async function addEvent(){
+  if(currentRole!=='admin') return;
   const d=document.getElementById('ev-data').value;
   const t=document.getElementById('ev-titolo').value.trim();
   if(!d||!t){ alert('Inserisci almeno la data e il titolo.'); return; }
@@ -609,31 +670,29 @@ async function addEvent(){
   const btn=document.getElementById('btn-add-ev');
   btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Salvando...';
   try{
-    await sbInsert('eventi',[{anno:+p[0],mese:+p[1],giorno:+p[2],
-      titolo:t,ora:document.getElementById('ev-ora').value.trim(),
+    await sbInsert('eventi',[{anno:+p[0],mese:+p[1],giorno:+p[2],titolo:t,
+      ora:document.getElementById('ev-ora').value.trim(),
       luogo:document.getElementById('ev-luogo').value.trim(),src:'manual'}]);
     ['ev-data','ev-titolo','ev-ora','ev-luogo'].forEach(id=>document.getElementById(id).value='');
-    await loadAll();
-    curM=+p[1]; curY=+p[0]; renderCalendar();
-    flash('ev-ok');
+    await loadAll(); curM=+p[1]; curY=+p[0]; renderCalendar(); flash('ev-ok');
   } catch(e){ alert('Errore: '+e.message); }
   btn.disabled=false; btn.textContent='Aggiungi al calendario';
 }
-
 async function deleteEvent(id){
+  if(currentRole!=='admin'){ alert('Solo l\'amministratrice può eliminare eventi.'); return; }
   if(!confirm('Eliminare questo evento?'))return;
   try{ await sbDelete('eventi',id); await loadAll(); renderCalendar(); } catch(e){ alert('Errore: '+e.message); }
 }
 async function clearEvents(){
-  if(!confirm('Eliminare TUTTI gli eventi dal database condiviso?'))return;
+  if(currentRole!=='admin') return;
+  if(!confirm('Eliminare TUTTI gli eventi?'))return;
   try{ await sbDeleteAll('eventi'); await loadAll(); renderCalendar(); } catch(e){ alert('Errore: '+e.message); }
 }
-
 function renderCalendar(){
   document.getElementById('cal-title').textContent=MONTHS[curM-1]+' '+curY;
   const tot=events.length, xl=events.filter(e=>e.src==='excel').length;
-  document.getElementById('ev-count').textContent=tot===0?'Nessun evento nel database':
-    `${tot} eventi totali${xl?' ('+xl+' da Excel)':''}`;
+  document.getElementById('ev-count').textContent=tot===0?'Nessun evento':
+    `${tot} eventi totali${xl?' · '+xl+' da Excel':''}`;
   const grid=document.getElementById('cal-grid'); grid.innerHTML='';
   ['L','M','M','G','V','S','D'].forEach(d=>{ const el=document.createElement('div'); el.className='cdn'; el.textContent=d; grid.appendChild(el); });
   const first=new Date(curY,curM-1,1).getDay(), offset=first===0?6:first-1;
@@ -647,6 +706,7 @@ function renderCalendar(){
   }
   const evList=document.getElementById('ev-list');
   const me=events.filter(e=>e.mese===curM&&e.anno===curY).sort((a,b)=>a.giorno-b.giorno);
+  const isAdmin=currentRole==='admin';
   evList.innerHTML=me.length===0?'<p class="empty-msg">Nessun evento in questo mese.</p>'
     :me.map(e=>`<div class="ev-item">
       <div class="ev-badge"><div class="day">${e.giorno}</div><div class="mon">${MS[e.mese]}</div></div>
@@ -654,7 +714,7 @@ function renderCalendar(){
         <h4>${e.titolo} <span class="ev-src ${e.src||'manual'}">${e.src==='excel'?'Excel':'Manuale'}</span></h4>
         ${[e.ora,e.luogo].filter(Boolean).length?`<p>${[e.ora,e.luogo].filter(Boolean).join(' · ')}</p>`:''}
       </div>
-      <button class="btn-rosso" onclick="deleteEvent(${e.id})">✕</button>
+      ${isAdmin?`<button class="btn-rosso" onclick="deleteEvent(${e.id})">✕</button>`:''}
     </div>`).join('');
 }
 function prevMonth(){ curM--; if(curM<1){curM=12;curY--;} renderCalendar(); }
@@ -670,16 +730,16 @@ const TIPO_BG={pdf:'#FCEBEB',doc:'#E6F1FB',docx:'#E6F1FB',xls:'#E8F7EE',xlsx:'#E
 function guessType(link){ if(!link)return'default'; const l=link.toLowerCase(); for(const e of['pdf','docx','doc','xlsx','xls'])if(l.includes(e))return e; return'default'; }
 
 async function addDoc(){
+  if(currentRole!=='admin') return;
   const nome=document.getElementById('doc-nome').value.trim();
   const link=document.getElementById('doc-link').value.trim();
-  if(!nome||!link){ alert('Inserisci nome e link del documento.'); return; }
+  if(!nome||!link){ alert('Inserisci nome e link.'); return; }
   if(!link.includes('drive.google.com')){ alert('Inserisci un link di Google Drive valido.'); return; }
   const btn=document.getElementById('btn-add-doc');
   btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Salvando...';
   try{
     await sbInsert('documenti',[{nome,cat:document.getElementById('doc-cat').value,
-      data:document.getElementById('doc-data').value||null,
-      link,tipo:guessType(link)}]);
+      data:document.getElementById('doc-data').value||null,link,tipo:guessType(link)}]);
     document.getElementById('doc-nome').value='';
     document.getElementById('doc-link').value='';
     document.getElementById('doc-data').value='';
@@ -687,13 +747,14 @@ async function addDoc(){
   } catch(e){ alert('Errore: '+e.message); }
   btn.disabled=false; btn.textContent='Aggiungi documento';
 }
-
 async function deleteDoc(id){
-  if(!confirm('Eliminare questo documento?'))return;
+  if(currentRole!=='admin'){ alert('Solo l\'amministratrice può eliminare documenti.'); return; }
+  if(!confirm('Eliminare?'))return;
   try{ await sbDelete('documenti',id); await loadAll(); } catch(e){ alert('Errore: '+e.message); }
 }
 async function clearDocs(){
-  if(!confirm('Eliminare TUTTI i documenti dal database condiviso?'))return;
+  if(currentRole!=='admin') return;
+  if(!confirm('Eliminare TUTTI i documenti?'))return;
   try{ await sbDeleteAll('documenti'); await loadAll(); } catch(e){ alert('Errore: '+e.message); }
 }
 function filterDocs(cat,btn){
@@ -705,6 +766,7 @@ function filterDocs(cat,btn){
 function renderDocs(){
   const filtered=currentFilter==='tutti'?docs:docs.filter(d=>d.cat===currentFilter);
   const list=document.getElementById('doc-list');
+  const isAdmin=currentRole==='admin';
   if(!filtered.length){ list.innerHTML='<p class="empty-msg">Nessun documento in questa categoria.</p>'; return; }
   list.innerHTML=filtered.map(d=>{
     const tipo=d.tipo||guessType(d.link);
@@ -716,26 +778,37 @@ function renderDocs(){
       <div class="doc-ico" style="background:${TIPO_BG[tipo]||TIPO_BG.default}">${TIPO_ICO[tipo]||'📎'}</div>
       <div class="doc-meta"><h4>${d.nome}</h4><p>${CAT_LABEL[d.cat]||d.cat}${dataFmt?' · '+dataFmt:''}</p></div>
       ${dlBtn}
-      <button class="btn-rosso" onclick="deleteDoc(${d.id})">✕</button>
+      ${isAdmin?`<button class="btn-rosso" onclick="deleteDoc(${d.id})">✕</button>`:''}
     </div>`;
   }).join('');
 }
 
 // ══════════════════════════════════════
-// IMPOSTAZIONI
+// IMPOSTAZIONI PASSWORD
 // ══════════════════════════════════════
-function changePassword(){
-  const old=document.getElementById('pwd-old').value;
-  const nw=document.getElementById('pwd-new').value;
-  const nw2=document.getElementById('pwd-new2').value;
-  const err=document.getElementById('pwd-err2');
+function changeViewPassword(){
+  const nw=document.getElementById('pwd-view-new').value;
+  const nw2=document.getElementById('pwd-view-new2').value;
+  const err=document.getElementById('pwd-view-err');
   err.style.display='none';
-  if(old!==getPass()){ err.textContent='Password attuale errata.'; err.style.display='block'; return; }
-  if(nw.length<6){ err.textContent='La nuova password deve avere almeno 6 caratteri.'; err.style.display='block'; return; }
-  if(nw!==nw2){ err.textContent='Le due password non coincidono.'; err.style.display='block'; return; }
-  localStorage.setItem(K_PASS,nw);
-  ['pwd-old','pwd-new','pwd-new2'].forEach(id=>document.getElementById(id).value='');
-  flash('pwd-ok');
+  if(nw.length<6){ err.textContent='Minimo 6 caratteri.'; err.style.display='block'; return; }
+  if(nw!==nw2){ err.textContent='Le password non coincidono.'; err.style.display='block'; return; }
+  localStorage.setItem(K_PASS_VIEWER,nw);
+  ['pwd-view-new','pwd-view-new2'].forEach(id=>document.getElementById(id).value='');
+  flash('pwd-view-ok');
+}
+function changeAdminPassword(){
+  const old=document.getElementById('pwd-admin-old').value;
+  const nw=document.getElementById('pwd-admin-new').value;
+  const nw2=document.getElementById('pwd-admin-new2').value;
+  const err=document.getElementById('pwd-admin-err');
+  err.style.display='none';
+  if(old!==getPassAdmin()){ err.textContent='Password attuale errata.'; err.style.display='block'; return; }
+  if(nw.length<6){ err.textContent='Minimo 6 caratteri.'; err.style.display='block'; return; }
+  if(nw!==nw2){ err.textContent='Le password non coincidono.'; err.style.display='block'; return; }
+  localStorage.setItem(K_PASS_ADMIN,nw);
+  ['pwd-admin-old','pwd-admin-new','pwd-admin-new2'].forEach(id=>document.getElementById(id).value='');
+  flash('pwd-admin-ok');
 }
 
 function flash(id){ const el=document.getElementById(id); el.style.display='block'; setTimeout(()=>el.style.display='none',3500); }
