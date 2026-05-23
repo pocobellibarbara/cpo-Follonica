@@ -32,10 +32,16 @@ nav{background:var(--blu);border-bottom:3px solid var(--oro);padding:0 1.5rem;di
 .lb.on-admin{background:var(--oro);border-color:var(--oro)}
 .page{display:none;padding:2rem 1.5rem;max-width:900px;margin:0 auto}
 .page.active{display:block}
+/* HERO */
 .hero{background:var(--bg);border-radius:var(--rl);border:.5px solid var(--br);border-top:3px solid var(--blu);padding:2rem;margin-bottom:1.5rem;display:flex;gap:1.5rem;align-items:flex-start}
 .hero h1{font-size:22px;font-weight:500;margin-bottom:.4rem}
 .hero-sub{font-size:12px;color:var(--blu);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem;font-weight:500}
-.hero p{font-size:14px;color:var(--t2);line-height:1.7}
+.hero-desc{font-size:14px;color:var(--t2);line-height:1.7}
+.hero-edit-btn{font-size:11px;padding:3px 10px;border-radius:99px;border:.5px solid var(--oro);background:var(--oro-l);color:var(--oro);cursor:pointer;margin-top:8px;display:none}
+.hero-edit-btn:hover{opacity:.8}
+.hero-editor{display:none;margin-top:10px}
+.hero-editor textarea{width:100%;padding:8px 10px;font-size:13px;font-family:inherit;border:.5px solid var(--blu-m);border-radius:var(--r);resize:vertical;height:100px;outline:none}
+.hero-editor-btns{display:flex;gap:8px;margin-top:6px}
 .info-strip{background:var(--blu-l);border-radius:var(--r);border:.5px solid #b8cfe8;padding:.75rem 1rem;margin-bottom:1.5rem;font-size:12px;color:var(--blu)}
 .info-strip a{color:var(--blu-m)}
 .st{font-size:11px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:1rem}
@@ -44,35 +50,42 @@ nav{background:var(--blu);border-bottom:3px solid var(--oro);padding:0 1.5rem;di
 .card-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:16px}
 .card h3{font-size:13px;font-weight:500;margin-bottom:4px}
 .card p{font-size:12px;color:var(--t2);line-height:1.5}
+/* NEWS */
 .news-list{display:flex;flex-direction:column;gap:10px}
 .ni{background:var(--bg);border:.5px solid var(--br);border-radius:var(--rl);padding:1rem 1.25rem;display:flex;gap:1rem}
 .nd{font-size:10px;color:var(--t3);white-space:nowrap;padding-top:2px}
 .ni h4{font-size:13px;font-weight:500;margin-bottom:3px}
 .ni p{font-size:12px;color:var(--t2);line-height:1.5}
+/* CONTATTI */
 .cf{background:var(--bg);border:.5px solid var(--br);border-radius:var(--rl);padding:1.5rem;max-width:480px}
 .fi{margin-bottom:1rem}
 .fi label{display:block;font-size:12px;color:var(--t2);margin-bottom:4px}
 .fi input,.fi textarea,.fi select{width:100%;padding:8px 10px;font-size:13px;font-family:inherit;border:.5px solid var(--br2);border-radius:var(--r);background:var(--bg);color:var(--t);outline:none;transition:border-color .15s}
 .fi input:focus,.fi textarea:focus,.fi select:focus{border-color:var(--blu-m)}
 .fi textarea{height:80px;resize:vertical}
+/* BUTTONS */
 .btn-blu{background:var(--blu);color:#fff;border:none;padding:9px 22px;border-radius:var(--r);font-size:13px;cursor:pointer;transition:opacity .15s}
 .btn-blu:hover{opacity:.85}
 .btn-verde{background:var(--verde);color:#fff;border:none;padding:8px 18px;border-radius:var(--r);font-size:13px;cursor:pointer;transition:opacity .15s}
 .btn-verde:hover{opacity:.85}
 .btn-oro{background:var(--oro);color:#fff;border:none;padding:8px 18px;border-radius:var(--r);font-size:13px;cursor:pointer;transition:opacity .15s}
 .btn-oro:hover{opacity:.85}
-.btn-rosso{background:var(--rosso-l);color:var(--rosso);border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;white-space:nowrap;flex-shrink:0}
-.btn-rosso:hover{opacity:.8}
+.btn-sm{font-size:11px;padding:4px 12px;border-radius:6px;border:none;cursor:pointer;transition:opacity .15s}
+.btn-sm:hover{opacity:.8}
+.btn-sm.verde{background:var(--verde-l);color:var(--verde)}
+.btn-sm.oro{background:var(--oro-l);color:var(--oro)}
+.btn-sm.rosso{background:var(--rosso-l);color:var(--rosso)}
+.btn-sm.grigio{background:var(--bg2);color:var(--t2);border:.5px solid var(--br2)}
 .btn-cancel{flex:1;background:transparent;border:.5px solid var(--br2);padding:8px;border-radius:var(--r);font-size:13px;cursor:pointer;color:var(--t2)}
 .btn-cancel:hover{background:var(--bg2)}
 /* MODAL */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:100}
-.modal{background:var(--bg);border-radius:var(--rl);border:.5px solid var(--br);padding:1.75rem;width:380px;max-width:95vw}
+.modal{background:var(--bg);border-radius:var(--rl);border:.5px solid var(--br);padding:1.75rem;width:400px;max-width:95vw}
 .modal h2{font-size:16px;font-weight:500;margin-bottom:.25rem}
 .modal .sub{font-size:12px;color:var(--t2);margin-bottom:1rem;line-height:1.5}
 .mbtns{display:flex;gap:8px;margin-top:1rem}
 .errmsg{font-size:11px;color:#c00;margin-top:4px}
-/* RUOLO SELECTOR */
+/* ROLE CARDS */
 .role-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem}
 .role-card{border:.5px solid var(--br2);border-radius:var(--rl);padding:1rem;cursor:pointer;transition:all .15s;text-align:center;background:var(--bg)}
 .role-card:hover{border-color:var(--blu-m);background:var(--blu-l)}
@@ -108,7 +121,6 @@ nav{background:var(--blu);border-bottom:3px solid var(--oro);padding:0 1.5rem;di
 .ok-msg{font-size:12px;color:var(--verde);margin-top:8px;display:none}
 .link-hint{font-size:11px;color:var(--t3);margin-top:4px;line-height:1.5}
 .link-hint b{color:var(--t2)}
-/* SOLA LETTURA */
 .readonly-notice{background:var(--blu-l);border:.5px solid #b8cfe8;border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--blu)}
 /* SPINNER */
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px}
@@ -157,13 +169,20 @@ nav{background:var(--blu);border-bottom:3px solid var(--oro);padding:0 1.5rem;di
 .cat-btn{font-size:12px;padding:5px 14px;border-radius:99px;border:.5px solid var(--br2);background:var(--bg);cursor:pointer;color:var(--t2);transition:all .15s}
 .cat-btn.active{background:var(--blu);color:#fff;border-color:var(--blu)}
 .doc-list{display:flex;flex-direction:column;gap:8px}
-.doc-item{background:var(--bg);border:.5px solid var(--br);border-radius:10px;padding:.9rem 1.25rem;display:flex;align-items:center;gap:1rem}
-.doc-ico{width:34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.doc-item{background:var(--bg);border:.5px solid var(--br);border-radius:10px;padding:.9rem 1.25rem;display:flex;align-items:flex-start;gap:1rem}
+.doc-ico{width:34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:2px}
 .doc-meta{flex:1;min-width:0}
 .doc-meta h4{font-size:13px;font-weight:500;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.doc-meta p{font-size:11px;color:var(--t2)}
-.btn-dl{font-size:12px;color:var(--blu);background:var(--blu-l);padding:5px 12px;border-radius:6px;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0;text-decoration:none;display:inline-block}
+.doc-meta p{font-size:11px;color:var(--t2);margin-bottom:6px}
+.doc-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.btn-dl{font-size:12px;color:var(--blu);background:var(--blu-l);padding:5px 12px;border-radius:6px;border:none;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block}
 .btn-dl:hover{opacity:.8}
+/* EDITOR DOCUMENTO INLINE */
+.doc-editor{background:var(--bg2);border:.5px solid var(--br2);border-radius:var(--r);padding:.9rem;margin-top:8px;display:none}
+.doc-editor .form-grid{gap:8px}
+.doc-editor .fi{margin-bottom:0}
+.doc-editor .fi input,.doc-editor .fi select{font-size:12px;padding:6px 8px}
+.doc-editor-btns{display:flex;gap:6px;margin-top:8px}
 .empty-msg{color:var(--t3);font-size:13px;padding:1rem 0}
 .db-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:99px;margin-bottom:1rem}
 .db-status.ok{background:var(--verde-l);color:var(--verde)}
@@ -202,7 +221,7 @@ footer a{color:rgba(255,255,255,.8)}
 <!-- HOME -->
 <div class="page active" id="page-home">
   <div class="hero">
-    <svg width="72" height="72" viewBox="0 0 64 64">
+    <svg width="72" height="72" viewBox="0 0 64 64" style="flex-shrink:0">
       <circle cx="32" cy="32" r="30" fill="#e8f0fb" stroke="#1a4a8a" stroke-width="2"/>
       <circle cx="22" cy="22" r="7" fill="none" stroke="#6b3fa0" stroke-width="2"/>
       <line x1="22" y1="29" x2="22" y2="38" stroke="#6b3fa0" stroke-width="2"/>
@@ -214,10 +233,20 @@ footer a{color:rgba(255,255,255,.8)}
       <line x1="20" y1="46" x2="44" y2="46" stroke="#c9932a" stroke-width="2.5"/>
       <line x1="20" y1="51" x2="44" y2="51" stroke="#c9932a" stroke-width="2.5"/>
     </svg>
-    <div>
+    <div style="flex:1">
       <div class="hero-sub">Comune di Follonica · Organo istituzionale</div>
       <h1>Commissione Pari Opportunità</h1>
-      <p>Organo consultivo del Comune di Follonica che promuove e tutela la parità di diritti e opportunità tra donne e uomini nel territorio comunale, contrastando ogni forma di discriminazione.</p>
+      <!-- Testo modificabile -->
+      <p class="hero-desc" id="hero-desc">Caricamento...</p>
+      <button class="hero-edit-btn" id="hero-edit-btn" onclick="startEditDesc()">✏️ Modifica descrizione</button>
+      <div class="hero-editor" id="hero-editor">
+        <textarea id="hero-textarea" placeholder="Descrizione della commissione..."></textarea>
+        <div class="hero-editor-btns">
+          <button class="btn-sm verde" onclick="saveDesc()">✓ Salva</button>
+          <button class="btn-sm grigio" onclick="cancelEditDesc()">Annulla</button>
+        </div>
+        <p class="ok-msg" id="desc-ok" style="display:none">✓ Descrizione aggiornata!</p>
+      </div>
     </div>
   </div>
   <div class="info-strip">
@@ -270,21 +299,18 @@ footer a{color:rgba(255,255,255,.8)}
     <button class="lb" style="border-color:rgba(0,0,0,0.2);color:var(--t2)" onclick="logout()">Esci</button>
   </div>
   <div id="db-status-bar"></div>
-
   <div class="tabs">
     <button class="tab active" onclick="showTab('cal',this)">📅 Calendario</button>
     <button class="tab" onclick="showTab('docs',this)">📁 Documenti</button>
     <button class="tab admin-only" id="tab-impost-btn" onclick="showTab('impost',this)">⚙️ Impostazioni</button>
   </div>
 
-  <!-- ── CALENDARIO ── -->
+  <!-- CALENDARIO -->
   <div class="tc active" id="tab-cal">
-
-    <!-- Pannelli SOLO ADMIN -->
     <div class="admin-only">
       <div class="panel oro">
         <h3>📊 Importa eventi da Excel</h3>
-        <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Compila il template Excel con gli eventi e caricalo qui. Tutti gli utenti li vedranno subito.</p>
+        <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Carica il file Excel con gli eventi. Saranno visibili a tutte le commissarie.</p>
         <div class="xl-drop" id="xl-drop" onclick="document.getElementById('xl-input').click()"
           ondragover="event.preventDefault();this.classList.add('drag')"
           ondragleave="this.classList.remove('drag')"
@@ -310,12 +336,7 @@ footer a{color:rgba(255,255,255,.8)}
         <p class="ok-msg" id="ev-ok">✓ Evento salvato!</p>
       </div>
     </div>
-
-    <!-- Avviso SOLO VIEWER -->
-    <div class="viewer-only readonly-notice">
-      👁️ <span>Accesso in sola visualizzazione — solo l'amministratrice può aggiungere o modificare eventi.</span>
-    </div>
-
+    <div class="viewer-only readonly-notice">👁️ <span>Sola visualizzazione — solo l'amministratrice può modificare il calendario.</span></div>
     <div class="cal-toolbar" id="ev-count"></div>
     <div class="calendar">
       <div class="cal-hdr">
@@ -328,10 +349,8 @@ footer a{color:rgba(255,255,255,.8)}
     <div class="ev-list" id="ev-list"></div>
   </div>
 
-  <!-- ── DOCUMENTI ── -->
+  <!-- DOCUMENTI -->
   <div class="tc" id="tab-docs">
-
-    <!-- Pannello SOLO ADMIN -->
     <div class="admin-only">
       <div class="panel blu">
         <h3>🔗 Aggiungi documento da Google Drive</h3>
@@ -357,12 +376,7 @@ footer a{color:rgba(255,255,255,.8)}
         <p class="ok-msg" id="doc-ok">✓ Documento salvato!</p>
       </div>
     </div>
-
-    <!-- Avviso SOLO VIEWER -->
-    <div class="viewer-only readonly-notice">
-      👁️ <span>Accesso in sola visualizzazione — solo l'amministratrice può aggiungere documenti.</span>
-    </div>
-
+    <div class="viewer-only readonly-notice">👁️ <span>Sola visualizzazione — solo l'amministratrice può aggiungere o modificare documenti.</span></div>
     <p class="st">Documenti condivisi</p>
     <div class="cat-bar">
       <button class="cat-btn active" onclick="filterDocs('tutti',this)">Tutti</button>
@@ -374,20 +388,19 @@ footer a{color:rgba(255,255,255,.8)}
     <div class="doc-list" id="doc-list"></div>
   </div>
 
-  <!-- ── IMPOSTAZIONI (solo admin) ── -->
+  <!-- IMPOSTAZIONI (solo admin) -->
   <div class="tc" id="tab-impost">
     <div class="panel blu">
-      <h3>🔑 Cambia password visualizzatrici</h3>
-      <p style="font-size:12px;color:var(--t2);margin-bottom:1rem">Modifica la password che usano le commissarie per accedere in sola visualizzazione.</p>
-      <div class="fi"><label>Nuova password visualizzatrici</label><input type="password" id="pwd-view-new" placeholder="••••••••"></div>
+      <h3>🔑 Cambia password commissarie</h3>
+      <p style="font-size:12px;color:var(--t2);margin-bottom:1rem">Password per accesso in sola visualizzazione.</p>
+      <div class="fi"><label>Nuova password commissarie</label><input type="password" id="pwd-view-new" placeholder="••••••••"></div>
       <div class="fi"><label>Conferma</label><input type="password" id="pwd-view-new2" placeholder="••••••••"></div>
       <button class="btn-verde" onclick="changeViewPassword()">Aggiorna</button>
-      <p class="ok-msg" id="pwd-view-ok">✓ Password visualizzatrici aggiornata!</p>
+      <p class="ok-msg" id="pwd-view-ok">✓ Password commissarie aggiornata!</p>
       <p id="pwd-view-err" style="display:none;font-size:12px;color:var(--rosso);margin-top:8px"></p>
     </div>
     <div class="panel oro">
       <h3>🔑 Cambia password admin</h3>
-      <p style="font-size:12px;color:var(--t2);margin-bottom:1rem">Modifica la tua password di amministratrice.</p>
       <div class="fi"><label>Password attuale</label><input type="password" id="pwd-admin-old" placeholder="••••••••"></div>
       <div class="fi"><label>Nuova password</label><input type="password" id="pwd-admin-new" placeholder="••••••••"></div>
       <div class="fi"><label>Conferma</label><input type="password" id="pwd-admin-new2" placeholder="••••••••"></div>
@@ -397,10 +410,10 @@ footer a{color:rgba(255,255,255,.8)}
     </div>
     <div class="panel grigio">
       <h3>🗑️ Gestione dati</h3>
-      <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Elimina tutti gli eventi o tutti i documenti dal database. L'operazione non è reversibile.</p>
+      <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Elimina tutti gli eventi o tutti i documenti. Operazione non reversibile.</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn-rosso" style="padding:8px 16px;font-size:13px" onclick="clearEvents()">Elimina tutti gli eventi</button>
-        <button class="btn-rosso" style="padding:8px 16px;font-size:13px" onclick="clearDocs()">Elimina tutti i documenti</button>
+        <button class="btn-sm rosso" style="padding:8px 16px;font-size:13px" onclick="clearEvents()">Elimina tutti gli eventi</button>
+        <button class="btn-sm rosso" style="padding:8px 16px;font-size:13px" onclick="clearDocs()">Elimina tutti i documenti</button>
       </div>
     </div>
   </div>
@@ -419,8 +432,6 @@ footer a{color:rgba(255,255,255,.8)}
       </svg>
       <div><h2>Area riservata CPO</h2><p style="font-size:11px;color:var(--t3)">Comune di Follonica</p></div>
     </div>
-
-    <!-- Selezione ruolo -->
     <p class="sub">Seleziona il tuo accesso:</p>
     <div class="role-cards">
       <div class="role-card selected" id="rc-viewer" onclick="selectRole('viewer')">
@@ -434,7 +445,6 @@ footer a{color:rgba(255,255,255,.8)}
         <div class="role-desc">Gestione completa eventi e documenti</div>
       </div>
     </div>
-
     <div class="fi">
       <label id="pwd-label">Password commissaria</label>
       <input type="password" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
@@ -458,14 +468,14 @@ footer a{color:rgba(255,255,255,.8)}
 // ══════════════════════════════════════
 const SB_URL='https://nxcjpeahugyiuazflcvf.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54Y2pwZWFodWd5aXVhemZsY3ZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NjkwMDYsImV4cCI6MjA5NDU0NTAwNn0.tK1_2Zbg1NiHrj1IAsfKTbPzzMH86rAIpi7RzT8vYqE';
-const H={
-  'Content-Type':'application/json',
-  'apikey':SB_KEY,
-  'Authorization':'Bearer '+SB_KEY,
-  'Prefer':'return=representation'
-};
+const H={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=representation'};
+const HP={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'};
+
 async function sbGet(t,f=''){ const r=await fetch(`${SB_URL}/rest/v1/${t}?order=creato_il.asc${f}`,{headers:H}); if(!r.ok)throw new Error(await r.text()); return r.json(); }
 async function sbInsert(t,d){ const r=await fetch(`${SB_URL}/rest/v1/${t}`,{method:'POST',headers:H,body:JSON.stringify(d)}); if(!r.ok)throw new Error(await r.text()); return r.json(); }
+async function sbUpdate(t,id,d){ const r=await fetch(`${SB_URL}/rest/v1/${t}?id=eq.${id}`,{method:'PATCH',headers:HP,body:JSON.stringify(d)}); if(!r.ok)throw new Error(await r.text()); }
+async function sbUpdateWhere(t,col,val,d){ const r=await fetch(`${SB_URL}/rest/v1/${t}?${col}=eq.${encodeURIComponent(val)}`,{method:'PATCH',headers:HP,body:JSON.stringify(d)}); if(!r.ok)throw new Error(await r.text()); }
+async function sbUpsert(t,d){ const r=await fetch(`${SB_URL}/rest/v1/${t}`,{method:'POST',headers:{...H,'Prefer':'resolution=merge-duplicates'},body:JSON.stringify(d)}); if(!r.ok)throw new Error(await r.text()); }
 async function sbDelete(t,id){ const r=await fetch(`${SB_URL}/rest/v1/${t}?id=eq.${id}`,{method:'DELETE',headers:H}); if(!r.ok)throw new Error(await r.text()); }
 async function sbDeleteAll(t){ const r=await fetch(`${SB_URL}/rest/v1/${t}?id=gt.0`,{method:'DELETE',headers:H}); if(!r.ok)throw new Error(await r.text()); }
 async function sbDeleteBySrc(src){ const r=await fetch(`${SB_URL}/rest/v1/eventi?src=eq.${src}`,{method:'DELETE',headers:H}); if(!r.ok)throw new Error(await r.text()); }
@@ -473,17 +483,15 @@ async function sbDeleteBySrc(src){ const r=await fetch(`${SB_URL}/rest/v1/eventi
 // ══════════════════════════════════════
 // PASSWORD E RUOLI
 // ══════════════════════════════════════
-const K_PASS_ADMIN  = 'cpo_pass_admin';
-const K_PASS_VIEWER = 'cpo_pass_viewer';
-function getPassAdmin(){  return localStorage.getItem(K_PASS_ADMIN)  || 'cpoAdmin2026'; }
-function getPassViewer(){ return localStorage.getItem(K_PASS_VIEWER) || 'cpo2026'; }
+const K_PA='cpo_pass_admin', K_PV='cpo_pass_viewer';
+function getPA(){ return localStorage.getItem(K_PA)||'cpoAdmin2026'; }
+function getPV(){ return localStorage.getItem(K_PV)||'cpo2026'; }
 
 // ══════════════════════════════════════
 // STATO
 // ══════════════════════════════════════
 let events=[], docs=[], currentFilter='tutti';
-let loggedIn=false, currentRole=null; // 'admin' | 'viewer'
-let selectedRole='viewer';
+let loggedIn=false, currentRole=null, selectedRole='viewer';
 let curM=new Date().getMonth()+1, curY=new Date().getFullYear();
 
 // ══════════════════════════════════════
@@ -501,10 +509,10 @@ function closeModal(){ document.getElementById('modal').style.display='none'; do
 
 function selectRole(role){
   selectedRole=role;
-  document.getElementById('rc-viewer').classList.toggle('selected', role==='viewer');
-  document.getElementById('rc-admin').classList.toggle('selected', role==='admin');
-  document.getElementById('pwd-label').textContent = role==='admin'?'Password amministratrice':'Password commissaria';
-  document.getElementById('btn-login').style.background = role==='admin'?'var(--oro)':'var(--blu)';
+  document.getElementById('rc-viewer').classList.toggle('selected',role==='viewer');
+  document.getElementById('rc-admin').classList.toggle('selected',role==='admin');
+  document.getElementById('pwd-label').textContent=role==='admin'?'Password amministratrice':'Password commissaria';
+  document.getElementById('btn-login').style.background=role==='admin'?'var(--oro)':'var(--blu)';
   document.getElementById('pwd-err').style.display='none';
   document.getElementById('pwd-input').value='';
   document.getElementById('pwd-input').focus();
@@ -512,49 +520,36 @@ function selectRole(role){
 
 function doLogin(){
   const pwd=document.getElementById('pwd-input').value;
-  const isAdmin  = pwd===getPassAdmin();
-  const isViewer = pwd===getPassViewer();
-  if(!isAdmin && !isViewer){ document.getElementById('pwd-err').style.display='block'; return; }
-  // Se ha inserito la password giusta per il ruolo selezionato
-  // (oppure se admin usa password viewer per sicurezza — non permesso)
-  if(selectedRole==='admin' && !isAdmin){ document.getElementById('pwd-err').style.display='block'; return; }
-  if(selectedRole==='viewer' && !isViewer && !isAdmin){ document.getElementById('pwd-err').style.display='block'; return; }
-
-  currentRole = isAdmin ? 'admin' : 'viewer';
-  loggedIn=true; closeModal();
-  applyRole();
-  showPage('member',null);
-  loadAll();
+  const isAdmin=pwd===getPA(), isViewer=pwd===getPV();
+  if(!isAdmin&&!isViewer){ document.getElementById('pwd-err').style.display='block'; return; }
+  if(selectedRole==='admin'&&!isAdmin){ document.getElementById('pwd-err').style.display='block'; return; }
+  currentRole=isAdmin?'admin':'viewer';
+  loggedIn=true; closeModal(); applyRole();
+  showPage('member',null); loadAll();
 }
 
 function applyRole(){
-  const isAdmin = currentRole==='admin';
-  // Badge ruolo
+  const isAdmin=currentRole==='admin';
   const badge=document.getElementById('badge-role');
-  if(isAdmin){
-    badge.className='badge-role admin';
-    badge.innerHTML='⚙️ Amministratrice — accesso completo';
-  } else {
-    badge.className='badge-role viewer';
-    badge.innerHTML='👁️ Commissaria — sola visualizzazione';
-  }
-  // Pulsante nav
-  document.getElementById('ltog').textContent = isAdmin?'⚙️ Admin':'👁️ Area riservata';
-  document.getElementById('ltog').className   = 'lb ' + (isAdmin?'on-admin':'on-view');
-  // Mostra/nascondi elementi
+  badge.className='badge-role '+(isAdmin?'admin':'viewer');
+  badge.innerHTML=isAdmin?'⚙️ Amministratrice — accesso completo':'👁️ Commissaria — sola visualizzazione';
+  document.getElementById('ltog').textContent=isAdmin?'⚙️ Admin':'👁️ Area riservata';
+  document.getElementById('ltog').className='lb '+(isAdmin?'on-admin':'on-view');
   document.querySelectorAll('.admin-only').forEach(el=>el.style.display=isAdmin?'':'none');
   document.querySelectorAll('.viewer-only').forEach(el=>el.style.display=isAdmin?'none':'');
-  // Tab impostazioni solo admin
   document.getElementById('tab-impost-btn').style.display=isAdmin?'':'none';
+  // Mostra pulsante modifica descrizione solo se admin e siamo sulla home
+  document.getElementById('hero-edit-btn').style.display=isAdmin?'inline-flex':'none';
 }
 
 function logout(){
   loggedIn=false; currentRole=null;
   document.getElementById('ltog').textContent='Area riservata';
   document.getElementById('ltog').className='lb';
+  document.getElementById('hero-edit-btn').style.display='none';
+  cancelEditDesc();
   showPage('home',document.querySelector('.nb'));
   document.querySelector('.nb').classList.add('active');
-  // Reset selezione ruolo
   selectRole('viewer');
 }
 function showTab(n,b){
@@ -565,12 +560,13 @@ function showTab(n,b){
 }
 
 // ══════════════════════════════════════
-// CARICA DATI
+// CARICA TUTTO
 // ══════════════════════════════════════
 async function loadAll(){
   setDbStatus('caricamento');
   try{
-    [events,docs]=await Promise.all([sbGet('eventi'),sbGet('documenti')]);
+    const [ev,dc]=await Promise.all([sbGet('eventi'),sbGet('documenti')]);
+    events=ev; docs=dc;
     setDbStatus('ok');
     renderCalendar(); renderDocs();
   } catch(e){ setDbStatus('err'); console.error(e); }
@@ -580,6 +576,43 @@ function setDbStatus(s){
   if(s==='ok') el.innerHTML='<span class="db-status ok">🟢 Database condiviso connesso</span>';
   else if(s==='err') el.innerHTML='<span class="db-status err">🔴 Errore connessione. Ricarica la pagina.</span>';
   else el.innerHTML='<span class="db-status ok" style="opacity:.6">⏳ Connessione...</span>';
+}
+
+// ══════════════════════════════════════
+// DESCRIZIONE CPO — modificabile
+// ══════════════════════════════════════
+async function loadDesc(){
+  try{
+    const r=await fetch(`${SB_URL}/rest/v1/testi?chiave=eq.descrizione_cpo`,{headers:H});
+    const data=await r.json();
+    const testo=data[0]?.valore||'Organo consultivo del Comune di Follonica.';
+    document.getElementById('hero-desc').textContent=testo;
+  } catch(e){ document.getElementById('hero-desc').textContent='Organo consultivo del Comune di Follonica che promuove e tutela la parità di diritti e opportunità tra donne e uomini nel territorio comunale.'; }
+}
+
+function startEditDesc(){
+  const testo=document.getElementById('hero-desc').textContent;
+  document.getElementById('hero-textarea').value=testo;
+  document.getElementById('hero-desc').style.display='none';
+  document.getElementById('hero-edit-btn').style.display='none';
+  document.getElementById('hero-editor').style.display='block';
+  document.getElementById('hero-textarea').focus();
+}
+function cancelEditDesc(){
+  document.getElementById('hero-editor').style.display='none';
+  document.getElementById('hero-desc').style.display='block';
+  if(currentRole==='admin') document.getElementById('hero-edit-btn').style.display='inline-flex';
+}
+async function saveDesc(){
+  const testo=document.getElementById('hero-textarea').value.trim();
+  if(!testo){ alert('Il testo non può essere vuoto.'); return; }
+  try{
+    await sbUpsert('testi',{chiave:'descrizione_cpo',valore:testo});
+    document.getElementById('hero-desc').textContent=testo;
+    cancelEditDesc();
+    const ok=document.getElementById('desc-ok');
+    ok.style.display='block'; setTimeout(()=>ok.style.display='none',3000);
+  } catch(e){ alert('Errore nel salvataggio: '+e.message); }
 }
 
 // ══════════════════════════════════════
@@ -603,7 +636,7 @@ function handleXlFile(file){
       const iT=hdr.findIndex(c=>c.includes('titolo'));
       const iO=hdr.findIndex(c=>c.includes('orario')||c.includes('ora'));
       const iL=hdr.findIndex(c=>c.includes('luogo'));
-      if(iD===-1||iT===-1){ showXlResult('Colonne Data e Titolo non trovate.','warn'); return; }
+      if(iD===-1||iT===-1){ showXlResult('Colonne Data e Titolo obbligatorie non trovate.','warn'); return; }
       const nuovi=[], saltati=[];
       for(let i=hr+1;i<rows.length;i++){
         const row=rows[i];
@@ -646,10 +679,9 @@ async function confirmImport(){
   try{
     await sbDeleteBySrc('excel');
     await sbInsert('eventi',nuovi);
-    resetXlPreview();
-    await loadAll();
+    resetXlPreview(); await loadAll();
     if(nuovi.length){ curM=nuovi[0].mese; curY=nuovi[0].anno; renderCalendar(); }
-    showXlResult(`✓ ${nuovi.length} eventi importati con successo!`,'ok');
+    showXlResult(`✓ ${nuovi.length} eventi importati!`,'ok');
   } catch(e){ btn.disabled=false; btn.textContent='✓ Importa'; showXlResult('Errore: '+e.message,'warn'); }
 }
 function resetXlPreview(){ document.getElementById('xl-preview').innerHTML=''; document.getElementById('xl-input').value=''; }
@@ -679,7 +711,7 @@ async function addEvent(){
   btn.disabled=false; btn.textContent='Aggiungi al calendario';
 }
 async function deleteEvent(id){
-  if(currentRole!=='admin'){ alert('Solo l\'amministratrice può eliminare eventi.'); return; }
+  if(currentRole!=='admin') return;
   if(!confirm('Eliminare questo evento?'))return;
   try{ await sbDelete('eventi',id); await loadAll(); renderCalendar(); } catch(e){ alert('Errore: '+e.message); }
 }
@@ -691,8 +723,7 @@ async function clearEvents(){
 function renderCalendar(){
   document.getElementById('cal-title').textContent=MONTHS[curM-1]+' '+curY;
   const tot=events.length, xl=events.filter(e=>e.src==='excel').length;
-  document.getElementById('ev-count').textContent=tot===0?'Nessun evento':
-    `${tot} eventi totali${xl?' · '+xl+' da Excel':''}`;
+  document.getElementById('ev-count').textContent=tot===0?'Nessun evento':`${tot} eventi${xl?' · '+xl+' da Excel':''}`;
   const grid=document.getElementById('cal-grid'); grid.innerHTML='';
   ['L','M','M','G','V','S','D'].forEach(d=>{ const el=document.createElement('div'); el.className='cdn'; el.textContent=d; grid.appendChild(el); });
   const first=new Date(curY,curM-1,1).getDay(), offset=first===0?6:first-1;
@@ -714,7 +745,7 @@ function renderCalendar(){
         <h4>${e.titolo} <span class="ev-src ${e.src||'manual'}">${e.src==='excel'?'Excel':'Manuale'}</span></h4>
         ${[e.ora,e.luogo].filter(Boolean).length?`<p>${[e.ora,e.luogo].filter(Boolean).join(' · ')}</p>`:''}
       </div>
-      ${isAdmin?`<button class="btn-rosso" onclick="deleteEvent(${e.id})">✕</button>`:''}
+      ${isAdmin?`<button class="btn-sm rosso" onclick="deleteEvent(${e.id})">✕ Elimina</button>`:''}
     </div>`).join('');
 }
 function prevMonth(){ curM--; if(curM<1){curM=12;curY--;} renderCalendar(); }
@@ -725,6 +756,7 @@ function nextMonth(){ curM++; if(curM>12){curM=1;curY++;} renderCalendar(); }
 // ══════════════════════════════════════
 function driveToDownload(url){ if(!url)return''; const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/); if(m)return`https://drive.google.com/uc?export=download&id=${m[1]}`; return url; }
 const CAT_LABEL={verbale:'Verbale',lavoro:'Documento di lavoro',comunicazione:'Comunicazione',altro:'Altro'};
+const CAT_OPTIONS=['verbale','lavoro','comunicazione','altro'];
 const TIPO_ICO={pdf:'📄',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊',default:'📎'};
 const TIPO_BG={pdf:'#FCEBEB',doc:'#E6F1FB',docx:'#E6F1FB',xls:'#E8F7EE',xlsx:'#E8F7EE',default:'#F5F5F0'};
 function guessType(link){ if(!link)return'default'; const l=link.toLowerCase(); for(const e of['pdf','docx','doc','xlsx','xls'])if(l.includes(e))return e; return'default'; }
@@ -747,9 +779,10 @@ async function addDoc(){
   } catch(e){ alert('Errore: '+e.message); }
   btn.disabled=false; btn.textContent='Aggiungi documento';
 }
+
 async function deleteDoc(id){
-  if(currentRole!=='admin'){ alert('Solo l\'amministratrice può eliminare documenti.'); return; }
-  if(!confirm('Eliminare?'))return;
+  if(currentRole!=='admin') return;
+  if(!confirm('Eliminare questo documento?'))return;
   try{ await sbDelete('documenti',id); await loadAll(); } catch(e){ alert('Errore: '+e.message); }
 }
 async function clearDocs(){
@@ -757,6 +790,35 @@ async function clearDocs(){
   if(!confirm('Eliminare TUTTI i documenti?'))return;
   try{ await sbDeleteAll('documenti'); await loadAll(); } catch(e){ alert('Errore: '+e.message); }
 }
+
+// MODIFICA DOCUMENTO INLINE
+function toggleDocEditor(id){
+  const edEl=document.getElementById('doc-editor-'+id);
+  const isOpen=edEl.style.display==='block';
+  // chiudi tutti gli altri editor aperti
+  document.querySelectorAll('[id^=doc-editor-]').forEach(el=>el.style.display='none');
+  document.querySelectorAll('[id^=doc-editbtn-]').forEach(el=>el.textContent='✏️ Modifica');
+  if(!isOpen){
+    edEl.style.display='block';
+    document.getElementById('doc-editbtn-'+id).textContent='✕ Chiudi';
+  }
+}
+async function saveDocEdit(id){
+  const nome=document.getElementById('ed-nome-'+id).value.trim();
+  const cat=document.getElementById('ed-cat-'+id).value;
+  const data=document.getElementById('ed-data-'+id).value||null;
+  const link=document.getElementById('ed-link-'+id).value.trim();
+  if(!nome){ alert('Il nome non può essere vuoto.'); return; }
+  const btn=document.getElementById('ed-save-'+id);
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>';
+  try{
+    await sbUpdate('documenti',id,{nome,cat,data,link,tipo:guessType(link)});
+    await loadAll();
+    flash('doc-edit-ok-'+id);
+  } catch(e){ alert('Errore: '+e.message); }
+  btn.disabled=false; btn.textContent='✓ Salva';
+}
+
 function filterDocs(cat,btn){
   currentFilter=cat;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
@@ -774,11 +836,43 @@ function renderDocs(){
     const dataFmt=d.data?new Date(d.data+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'short',year:'numeric'}):'';
     const dlBtn=dlUrl?`<a class="btn-dl" href="${dlUrl}" target="_blank" rel="noopener">⬇ Scarica</a>`
       :`<span class="btn-dl" style="opacity:.4;cursor:default">⬇ Scarica</span>`;
+    const catOpts=CAT_OPTIONS.map(c=>`<option value="${c}" ${d.cat===c?'selected':''}>${CAT_LABEL[c]}</option>`).join('');
+    const adminActions=isAdmin?`
+      <button class="btn-sm oro" id="doc-editbtn-${d.id}" onclick="toggleDocEditor(${d.id})">✏️ Modifica</button>
+      <button class="btn-sm rosso" onclick="deleteDoc(${d.id})">✕ Elimina</button>` : '';
+    const editor=isAdmin?`
+      <div class="doc-editor" id="doc-editor-${d.id}">
+        <div class="form-grid">
+          <div class="fi full"><label style="font-size:11px">Nome documento</label>
+            <input type="text" id="ed-nome-${d.id}" value="${d.nome.replace(/"/g,'&quot;')}">
+          </div>
+          <div class="fi"><label style="font-size:11px">Categoria</label>
+            <select id="ed-cat-${d.id}">${catOpts}</select>
+          </div>
+          <div class="fi"><label style="font-size:11px">Data</label>
+            <input type="date" id="ed-data-${d.id}" value="${d.data||''}">
+          </div>
+          <div class="fi full"><label style="font-size:11px">Link Google Drive</label>
+            <input type="url" id="ed-link-${d.id}" value="${(d.link||'').replace(/"/g,'&quot;')}">
+          </div>
+        </div>
+        <div class="doc-editor-btns">
+          <button class="btn-sm verde" id="ed-save-${d.id}" onclick="saveDocEdit(${d.id})">✓ Salva modifiche</button>
+          <button class="btn-sm grigio" onclick="toggleDocEditor(${d.id})">Annulla</button>
+        </div>
+        <p class="ok-msg" id="doc-edit-ok-${d.id}" style="font-size:11px">✓ Documento aggiornato!</p>
+      </div>` : '';
     return `<div class="doc-item">
       <div class="doc-ico" style="background:${TIPO_BG[tipo]||TIPO_BG.default}">${TIPO_ICO[tipo]||'📎'}</div>
-      <div class="doc-meta"><h4>${d.nome}</h4><p>${CAT_LABEL[d.cat]||d.cat}${dataFmt?' · '+dataFmt:''}</p></div>
-      ${dlBtn}
-      ${isAdmin?`<button class="btn-rosso" onclick="deleteDoc(${d.id})">✕</button>`:''}
+      <div class="doc-meta">
+        <h4>${d.nome}</h4>
+        <p>${CAT_LABEL[d.cat]||d.cat}${dataFmt?' · '+dataFmt:''}</p>
+        <div class="doc-actions">
+          ${dlBtn}
+          ${adminActions}
+        </div>
+        ${editor}
+      </div>
     </div>`;
   }).join('');
 }
@@ -789,11 +883,10 @@ function renderDocs(){
 function changeViewPassword(){
   const nw=document.getElementById('pwd-view-new').value;
   const nw2=document.getElementById('pwd-view-new2').value;
-  const err=document.getElementById('pwd-view-err');
-  err.style.display='none';
+  const err=document.getElementById('pwd-view-err'); err.style.display='none';
   if(nw.length<6){ err.textContent='Minimo 6 caratteri.'; err.style.display='block'; return; }
   if(nw!==nw2){ err.textContent='Le password non coincidono.'; err.style.display='block'; return; }
-  localStorage.setItem(K_PASS_VIEWER,nw);
+  localStorage.setItem(K_PV,nw);
   ['pwd-view-new','pwd-view-new2'].forEach(id=>document.getElementById(id).value='');
   flash('pwd-view-ok');
 }
@@ -801,18 +894,20 @@ function changeAdminPassword(){
   const old=document.getElementById('pwd-admin-old').value;
   const nw=document.getElementById('pwd-admin-new').value;
   const nw2=document.getElementById('pwd-admin-new2').value;
-  const err=document.getElementById('pwd-admin-err');
-  err.style.display='none';
-  if(old!==getPassAdmin()){ err.textContent='Password attuale errata.'; err.style.display='block'; return; }
+  const err=document.getElementById('pwd-admin-err'); err.style.display='none';
+  if(old!==getPA()){ err.textContent='Password attuale errata.'; err.style.display='block'; return; }
   if(nw.length<6){ err.textContent='Minimo 6 caratteri.'; err.style.display='block'; return; }
   if(nw!==nw2){ err.textContent='Le password non coincidono.'; err.style.display='block'; return; }
-  localStorage.setItem(K_PASS_ADMIN,nw);
+  localStorage.setItem(K_PA,nw);
   ['pwd-admin-old','pwd-admin-new','pwd-admin-new2'].forEach(id=>document.getElementById(id).value='');
   flash('pwd-admin-ok');
 }
 
-function flash(id){ const el=document.getElementById(id); el.style.display='block'; setTimeout(()=>el.style.display='none',3500); }
+function flash(id){ const el=document.getElementById(id); if(!el)return; el.style.display='block'; setTimeout(()=>el.style.display='none',3500); }
 function contactSent(){ document.getElementById('contact-ok').style.display='block'; }
+
+// Carica la descrizione all'avvio
+loadDesc();
 </script>
 </body>
 </html>
