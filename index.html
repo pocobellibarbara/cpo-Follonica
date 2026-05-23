@@ -607,7 +607,13 @@ async function saveDesc(){
   const testo=document.getElementById('hero-textarea').value.trim();
   if(!testo){ alert('Il testo non può essere vuoto.'); return; }
   try{
-    await sbUpsert('testi',{chiave:'descrizione_cpo',valore:testo});
+    // Usa PATCH per aggiornare la riga esistente tramite la chiave univoca
+    const r=await fetch(`${SB_URL}/rest/v1/testi?chiave=eq.descrizione_cpo`,{
+      method:'PATCH',
+      headers:{...HP},
+      body:JSON.stringify({valore:testo})
+    });
+    if(!r.ok){ const err=await r.text(); throw new Error(err); }
     document.getElementById('hero-desc').textContent=testo;
     cancelEditDesc();
     const ok=document.getElementById('desc-ok');
