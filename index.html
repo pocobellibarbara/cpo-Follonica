@@ -5,192 +5,278 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Commissione Pari Opportunità — Comune di Follonica</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,-apple-system,sans-serif;background:#f5f5f0;min-height:100vh}
-:root{
-  --blu:#1a4a8a;--blu-l:#e8f0fb;--blu-m:#2b6cb0;
-  --oro:#c9932a;--oro-l:#fdf3e3;
-  --viola:#6b3fa0;--viola-l:#f3eefb;
-  --verde:#1a6b3a;--verde-l:#e8f7ee;
-  --rosso:#a32020;--rosso-l:#fceaea;
-  --bg:#fff;--bg2:#f8f8f5;
-  --t:#1a1a1a;--t2:#555;--t3:#888;
-  --br:rgba(0,0,0,0.1);--br2:rgba(0,0,0,0.18);
-  --r:8px;--rl:12px
-}
-nav{background:var(--blu);border-bottom:3px solid var(--oro);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;min-height:64px;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:50}
-.nav-brand{display:flex;align-items:center;gap:12px}
-.nav-comune{font-size:11px;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:.08em;line-height:1.2}
-.nav-cpo{font-size:13px;font-weight:500;color:#fff}
-.nav-links{display:flex;gap:2px}
-.nb{font-size:13px;padding:6px 12px;border-radius:6px;border:none;background:transparent;color:rgba(255,255,255,0.8);cursor:pointer;transition:all .15s}
-.nb:hover,.nb.active{background:rgba(255,255,255,0.15);color:#fff}
-.lb{font-size:12px;padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.4);background:transparent;color:#fff;cursor:pointer;transition:all .15s;flex-shrink:0}
-.lb:hover{background:rgba(255,255,255,0.15)}
-.lb.on-view{background:var(--blu-m);border-color:var(--blu-m)}
-.lb.on-admin{background:var(--oro);border-color:var(--oro)}
-.page{display:none;padding:2rem 1.5rem;max-width:900px;margin:0 auto}
-.page.active{display:block}
-/* HERO */
-.hero{background:var(--bg);border-radius:var(--rl);border:.5px solid var(--br);border-top:3px solid var(--blu);padding:2rem;margin-bottom:1.5rem;display:flex;gap:1.5rem;align-items:flex-start}
-.hero h1{font-size:22px;font-weight:500;margin-bottom:.4rem}
-.hero-sub{font-size:12px;color:var(--blu);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem;font-weight:500}
-.hero-desc{font-size:14px;color:var(--t2);line-height:1.7}
-.hero-edit-btn{font-size:11px;padding:3px 10px;border-radius:99px;border:.5px solid var(--oro);background:var(--oro-l);color:var(--oro);cursor:pointer;margin-top:8px;display:none}
-.hero-edit-btn:hover{opacity:.8}
-.hero-editor{display:none;margin-top:10px}
-.hero-editor textarea{width:100%;padding:8px 10px;font-size:13px;font-family:inherit;border:.5px solid var(--blu-m);border-radius:var(--r);resize:vertical;height:100px;outline:none}
-.hero-editor-btns{display:flex;gap:8px;margin-top:6px}
-.info-strip{background:var(--blu-l);border-radius:var(--r);border:.5px solid #b8cfe8;padding:.75rem 1rem;margin-bottom:1.5rem;font-size:12px;color:var(--blu)}
-.info-strip a{color:var(--blu-m)}
-.st{font-size:11px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:1rem}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:1.5rem}
-.card{background:var(--bg);border:.5px solid var(--br);border-radius:var(--rl);padding:1.25rem}
-.card-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:16px}
-.card h3{font-size:13px;font-weight:500;margin-bottom:4px}
-.card p{font-size:12px;color:var(--t2);line-height:1.5}
-/* NEWS */
-.news-list{display:flex;flex-direction:column;gap:10px}
-.ni{background:var(--bg);border:.5px solid var(--br);border-radius:var(--rl);padding:1rem 1.25rem;display:flex;gap:1rem}
-.nd{font-size:10px;color:var(--t3);white-space:nowrap;padding-top:2px}
-.ni h4{font-size:13px;font-weight:500;margin-bottom:3px}
-.ni p{font-size:12px;color:var(--t2);line-height:1.5}
-/* CONTATTI */
-.cf{background:var(--bg);border:.5px solid var(--br);border-radius:var(--rl);padding:1.5rem;max-width:480px}
-.fi{margin-bottom:1rem}
-.fi label{display:block;font-size:12px;color:var(--t2);margin-bottom:4px}
-.fi input,.fi textarea,.fi select{width:100%;padding:8px 10px;font-size:13px;font-family:inherit;border:.5px solid var(--br2);border-radius:var(--r);background:var(--bg);color:var(--t);outline:none;transition:border-color .15s}
-.fi input:focus,.fi textarea:focus,.fi select:focus{border-color:var(--blu-m)}
-.fi textarea{height:80px;resize:vertical}
-/* BUTTONS */
-.btn-blu{background:var(--blu);color:#fff;border:none;padding:9px 22px;border-radius:var(--r);font-size:13px;cursor:pointer;transition:opacity .15s}
-.btn-blu:hover{opacity:.85}
-.btn-verde{background:var(--verde);color:#fff;border:none;padding:8px 18px;border-radius:var(--r);font-size:13px;cursor:pointer;transition:opacity .15s}
-.btn-verde:hover{opacity:.85}
-.btn-oro{background:var(--oro);color:#fff;border:none;padding:8px 18px;border-radius:var(--r);font-size:13px;cursor:pointer;transition:opacity .15s}
-.btn-oro:hover{opacity:.85}
-.btn-sm{font-size:11px;padding:4px 12px;border-radius:6px;border:none;cursor:pointer;transition:opacity .15s}
-.btn-sm:hover{opacity:.8}
-.btn-sm.verde{background:var(--verde-l);color:var(--verde)}
-.btn-sm.oro{background:var(--oro-l);color:var(--oro)}
-.btn-sm.rosso{background:var(--rosso-l);color:var(--rosso)}
-.btn-sm.grigio{background:var(--bg2);color:var(--t2);border:.5px solid var(--br2)}
-.btn-cancel{flex:1;background:transparent;border:.5px solid var(--br2);padding:8px;border-radius:var(--r);font-size:13px;cursor:pointer;color:var(--t2)}
-.btn-cancel:hover{background:var(--bg2)}
-/* MODAL */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:100}
-.modal{background:var(--bg);border-radius:var(--rl);border:.5px solid var(--br);padding:1.75rem;width:400px;max-width:95vw}
-.modal h2{font-size:16px;font-weight:500;margin-bottom:.25rem}
-.modal .sub{font-size:12px;color:var(--t2);margin-bottom:1rem;line-height:1.5}
-.mbtns{display:flex;gap:8px;margin-top:1rem}
-.errmsg{font-size:11px;color:#c00;margin-top:4px}
-/* ROLE CARDS */
-.role-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem}
-.role-card{border:.5px solid var(--br2);border-radius:var(--rl);padding:1rem;cursor:pointer;transition:all .15s;text-align:center;background:var(--bg)}
-.role-card:hover{border-color:var(--blu-m);background:var(--blu-l)}
-.role-card.selected{border-color:var(--blu);background:var(--blu-l);box-shadow:0 0 0 2px var(--blu-l)}
-.role-card .role-icon{font-size:26px;margin-bottom:6px}
-.role-card .role-name{font-size:13px;font-weight:500;color:var(--t)}
-.role-card .role-desc{font-size:11px;color:var(--t3);margin-top:2px}
-.role-card.admin-card:hover,.role-card.admin-card.selected{border-color:var(--oro);background:var(--oro-l);box-shadow:0 0 0 2px var(--oro-l)}
-/* AREA RISERVATA */
-.mh{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:8px}
-.mh h2{font-size:20px;font-weight:500}
-.badge-role{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:4px 10px;border-radius:99px;margin-bottom:.5rem}
-.badge-role.viewer{background:var(--blu-l);color:var(--blu);border:.5px solid #b8cfe8}
-.badge-role.admin{background:var(--oro-l);color:var(--oro);border:.5px solid #e8c880}
-.tabs{display:flex;gap:3px;margin-bottom:1.5rem;border-bottom:.5px solid var(--br);flex-wrap:wrap}
-.tab{font-size:13px;padding:6px 16px;border-radius:8px 8px 0 0;border:none;background:transparent;cursor:pointer;color:var(--t2);transition:all .15s;margin-bottom:-.5px}
-.tab.active{background:var(--bg);border:.5px solid var(--br);border-bottom-color:var(--bg);color:var(--t);font-weight:500}
-.tc{display:none}
-.tc.active{display:block}
-.panel{border-radius:var(--rl);padding:1.25rem;margin-bottom:1.25rem}
-.panel.verde{background:var(--verde-l);border:.5px solid #a8d5b8}
-.panel.blu{background:var(--blu-l);border:.5px solid #b8cfe8}
-.panel.oro{background:var(--oro-l);border:.5px solid #e8c880}
-.panel.grigio{background:var(--bg2);border:.5px solid var(--br)}
-.panel h3{font-size:14px;font-weight:500;margin-bottom:1rem;display:flex;align-items:center;gap:6px}
-.panel.verde h3{color:var(--verde)}
-.panel.blu h3{color:var(--blu)}
-.panel.oro h3{color:var(--oro)}
-.panel.grigio h3{color:var(--t2)}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.form-grid .fi{margin-bottom:0}
-.full{grid-column:1/-1}
-.ok-msg{font-size:12px;color:var(--verde);margin-top:8px;display:none}
-.link-hint{font-size:11px;color:var(--t3);margin-top:4px;line-height:1.5}
-.link-hint b{color:var(--t2)}
-.readonly-notice{background:var(--blu-l);border:.5px solid #b8cfe8;border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--blu)}
-/* SPINNER */
-.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px}
-@keyframes spin{to{transform:rotate(360deg)}}
-/* EXCEL */
-.xl-drop{border:2px dashed #a8d5b8;border-radius:var(--rl);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg);margin-bottom:1rem}
-.xl-drop:hover,.xl-drop.drag{border-color:var(--verde);background:var(--verde-l)}
-.xl-drop .ico{font-size:32px;margin-bottom:6px}
-.xl-drop p{font-size:13px;color:var(--t2)}
-.xl-drop small{font-size:11px;color:var(--t3);display:block;margin-top:4px}
-.xl-drop input{display:none}
-.preview-table{width:100%;border-collapse:collapse;font-size:12px}
-.preview-table th{background:var(--blu);color:#fff;padding:5px 10px;text-align:left}
-.preview-table td{padding:5px 10px;border-bottom:.5px solid var(--br)}
-.preview-table tr:nth-child(even) td{background:var(--bg2)}
-.import-result{font-size:13px;padding:.6rem 1rem;border-radius:var(--r);margin-top:8px;display:none}
-.import-result.ok{background:var(--verde-l);color:var(--verde);border:.5px solid #a8d5b8}
-.import-result.warn{background:var(--oro-l);color:var(--oro);border:.5px solid #e8c880}
-/* CALENDARIO */
-.cal-toolbar{font-size:12px;color:var(--t3);margin-bottom:1rem;min-height:18px}
-.calendar{background:var(--bg);border-radius:var(--rl);border:.5px solid var(--br)}
-.cal-hdr{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:.5px solid var(--br)}
-.cal-hdr h3{font-size:15px;font-weight:500}
-.cal-nav button{width:28px;height:28px;border-radius:6px;border:.5px solid var(--br2);background:transparent;cursor:pointer;color:var(--t2);font-size:14px}
-.cal-nav button:hover{background:var(--bg2)}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);padding:1rem;gap:2px}
-.cdn{text-align:center;font-size:10px;color:var(--t3);padding:4px 0;font-weight:500}
-.cd{text-align:center;padding:6px 4px;border-radius:6px;font-size:12px;cursor:pointer;transition:background .1s;min-height:30px;position:relative;color:var(--t)}
-.cd:hover:not(.empty){background:var(--bg2)}
-.cd.today{font-weight:600;color:var(--blu)}
-.cd.has-event::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--blu-m);position:absolute;bottom:3px;left:50%;transform:translateX(-50%)}
-.cd.empty{cursor:default}
-.ev-list{margin-top:1.5rem;display:flex;flex-direction:column;gap:10px}
-.ev-item{background:var(--bg);border:.5px solid var(--br);border-left:3px solid var(--blu-m);border-radius:0 10px 10px 0;padding:.9rem 1.1rem;display:flex;gap:1rem;align-items:center}
-.ev-badge{background:var(--blu-l);color:var(--blu);border-radius:8px;padding:6px 10px;text-align:center;min-width:44px;flex-shrink:0}
-.ev-badge .day{font-size:18px;font-weight:600;line-height:1}
-.ev-badge .mon{font-size:9px;text-transform:uppercase;letter-spacing:.05em}
-.ev-info{flex:1}
-.ev-info h4{font-size:13px;font-weight:500;margin-bottom:2px}
-.ev-info p{font-size:11px;color:var(--t2)}
-.ev-src{font-size:10px;padding:2px 7px;border-radius:99px;margin-left:6px}
-.ev-src.excel{background:var(--verde-l);color:var(--verde)}
-.ev-src.manual{background:var(--blu-l);color:var(--blu)}
-/* DOCUMENTI */
-.cat-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
-.cat-btn{font-size:12px;padding:5px 14px;border-radius:99px;border:.5px solid var(--br2);background:var(--bg);cursor:pointer;color:var(--t2);transition:all .15s}
-.cat-btn.active{background:var(--blu);color:#fff;border-color:var(--blu)}
-.doc-list{display:flex;flex-direction:column;gap:8px}
-.doc-item{background:var(--bg);border:.5px solid var(--br);border-radius:10px;padding:.9rem 1.25rem;display:flex;align-items:flex-start;gap:1rem}
-.doc-ico{width:34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:2px}
-.doc-meta{flex:1;min-width:0}
-.doc-meta h4{font-size:13px;font-weight:500;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.doc-meta p{font-size:11px;color:var(--t2);margin-bottom:6px}
-.doc-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.btn-dl{font-size:12px;color:var(--blu);background:var(--blu-l);padding:5px 12px;border-radius:6px;border:none;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block}
-.btn-dl:hover{opacity:.8}
-/* EDITOR DOCUMENTO INLINE */
-.doc-editor{background:var(--bg2);border:.5px solid var(--br2);border-radius:var(--r);padding:.9rem;margin-top:8px;display:none}
-.doc-editor .form-grid{gap:8px}
-.doc-editor .fi{margin-bottom:0}
-.doc-editor .fi input,.doc-editor .fi select{font-size:12px;padding:6px 8px}
-.doc-editor-btns{display:flex;gap:6px;margin-top:8px}
-.empty-msg{color:var(--t3);font-size:13px;padding:1rem 0}
-.db-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:99px;margin-bottom:1rem}
-.db-status.ok{background:var(--verde-l);color:var(--verde)}
-.db-status.err{background:var(--rosso-l);color:var(--rosso)}
-footer{background:var(--blu);color:rgba(255,255,255,.65);font-size:11px;text-align:center;padding:1rem;margin-top:3rem}
-footer a{color:rgba(255,255,255,.8)}
-@media(max-width:600px){.hero{flex-direction:column}.nav-links{display:none}.form-grid{grid-template-columns:1fr}.full{grid-column:1}.role-cards{grid-template-columns:1fr}}
-</style>
+<link rel="stylesheet" href="stile.css">
+</head>
+<body>
+<nav>
+  <div class="nav-brand">
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+      <rect width="44" height="44" rx="4" fill="white" fill-opacity="0.12"/>
+      <path d="M6 6H38V28Q22 42 22 42Q22 42 6 28Z" fill="#1a4a8a" stroke="#c9932a" stroke-width="1.5"/>
+      <path d="M6 26Q11 23 16 26Q21 29 26 26Q31 23 38 26L38 28Q22 42 22 42Q22 42 6 28Z" fill="#4a90d9"/>
+      <path d="M14 22Q22 19 30 22L29 25Q22 27 15 25Z" fill="#c9932a"/>
+      <line x1="22" y1="10" x2="22" y2="22" stroke="white" stroke-width="1.2"/>
+      <path d="M22 11L29 17L22 20Z" fill="white" fill-opacity="0.9"/>
+      <path d="M22 11L15 17L22 18Z" fill="white" fill-opacity="0.5"/>
+    </svg>
+    <div>
+      <div class="nav-comune">Comune di Follonica</div>
+      <div class="nav-cpo">Commissione Pari Opportunità</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <button class="nb active" onclick="showPage('home',this)">Home</button>
+    <button class="nb" onclick="showPage('news',this)">Notizie</button>
+    <button class="nb" onclick="showPage('contatti',this)">Contatti</button>
+  </div>
+  <button class="lb" id="ltog" onclick="toggleLogin()">Area riservata</button>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <svg width="72" height="72" viewBox="0 0 64 64" style="flex-shrink:0">
+      <circle cx="32" cy="32" r="30" fill="#e8f0fb" stroke="#1a4a8a" stroke-width="2"/>
+      <circle cx="22" cy="22" r="7" fill="none" stroke="#6b3fa0" stroke-width="2"/>
+      <line x1="22" y1="29" x2="22" y2="38" stroke="#6b3fa0" stroke-width="2"/>
+      <line x1="18" y1="33" x2="26" y2="33" stroke="#6b3fa0" stroke-width="2"/>
+      <circle cx="42" cy="22" r="7" fill="none" stroke="#1a4a8a" stroke-width="2"/>
+      <line x1="47" y1="17" x2="53" y2="11" stroke="#1a4a8a" stroke-width="2"/>
+      <line x1="49" y1="11" x2="53" y2="11" stroke="#1a4a8a" stroke-width="2"/>
+      <line x1="53" y1="11" x2="53" y2="15" stroke="#1a4a8a" stroke-width="2"/>
+      <line x1="20" y1="46" x2="44" y2="46" stroke="#c9932a" stroke-width="2.5"/>
+      <line x1="20" y1="51" x2="44" y2="51" stroke="#c9932a" stroke-width="2.5"/>
+    </svg>
+    <div style="flex:1">
+      <div class="hero-sub">Comune di Follonica · Organo istituzionale</div>
+      <h1>Commissione Pari Opportunità</h1>
+      <!-- Testo modificabile -->
+      <p class="hero-desc" id="hero-desc">Caricamento...</p>
+      <button class="hero-edit-btn" id="hero-edit-btn" onclick="startEditDesc()">✏️ Modifica descrizione</button>
+      <div class="hero-editor" id="hero-editor">
+        <textarea id="hero-textarea" placeholder="Descrizione della commissione..."></textarea>
+        <div class="hero-editor-btns">
+          <button class="btn-sm verde" onclick="saveDesc()">✓ Salva</button>
+          <button class="btn-sm grigio" onclick="cancelEditDesc()">Annulla</button>
+        </div>
+        <p class="ok-msg" id="desc-ok" style="display:none">✓ Descrizione aggiornata!</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-strip">
+    <strong>Sede:</strong> Largo Felice Cavallotti, 1 — 58022 Follonica (GR) &nbsp;·&nbsp;
+    <strong>Tel:</strong> 0566 59111 &nbsp;·&nbsp;
+    <a href="https://www.comune.follonica.gr.it">comune.follonica.gr.it</a>
+  </div>
+  <p class="st">Aree di intervento</p>
+  <div class="cards">
+    <div class="card"><div class="card-icon" style="background:#f3eefb">⚖️</div><h3>Pari opportunità</h3><p>Promozione dell'uguaglianza di genere nelle politiche locali.</p></div>
+    <div class="card"><div class="card-icon" style="background:#e8f0fb">🛡️</div><h3>Contrasto discriminazioni</h3><p>Monitoraggio e supporto in caso di discriminazione.</p></div>
+    <div class="card"><div class="card-icon" style="background:#fdf3e3">📣</div><h3>Sensibilizzazione</h3><p>Campagne, eventi e formazione rivolti alla cittadinanza.</p></div>
+    <div class="card"><div class="card-icon" style="background:#eafaf1">🤝</div><h3>Rete territoriale</h3><p>Collaborazione con enti, scuole e associazioni.</p></div>
+  </div>
+</div>
+
+<!-- NOTIZIE -->
+<div class="page" id="page-news">
+  <p class="st">Notizie e comunicati</p>
+  <div class="news-list">
+    <div class="ni"><span class="nd">18 Apr 2026</span><div><h4>Convegno "Lavoro e parità di genere"</h4><p>Giovedì 7 maggio al Teatro Fonderia Leopolda.</p></div></div>
+    <div class="ni"><span class="nd">2 Apr 2026</span><div><h4>Riunione plenaria — verbale disponibile</h4><p>Il verbale è disponibile nell'area riservata.</p></div></div>
+    <div class="ni"><span class="nd">20 Mar 2026</span><div><h4>8 marzo: successo per la giornata della donna</h4><p>Grande partecipazione all'iniziativa in piazza.</p></div></div>
+    <div class="ni"><span class="nd">5 Feb 2026</span><div><h4>Nuova composizione della commissione</h4><p>Il Consiglio Comunale ha rinnovato i componenti per il triennio 2026–2029.</p></div></div>
+  </div>
+</div>
+
+<!-- CONTATTI -->
+<div class="page" id="page-contatti">
+  <p class="st">Contatta la Commissione</p>
+  <div class="cf">
+    <div class="fi"><label>Nome e cognome</label><input type="text" placeholder="Mario Rossi"></div>
+    <div class="fi"><label>Email</label><input type="email" placeholder="email@esempio.it"></div>
+    <div class="fi"><label>Oggetto</label>
+      <select><option>Richiesta informazioni</option><option>Segnalazione discriminazione</option><option>Proposta di collaborazione</option><option>Altro</option></select>
+    </div>
+    <div class="fi"><label>Messaggio</label><textarea placeholder="Scrivi qui il tuo messaggio..."></textarea></div>
+    <button class="btn-blu" onclick="contactSent()">Invia messaggio</button>
+    <p id="contact-ok" style="display:none;font-size:12px;color:var(--blu);margin-top:8px">✓ Messaggio inviato.</p>
+  </div>
+</div>
+
+<!-- AREA RISERVATA -->
+<div class="page" id="page-member">
+  <div class="mh">
+    <div>
+      <div class="badge-role" id="badge-role"></div>
+      <h2>Area riservata</h2>
+    </div>
+    <button class="lb" style="border-color:rgba(0,0,0,0.2);color:var(--t2)" onclick="logout()">Esci</button>
+  </div>
+  <div id="db-status-bar"></div>
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('cal',this)">📅 Calendario</button>
+    <button class="tab" onclick="showTab('docs',this)">📁 Documenti</button>
+    <button class="tab admin-only" id="tab-impost-btn" onclick="showTab('impost',this)">⚙️ Impostazioni</button>
+  </div>
+
+  <!-- CALENDARIO -->
+  <div class="tc active" id="tab-cal">
+    <div class="admin-only">
+      <div class="panel oro">
+        <h3>📊 Importa eventi da Excel</h3>
+        <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Carica il file Excel con gli eventi. Saranno visibili a tutte le commissarie.</p>
+        <div class="xl-drop" id="xl-drop" onclick="document.getElementById('xl-input').click()"
+          ondragover="event.preventDefault();this.classList.add('drag')"
+          ondragleave="this.classList.remove('drag')"
+          ondrop="handleXlDrop(event)">
+          <div class="ico">📂</div>
+          <p>Clicca o trascina il file Excel qui</p>
+          <small>Formato .xlsx — usa il template fornito</small>
+          <input type="file" id="xl-input" accept=".xlsx,.xls" onchange="handleXlFile(this.files[0])">
+        </div>
+        <div id="xl-preview"></div>
+        <div id="xl-result" class="import-result"></div>
+      </div>
+      <div class="panel verde">
+        <h3>➕ Aggiungi evento singolo</h3>
+        <div class="form-grid">
+          <div class="fi"><label>Data *</label><input type="date" id="ev-data"></div>
+          <div class="fi"><label>Orario</label><input type="text" id="ev-ora" placeholder="es. 17:30"></div>
+          <div class="fi full"><label>Titolo *</label><input type="text" id="ev-titolo" placeholder="es. Riunione CPO"></div>
+          <div class="fi full"><label>Luogo</label><input type="text" id="ev-luogo" placeholder="es. Sala Giunta, Municipio"></div>
+        </div>
+        <br>
+        <button class="btn-verde" id="btn-add-ev" onclick="addEvent()">Aggiungi al calendario</button>
+        <p class="ok-msg" id="ev-ok">✓ Evento salvato!</p>
+      </div>
+    </div>
+    <div class="viewer-only readonly-notice">👁️ <span>Sola visualizzazione — solo l'amministratrice può modificare il calendario.</span></div>
+    <div class="cal-toolbar" id="ev-count"></div>
+    <div class="calendar">
+      <div class="cal-hdr">
+        <div class="cal-nav"><button onclick="prevMonth()">‹</button></div>
+        <h3 id="cal-title"></h3>
+        <div class="cal-nav"><button onclick="nextMonth()">›</button></div>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+    <div class="ev-list" id="ev-list"></div>
+  </div>
+
+  <!-- DOCUMENTI -->
+  <div class="tc" id="tab-docs">
+    <div class="admin-only">
+      <div class="panel blu">
+        <h3>🔗 Aggiungi documento da Google Drive</h3>
+        <div class="form-grid">
+          <div class="fi full"><label>Nome documento *</label><input type="text" id="doc-nome" placeholder="es. Verbale riunione 5 maggio 2026"></div>
+          <div class="fi full">
+            <label>Link Google Drive *</label>
+            <input type="url" id="doc-link" placeholder="https://drive.google.com/file/d/…/view">
+            <div class="link-hint">Drive → clic destro → <b>Condividi</b> → <b>"Chiunque abbia il link"</b> → <b>Copia link</b></div>
+          </div>
+          <div class="fi"><label>Categoria</label>
+            <select id="doc-cat">
+              <option value="verbale">Verbale riunione</option>
+              <option value="lavoro">Documento di lavoro</option>
+              <option value="comunicazione">Comunicazione</option>
+              <option value="altro">Altro</option>
+            </select>
+          </div>
+          <div class="fi"><label>Data documento</label><input type="date" id="doc-data"></div>
+        </div>
+        <br>
+        <button class="btn-verde" id="btn-add-doc" onclick="addDoc()">Aggiungi documento</button>
+        <p class="ok-msg" id="doc-ok">✓ Documento salvato!</p>
+      </div>
+    </div>
+    <div class="viewer-only readonly-notice">👁️ <span>Sola visualizzazione — solo l'amministratrice può aggiungere o modificare documenti.</span></div>
+    <p class="st">Documenti condivisi</p>
+    <div class="cat-bar">
+      <button class="cat-btn active" onclick="filterDocs('tutti',this)">Tutti</button>
+      <button class="cat-btn" onclick="filterDocs('verbale',this)">Verbali</button>
+      <button class="cat-btn" onclick="filterDocs('lavoro',this)">Documenti di lavoro</button>
+      <button class="cat-btn" onclick="filterDocs('comunicazione',this)">Comunicazioni</button>
+      <button class="cat-btn" onclick="filterDocs('altro',this)">Altro</button>
+    </div>
+    <div class="doc-list" id="doc-list"></div>
+  </div>
+
+  <!-- IMPOSTAZIONI (solo admin) -->
+  <div class="tc" id="tab-impost">
+    <div class="panel blu">
+      <h3>🔑 Cambia password commissarie</h3>
+      <p style="font-size:12px;color:var(--t2);margin-bottom:1rem">Password per accesso in sola visualizzazione.</p>
+      <div class="fi"><label>Nuova password commissarie</label><input type="password" id="pwd-view-new" placeholder="••••••••"></div>
+      <div class="fi"><label>Conferma</label><input type="password" id="pwd-view-new2" placeholder="••••••••"></div>
+      <button class="btn-verde" onclick="changeViewPassword()">Aggiorna</button>
+      <p class="ok-msg" id="pwd-view-ok">✓ Password commissarie aggiornata!</p>
+      <p id="pwd-view-err" style="display:none;font-size:12px;color:var(--rosso);margin-top:8px"></p>
+    </div>
+    <div class="panel oro">
+      <h3>🔑 Cambia password admin</h3>
+      <div class="fi"><label>Password attuale</label><input type="password" id="pwd-admin-old" placeholder="••••••••"></div>
+      <div class="fi"><label>Nuova password</label><input type="password" id="pwd-admin-new" placeholder="••••••••"></div>
+      <div class="fi"><label>Conferma</label><input type="password" id="pwd-admin-new2" placeholder="••••••••"></div>
+      <button class="btn-oro" onclick="changeAdminPassword()">Aggiorna</button>
+      <p class="ok-msg" id="pwd-admin-ok">✓ Password admin aggiornata!</p>
+      <p id="pwd-admin-err" style="display:none;font-size:12px;color:var(--rosso);margin-top:8px"></p>
+    </div>
+    <div class="panel grigio">
+      <h3>🗑️ Gestione dati</h3>
+      <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.6">Elimina tutti gli eventi o tutti i documenti. Operazione non reversibile.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn-sm rosso" style="padding:8px 16px;font-size:13px" onclick="clearEvents()">Elimina tutti gli eventi</button>
+        <button class="btn-sm rosso" style="padding:8px 16px;font-size:13px" onclick="clearDocs()">Elimina tutti i documenti</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL LOGIN -->
+<div class="overlay" id="modal" style="display:none">
+  <div class="modal">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem">
+      <svg width="34" height="34" viewBox="0 0 44 44" fill="none">
+        <path d="M6 6H38V28Q22 42 22 42Q22 42 6 28Z" fill="#1a4a8a" stroke="#c9932a" stroke-width="1.5"/>
+        <path d="M6 26Q11 23 16 26Q21 29 26 26Q31 23 38 26L38 28Q22 42 22 42Q22 42 6 28Z" fill="#4a90d9"/>
+        <path d="M14 22Q22 19 30 22L29 25Q22 27 15 25Z" fill="#c9932a"/>
+        <line x1="22" y1="10" x2="22" y2="22" stroke="white" stroke-width="1.2"/>
+        <path d="M22 11L29 17L22 20Z" fill="white" fill-opacity="0.9"/>
+      </svg>
+      <div><h2>Area riservata CPO</h2><p style="font-size:11px;color:var(--t3)">Comune di Follonica</p></div>
+    </div>
+    <p class="sub">Seleziona il tuo accesso:</p>
+    <div class="role-cards">
+      <div class="role-card selected" id="rc-viewer" onclick="selectRole('viewer')">
+        <div class="role-icon">👁️</div>
+        <div class="role-name">Commissaria</div>
+        <div class="role-desc">Visualizzazione calendario e documenti</div>
+      </div>
+      <div class="role-card admin-card" id="rc-admin" onclick="selectRole('admin')">
+        <div class="role-icon">⚙️</div>
+        <div class="role-name">Amministratrice</div>
+        <div class="role-desc">Gestione completa eventi e documenti</div>
+      </div>
+    </div>
+    <div class="fi">
+      <label id="pwd-label">Password commissaria</label>
+      <input type="password" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      <p class="errmsg" id="pwd-err" style="display:none">Password errata. Riprova.</p>
+    </div>
+    <div class="mbtns">
+      <button class="btn-cancel" onclick="closeModal()">Annulla</button>
+      <button class="btn-blu" style="flex:1" id="btn-login" onclick="doLogin()">Accedi</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Commissione Pari Opportunità — Comune di Follonica &nbsp;·&nbsp; Largo Felice Cavallotti, 1 — 58022 Follonica (GR) &nbsp;·&nbsp; Tel. 0566 59111</p>
+  <p style="margin-top:4px"><a href="https://www.comune.follonica.gr.it">www.comune.follonica.gr.it</a></p>
+</footer>
+
+<link rel="stylesheet" href="stile.css">
 </head>
 <body>
 
@@ -462,458 +548,6 @@ footer a{color:rgba(255,255,255,.8)}
   <p style="margin-top:4px"><a href="https://www.comune.follonica.gr.it">www.comune.follonica.gr.it</a></p>
 </footer>
 
-<script>
-// ══════════════════════════════════════
-// SUPABASE
-// ══════════════════════════════════════
-const SB_URL='https://nxcjpeahugyiuazflcvf.supabase.co';
-const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54Y2pwZWFodWd5aXVhemZsY3ZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NjkwMDYsImV4cCI6MjA5NDU0NTAwNn0.tK1_2Zbg1NiHrj1IAsfKTbPzzMH86rAIpi7RzT8vYqE';
-const H={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=representation'};
-const HP={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'};
-
-async function sbGet(t,f=''){ const r=await fetch(`${SB_URL}/rest/v1/${t}?order=creato_il.asc${f}`,{headers:H}); if(!r.ok)throw new Error(await r.text()); return r.json(); }
-async function sbInsert(t,d){ const r=await fetch(`${SB_URL}/rest/v1/${t}`,{method:'POST',headers:H,body:JSON.stringify(d)}); if(!r.ok)throw new Error(await r.text()); return r.json(); }
-async function sbUpdate(t,id,d){ const r=await fetch(`${SB_URL}/rest/v1/${t}?id=eq.${id}`,{method:'PATCH',headers:HP,body:JSON.stringify(d)}); if(!r.ok)throw new Error(await r.text()); }
-async function sbUpdateWhere(t,col,val,d){ const r=await fetch(`${SB_URL}/rest/v1/${t}?${col}=eq.${encodeURIComponent(val)}`,{method:'PATCH',headers:HP,body:JSON.stringify(d)}); if(!r.ok)throw new Error(await r.text()); }
-async function sbUpsert(t,d){ const r=await fetch(`${SB_URL}/rest/v1/${t}`,{method:'POST',headers:{...H,'Prefer':'resolution=merge-duplicates'},body:JSON.stringify(d)}); if(!r.ok)throw new Error(await r.text()); }
-async function sbDelete(t,id){ const r=await fetch(`${SB_URL}/rest/v1/${t}?id=eq.${id}`,{method:'DELETE',headers:H}); if(!r.ok)throw new Error(await r.text()); }
-async function sbDeleteAll(t){ const r=await fetch(`${SB_URL}/rest/v1/${t}?id=gt.0`,{method:'DELETE',headers:H}); if(!r.ok)throw new Error(await r.text()); }
-async function sbDeleteBySrc(src){ const r=await fetch(`${SB_URL}/rest/v1/eventi?src=eq.${src}`,{method:'DELETE',headers:H}); if(!r.ok)throw new Error(await r.text()); }
-
-// ══════════════════════════════════════
-// PASSWORD E RUOLI
-// ══════════════════════════════════════
-const K_PA='cpo_pass_admin', K_PV='cpo_pass_viewer';
-function getPA(){ return localStorage.getItem(K_PA)||'cpoAdmin2026'; }
-function getPV(){ return localStorage.getItem(K_PV)||'cpo2026'; }
-
-// ══════════════════════════════════════
-// STATO
-// ══════════════════════════════════════
-let events=[], docs=[], currentFilter='tutti';
-let loggedIn=false, currentRole=null, selectedRole='viewer';
-let curM=new Date().getMonth()+1, curY=new Date().getFullYear();
-
-// ══════════════════════════════════════
-// NAVIGAZIONE
-// ══════════════════════════════════════
-function showPage(n,b){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nb').forEach(x=>x.classList.remove('active'));
-  document.getElementById('page-'+n).classList.add('active');
-  if(b) b.classList.add('active');
-  window.scrollTo(0,0);
-}
-function toggleLogin(){ loggedIn?showPage('member',null):(document.getElementById('modal').style.display='flex'); }
-function closeModal(){ document.getElementById('modal').style.display='none'; document.getElementById('pwd-err').style.display='none'; document.getElementById('pwd-input').value=''; }
-
-function selectRole(role){
-  selectedRole=role;
-  document.getElementById('rc-viewer').classList.toggle('selected',role==='viewer');
-  document.getElementById('rc-admin').classList.toggle('selected',role==='admin');
-  document.getElementById('pwd-label').textContent=role==='admin'?'Password amministratrice':'Password commissaria';
-  document.getElementById('btn-login').style.background=role==='admin'?'var(--oro)':'var(--blu)';
-  document.getElementById('pwd-err').style.display='none';
-  document.getElementById('pwd-input').value='';
-  document.getElementById('pwd-input').focus();
-}
-
-function doLogin(){
-  const pwd=document.getElementById('pwd-input').value;
-  const isAdmin=pwd===getPA(), isViewer=pwd===getPV();
-  if(!isAdmin&&!isViewer){ document.getElementById('pwd-err').style.display='block'; return; }
-  if(selectedRole==='admin'&&!isAdmin){ document.getElementById('pwd-err').style.display='block'; return; }
-  currentRole=isAdmin?'admin':'viewer';
-  loggedIn=true; closeModal(); applyRole();
-  showPage('member',null); loadAll();
-}
-
-function applyRole(){
-  const isAdmin=currentRole==='admin';
-  const badge=document.getElementById('badge-role');
-  badge.className='badge-role '+(isAdmin?'admin':'viewer');
-  badge.innerHTML=isAdmin?'⚙️ Amministratrice — accesso completo':'👁️ Commissaria — sola visualizzazione';
-  document.getElementById('ltog').textContent=isAdmin?'⚙️ Admin':'👁️ Area riservata';
-  document.getElementById('ltog').className='lb '+(isAdmin?'on-admin':'on-view');
-  document.querySelectorAll('.admin-only').forEach(el=>el.style.display=isAdmin?'':'none');
-  document.querySelectorAll('.viewer-only').forEach(el=>el.style.display=isAdmin?'none':'');
-  document.getElementById('tab-impost-btn').style.display=isAdmin?'':'none';
-  // Mostra pulsante modifica descrizione solo se admin e siamo sulla home
-  document.getElementById('hero-edit-btn').style.display=isAdmin?'inline-flex':'none';
-}
-
-function logout(){
-  loggedIn=false; currentRole=null;
-  document.getElementById('ltog').textContent='Area riservata';
-  document.getElementById('ltog').className='lb';
-  document.getElementById('hero-edit-btn').style.display='none';
-  cancelEditDesc();
-  showPage('home',document.querySelector('.nb'));
-  document.querySelector('.nb').classList.add('active');
-  selectRole('viewer');
-}
-function showTab(n,b){
-  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+n).classList.add('active');
-  if(b) b.classList.add('active');
-}
-
-// ══════════════════════════════════════
-// CARICA TUTTO
-// ══════════════════════════════════════
-async function loadAll(){
-  setDbStatus('caricamento');
-  try{
-    const [ev,dc]=await Promise.all([sbGet('eventi'),sbGet('documenti')]);
-    events=ev; docs=dc;
-    setDbStatus('ok');
-    renderCalendar(); renderDocs();
-  } catch(e){ setDbStatus('err'); console.error(e); }
-}
-function setDbStatus(s){
-  const el=document.getElementById('db-status-bar');
-  if(s==='ok') el.innerHTML='<span class="db-status ok">🟢 Database condiviso connesso</span>';
-  else if(s==='err') el.innerHTML='<span class="db-status err">🔴 Errore connessione. Ricarica la pagina.</span>';
-  else el.innerHTML='<span class="db-status ok" style="opacity:.6">⏳ Connessione...</span>';
-}
-
-// ══════════════════════════════════════
-// DESCRIZIONE CPO — modificabile
-// ══════════════════════════════════════
-async function loadDesc(){
-  try{
-    const r=await fetch(`${SB_URL}/rest/v1/testi?chiave=eq.descrizione_cpo`,{headers:H});
-    const data=await r.json();
-    const testo=data[0]?.valore||'Organo consultivo del Comune di Follonica.';
-    document.getElementById('hero-desc').textContent=testo;
-  } catch(e){ document.getElementById('hero-desc').textContent='Organo consultivo del Comune di Follonica che promuove e tutela la parità di diritti e opportunità tra donne e uomini nel territorio comunale.'; }
-}
-
-function startEditDesc(){
-  const testo=document.getElementById('hero-desc').textContent;
-  document.getElementById('hero-textarea').value=testo;
-  document.getElementById('hero-desc').style.display='none';
-  document.getElementById('hero-edit-btn').style.display='none';
-  document.getElementById('hero-editor').style.display='block';
-  document.getElementById('hero-textarea').focus();
-}
-function cancelEditDesc(){
-  document.getElementById('hero-editor').style.display='none';
-  document.getElementById('hero-desc').style.display='block';
-  if(currentRole==='admin') document.getElementById('hero-edit-btn').style.display='inline-flex';
-}
-async function saveDesc(){
-  const testo=document.getElementById('hero-textarea').value.trim();
-  if(!testo){ alert('Il testo non può essere vuoto.'); return; }
-  try{
-    // Usa PATCH per aggiornare la riga esistente tramite la chiave univoca
-    const r=await fetch(`${SB_URL}/rest/v1/testi?chiave=eq.descrizione_cpo`,{
-      method:'PATCH',
-      headers:{...HP},
-      body:JSON.stringify({valore:testo})
-    });
-    if(!r.ok){ const err=await r.text(); throw new Error(err); }
-    document.getElementById('hero-desc').textContent=testo;
-    cancelEditDesc();
-    const ok=document.getElementById('desc-ok');
-    ok.style.display='block'; setTimeout(()=>ok.style.display='none',3000);
-  } catch(e){ alert('Errore nel salvataggio: '+e.message); }
-}
-
-// ══════════════════════════════════════
-// EXCEL IMPORT
-// ══════════════════════════════════════
-function handleXlDrop(ev){ ev.preventDefault(); document.getElementById('xl-drop').classList.remove('drag'); const f=ev.dataTransfer.files[0]; if(f) handleXlFile(f); }
-function handleXlFile(file){
-  if(!file||!file.name.match(/\.xlsx?$/i)){ alert('Carica un file .xlsx'); return; }
-  const reader=new FileReader();
-  reader.onload=function(e){
-    try{
-      const wb=XLSX.read(e.target.result,{type:'array',cellDates:true});
-      const sn=wb.SheetNames.includes('Eventi CPO')?'Eventi CPO':wb.SheetNames[0];
-      const ws=wb.Sheets[sn];
-      const rows=XLSX.utils.sheet_to_json(ws,{header:1,raw:false,dateNF:'DD/MM/YYYY'});
-      let hr=-1;
-      for(let i=0;i<rows.length;i++){ if(rows[i].map(c=>(c||'').toString().toLowerCase()).some(c=>c.includes('data'))){ hr=i; break; } }
-      if(hr===-1){ showXlResult('Intestazioni non trovate. Usa il template.','warn'); return; }
-      const hdr=rows[hr].map(c=>(c||'').toString().toLowerCase().trim());
-      const iD=hdr.findIndex(c=>c.includes('data'));
-      const iT=hdr.findIndex(c=>c.includes('titolo'));
-      const iO=hdr.findIndex(c=>c.includes('orario')||c.includes('ora'));
-      const iL=hdr.findIndex(c=>c.includes('luogo'));
-      if(iD===-1||iT===-1){ showXlResult('Colonne Data e Titolo obbligatorie non trovate.','warn'); return; }
-      const nuovi=[], saltati=[];
-      for(let i=hr+1;i<rows.length;i++){
-        const row=rows[i];
-        const dr=((iD>=0?row[iD]:'')||'').toString().trim();
-        const tit=((iT>=0?row[iT]:'')||'').toString().trim();
-        if(!dr&&!tit) continue;
-        if(!dr||!tit){ saltati.push(i+1); continue; }
-        let p=null;
-        let m=dr.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
-        if(m) p={giorno:+m[1],mese:+m[2],anno:+m[3]};
-        if(!p){ m=dr.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/); if(m) p={anno:+m[1],mese:+m[2],giorno:+m[3]}; }
-        if(!p&&!isNaN(+dr)){ const d=XLSX.SSF.parse_date_code(+dr); if(d) p={anno:d.y,mese:d.m,giorno:d.d}; }
-        if(!p){ saltati.push(i+1); continue; }
-        nuovi.push({anno:p.anno,mese:p.mese,giorno:p.giorno,titolo:tit,
-          ora:((iO>=0?row[iO]:'')||'').toString().trim(),
-          luogo:((iL>=0?row[iL]:'')||'').toString().trim(),src:'excel'});
-      }
-      if(!nuovi.length){ showXlResult('Nessun evento valido trovato.','warn'); return; }
-      showXlPreview(nuovi,saltati);
-    } catch(err){ showXlResult('Errore: '+err.message,'warn'); }
-  };
-  reader.readAsArrayBuffer(file);
-}
-function showXlPreview(nuovi,saltati){
-  const MS=['','Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
-  let html=`<p style="font-size:12px;color:var(--verde);margin-bottom:6px;font-weight:500">✓ Trovati ${nuovi.length} eventi${saltati.length?' ('+saltati.length+' saltati)':''}:</p>`;
-  html+=`<div style="max-height:180px;overflow-y:auto;border:.5px solid var(--br);border-radius:var(--r);margin-bottom:10px"><table class="preview-table"><thead><tr><th>Data</th><th>Titolo</th><th>Orario</th><th>Luogo</th></tr></thead><tbody>`;
-  nuovi.forEach(e=>{ html+=`<tr><td>${e.giorno} ${MS[e.mese]} ${e.anno}</td><td>${e.titolo}</td><td>${e.ora||'—'}</td><td>${e.luogo||'—'}</td></tr>`; });
-  html+=`</tbody></table></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-verde" id="btn-xl-confirm">✓ Importa ${nuovi.length} eventi</button><button class="btn-cancel" style="flex:0" onclick="resetXlPreview()">Annulla</button></div>`;
-  const wrapper=document.getElementById('xl-preview');
-  wrapper.innerHTML=html; wrapper._nuovi=nuovi;
-  document.getElementById('btn-xl-confirm').onclick=()=>confirmImport();
-  document.getElementById('xl-result').style.display='none';
-}
-async function confirmImport(){
-  const nuovi=document.getElementById('xl-preview')._nuovi;
-  if(!nuovi||!nuovi.length) return;
-  const btn=document.getElementById('btn-xl-confirm');
-  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Importando...';
-  try{
-    await sbDeleteBySrc('excel');
-    await sbInsert('eventi',nuovi);
-    resetXlPreview(); await loadAll();
-    if(nuovi.length){ curM=nuovi[0].mese; curY=nuovi[0].anno; renderCalendar(); }
-    showXlResult(`✓ ${nuovi.length} eventi importati!`,'ok');
-  } catch(e){ btn.disabled=false; btn.textContent='✓ Importa'; showXlResult('Errore: '+e.message,'warn'); }
-}
-function resetXlPreview(){ document.getElementById('xl-preview').innerHTML=''; document.getElementById('xl-input').value=''; }
-function showXlResult(msg,type){ const el=document.getElementById('xl-result'); el.textContent=msg; el.className='import-result '+type; el.style.display='block'; }
-
-// ══════════════════════════════════════
-// CALENDARIO
-// ══════════════════════════════════════
-const MONTHS=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
-const MS=['','Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
-
-async function addEvent(){
-  if(currentRole!=='admin') return;
-  const d=document.getElementById('ev-data').value;
-  const t=document.getElementById('ev-titolo').value.trim();
-  if(!d||!t){ alert('Inserisci almeno la data e il titolo.'); return; }
-  const p=d.split('-');
-  const btn=document.getElementById('btn-add-ev');
-  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Salvando...';
-  try{
-    await sbInsert('eventi',[{anno:+p[0],mese:+p[1],giorno:+p[2],titolo:t,
-      ora:document.getElementById('ev-ora').value.trim(),
-      luogo:document.getElementById('ev-luogo').value.trim(),src:'manual'}]);
-    ['ev-data','ev-titolo','ev-ora','ev-luogo'].forEach(id=>document.getElementById(id).value='');
-    await loadAll(); curM=+p[1]; curY=+p[0]; renderCalendar(); flash('ev-ok');
-  } catch(e){ alert('Errore: '+e.message); }
-  btn.disabled=false; btn.textContent='Aggiungi al calendario';
-}
-async function deleteEvent(id){
-  if(currentRole!=='admin') return;
-  if(!confirm('Eliminare questo evento?'))return;
-  try{ await sbDelete('eventi',id); await loadAll(); renderCalendar(); } catch(e){ alert('Errore: '+e.message); }
-}
-async function clearEvents(){
-  if(currentRole!=='admin') return;
-  if(!confirm('Eliminare TUTTI gli eventi?'))return;
-  try{ await sbDeleteAll('eventi'); await loadAll(); renderCalendar(); } catch(e){ alert('Errore: '+e.message); }
-}
-function renderCalendar(){
-  document.getElementById('cal-title').textContent=MONTHS[curM-1]+' '+curY;
-  const tot=events.length, xl=events.filter(e=>e.src==='excel').length;
-  document.getElementById('ev-count').textContent=tot===0?'Nessun evento':`${tot} eventi${xl?' · '+xl+' da Excel':''}`;
-  const grid=document.getElementById('cal-grid'); grid.innerHTML='';
-  ['L','M','M','G','V','S','D'].forEach(d=>{ const el=document.createElement('div'); el.className='cdn'; el.textContent=d; grid.appendChild(el); });
-  const first=new Date(curY,curM-1,1).getDay(), offset=first===0?6:first-1;
-  const days=new Date(curY,curM,0).getDate(), today=new Date();
-  for(let i=0;i<offset;i++){ const el=document.createElement('div'); el.className='cd empty'; grid.appendChild(el); }
-  for(let d=1;d<=days;d++){
-    const el=document.createElement('div'); el.className='cd'; el.textContent=d;
-    if(d===today.getDate()&&curM===today.getMonth()+1&&curY===today.getFullYear()) el.classList.add('today');
-    if(events.some(e=>e.giorno===d&&e.mese===curM&&e.anno===curY)) el.classList.add('has-event');
-    grid.appendChild(el);
-  }
-  const evList=document.getElementById('ev-list');
-  const me=events.filter(e=>e.mese===curM&&e.anno===curY).sort((a,b)=>a.giorno-b.giorno);
-  const isAdmin=currentRole==='admin';
-  evList.innerHTML=me.length===0?'<p class="empty-msg">Nessun evento in questo mese.</p>'
-    :me.map(e=>`<div class="ev-item">
-      <div class="ev-badge"><div class="day">${e.giorno}</div><div class="mon">${MS[e.mese]}</div></div>
-      <div class="ev-info">
-        <h4>${e.titolo} <span class="ev-src ${e.src||'manual'}">${e.src==='excel'?'Excel':'Manuale'}</span></h4>
-        ${[e.ora,e.luogo].filter(Boolean).length?`<p>${[e.ora,e.luogo].filter(Boolean).join(' · ')}</p>`:''}
-      </div>
-      ${isAdmin?`<button class="btn-sm rosso" onclick="deleteEvent(${e.id})">✕ Elimina</button>`:''}
-    </div>`).join('');
-}
-function prevMonth(){ curM--; if(curM<1){curM=12;curY--;} renderCalendar(); }
-function nextMonth(){ curM++; if(curM>12){curM=1;curY++;} renderCalendar(); }
-
-// ══════════════════════════════════════
-// DOCUMENTI
-// ══════════════════════════════════════
-function driveToDownload(url){ if(!url)return''; const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/); if(m)return`https://drive.google.com/uc?export=download&id=${m[1]}`; return url; }
-const CAT_LABEL={verbale:'Verbale',lavoro:'Documento di lavoro',comunicazione:'Comunicazione',altro:'Altro'};
-const CAT_OPTIONS=['verbale','lavoro','comunicazione','altro'];
-const TIPO_ICO={pdf:'📄',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊',default:'📎'};
-const TIPO_BG={pdf:'#FCEBEB',doc:'#E6F1FB',docx:'#E6F1FB',xls:'#E8F7EE',xlsx:'#E8F7EE',default:'#F5F5F0'};
-function guessType(link){ if(!link)return'default'; const l=link.toLowerCase(); for(const e of['pdf','docx','doc','xlsx','xls'])if(l.includes(e))return e; return'default'; }
-
-async function addDoc(){
-  if(currentRole!=='admin') return;
-  const nome=document.getElementById('doc-nome').value.trim();
-  const link=document.getElementById('doc-link').value.trim();
-  if(!nome||!link){ alert('Inserisci nome e link.'); return; }
-  if(!link.includes('drive.google.com')){ alert('Inserisci un link di Google Drive valido.'); return; }
-  const btn=document.getElementById('btn-add-doc');
-  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Salvando...';
-  try{
-    await sbInsert('documenti',[{nome,cat:document.getElementById('doc-cat').value,
-      data:document.getElementById('doc-data').value||null,link,tipo:guessType(link)}]);
-    document.getElementById('doc-nome').value='';
-    document.getElementById('doc-link').value='';
-    document.getElementById('doc-data').value='';
-    await loadAll(); flash('doc-ok');
-  } catch(e){ alert('Errore: '+e.message); }
-  btn.disabled=false; btn.textContent='Aggiungi documento';
-}
-
-async function deleteDoc(id){
-  if(currentRole!=='admin') return;
-  if(!confirm('Eliminare questo documento?'))return;
-  try{ await sbDelete('documenti',id); await loadAll(); } catch(e){ alert('Errore: '+e.message); }
-}
-async function clearDocs(){
-  if(currentRole!=='admin') return;
-  if(!confirm('Eliminare TUTTI i documenti?'))return;
-  try{ await sbDeleteAll('documenti'); await loadAll(); } catch(e){ alert('Errore: '+e.message); }
-}
-
-// MODIFICA DOCUMENTO INLINE
-function toggleDocEditor(id){
-  const edEl=document.getElementById('doc-editor-'+id);
-  const isOpen=edEl.style.display==='block';
-  // chiudi tutti gli altri editor aperti
-  document.querySelectorAll('[id^=doc-editor-]').forEach(el=>el.style.display='none');
-  document.querySelectorAll('[id^=doc-editbtn-]').forEach(el=>el.textContent='✏️ Modifica');
-  if(!isOpen){
-    edEl.style.display='block';
-    document.getElementById('doc-editbtn-'+id).textContent='✕ Chiudi';
-  }
-}
-async function saveDocEdit(id){
-  const nome=document.getElementById('ed-nome-'+id).value.trim();
-  const cat=document.getElementById('ed-cat-'+id).value;
-  const data=document.getElementById('ed-data-'+id).value||null;
-  const link=document.getElementById('ed-link-'+id).value.trim();
-  if(!nome){ alert('Il nome non può essere vuoto.'); return; }
-  const btn=document.getElementById('ed-save-'+id);
-  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>';
-  try{
-    await sbUpdate('documenti',id,{nome,cat,data,link,tipo:guessType(link)});
-    await loadAll();
-    flash('doc-edit-ok-'+id);
-  } catch(e){ alert('Errore: '+e.message); }
-  btn.disabled=false; btn.textContent='✓ Salva';
-}
-
-function filterDocs(cat,btn){
-  currentFilter=cat;
-  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  renderDocs();
-}
-function renderDocs(){
-  const filtered=currentFilter==='tutti'?docs:docs.filter(d=>d.cat===currentFilter);
-  const list=document.getElementById('doc-list');
-  const isAdmin=currentRole==='admin';
-  if(!filtered.length){ list.innerHTML='<p class="empty-msg">Nessun documento in questa categoria.</p>'; return; }
-  list.innerHTML=filtered.map(d=>{
-    const tipo=d.tipo||guessType(d.link);
-    const dlUrl=driveToDownload(d.link);
-    const dataFmt=d.data?new Date(d.data+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'short',year:'numeric'}):'';
-    const dlBtn=dlUrl?`<a class="btn-dl" href="${dlUrl}" target="_blank" rel="noopener">⬇ Scarica</a>`
-      :`<span class="btn-dl" style="opacity:.4;cursor:default">⬇ Scarica</span>`;
-    const catOpts=CAT_OPTIONS.map(c=>`<option value="${c}" ${d.cat===c?'selected':''}>${CAT_LABEL[c]}</option>`).join('');
-    const adminActions=isAdmin?`
-      <button class="btn-sm oro" id="doc-editbtn-${d.id}" onclick="toggleDocEditor(${d.id})">✏️ Modifica</button>
-      <button class="btn-sm rosso" onclick="deleteDoc(${d.id})">✕ Elimina</button>` : '';
-    const editor=isAdmin?`
-      <div class="doc-editor" id="doc-editor-${d.id}">
-        <div class="form-grid">
-          <div class="fi full"><label style="font-size:11px">Nome documento</label>
-            <input type="text" id="ed-nome-${d.id}" value="${d.nome.replace(/"/g,'&quot;')}">
-          </div>
-          <div class="fi"><label style="font-size:11px">Categoria</label>
-            <select id="ed-cat-${d.id}">${catOpts}</select>
-          </div>
-          <div class="fi"><label style="font-size:11px">Data</label>
-            <input type="date" id="ed-data-${d.id}" value="${d.data||''}">
-          </div>
-          <div class="fi full"><label style="font-size:11px">Link Google Drive</label>
-            <input type="url" id="ed-link-${d.id}" value="${(d.link||'').replace(/"/g,'&quot;')}">
-          </div>
-        </div>
-        <div class="doc-editor-btns">
-          <button class="btn-sm verde" id="ed-save-${d.id}" onclick="saveDocEdit(${d.id})">✓ Salva modifiche</button>
-          <button class="btn-sm grigio" onclick="toggleDocEditor(${d.id})">Annulla</button>
-        </div>
-        <p class="ok-msg" id="doc-edit-ok-${d.id}" style="font-size:11px">✓ Documento aggiornato!</p>
-      </div>` : '';
-    return `<div class="doc-item">
-      <div class="doc-ico" style="background:${TIPO_BG[tipo]||TIPO_BG.default}">${TIPO_ICO[tipo]||'📎'}</div>
-      <div class="doc-meta">
-        <h4>${d.nome}</h4>
-        <p>${CAT_LABEL[d.cat]||d.cat}${dataFmt?' · '+dataFmt:''}</p>
-        <div class="doc-actions">
-          ${dlBtn}
-          ${adminActions}
-        </div>
-        ${editor}
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ══════════════════════════════════════
-// IMPOSTAZIONI PASSWORD
-// ══════════════════════════════════════
-function changeViewPassword(){
-  const nw=document.getElementById('pwd-view-new').value;
-  const nw2=document.getElementById('pwd-view-new2').value;
-  const err=document.getElementById('pwd-view-err'); err.style.display='none';
-  if(nw.length<6){ err.textContent='Minimo 6 caratteri.'; err.style.display='block'; return; }
-  if(nw!==nw2){ err.textContent='Le password non coincidono.'; err.style.display='block'; return; }
-  localStorage.setItem(K_PV,nw);
-  ['pwd-view-new','pwd-view-new2'].forEach(id=>document.getElementById(id).value='');
-  flash('pwd-view-ok');
-}
-function changeAdminPassword(){
-  const old=document.getElementById('pwd-admin-old').value;
-  const nw=document.getElementById('pwd-admin-new').value;
-  const nw2=document.getElementById('pwd-admin-new2').value;
-  const err=document.getElementById('pwd-admin-err'); err.style.display='none';
-  if(old!==getPA()){ err.textContent='Password attuale errata.'; err.style.display='block'; return; }
-  if(nw.length<6){ err.textContent='Minimo 6 caratteri.'; err.style.display='block'; return; }
-  if(nw!==nw2){ err.textContent='Le password non coincidono.'; err.style.display='block'; return; }
-  localStorage.setItem(K_PA,nw);
-  ['pwd-admin-old','pwd-admin-new','pwd-admin-new2'].forEach(id=>document.getElementById(id).value='');
-  flash('pwd-admin-ok');
-}
-
-function flash(id){ const el=document.getElementById(id); if(!el)return; el.style.display='block'; setTimeout(()=>el.style.display='none',3500); }
-function contactSent(){ document.getElementById('contact-ok').style.display='block'; }
-
-// Carica la descrizione all'avvio
-loadDesc();
-</script>
+<script src="script.js"></script>
 </body>
 </html>
